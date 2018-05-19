@@ -5,8 +5,11 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import arduino.*;
+import Sensors.*;
 import pendrive.*;
-import java.io.IOException;
+import Sensors.SensorFactory.Type;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 public class Main extends Application {
 	@Override
@@ -27,18 +30,20 @@ public class Main extends Application {
 
 		System.out.println("test");
 
-		Arduino serial = new Arduino();
+		Arduino serial = Arduino.getInstance();
 		serial.open();
 
-		try {
+		SensorFactory.createSensor(Type.ENCODER);
+		SensorFactory.createSensor(Type.ENCODER);
+		SensorFactory.createSensor(Type.TENSOMETER);
 
-			serial.write(48, 1);
-			byte[] array = serial.read(12);
-			System.out.println(Arduino.byteToInt(array, 0));
-		} catch (Exception exc) {
-			System.out.println(exc);
-		} finally {
-			serial.close();
-		}
+		ReadingsLogger logger = new ReadingsLogger(serial);
+		Thread thread = new Thread(logger);
+		thread.start();
+		serial.delay(10000);
+
+		logger.stop();
+		serial.delay(1000);
+		serial.close();
 	}
 }

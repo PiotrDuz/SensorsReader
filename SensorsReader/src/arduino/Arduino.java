@@ -4,9 +4,16 @@ import com.fazecast.jSerialComm.*;
 import java.io.IOException;
 
 public class Arduino {
-	SerialPort port;
+	public final SerialPort port;
+	private static final Arduino serial = new Arduino();
 
-	public Arduino() {
+	public static final String DEVICE_ID = "ch341";
+
+	public static Arduino getInstance() {
+		return serial;
+	}
+
+	private Arduino() {
 		port = getComm();
 		port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 1, 1);
 		port.setComPortParameters(115200, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
@@ -44,10 +51,37 @@ public class Arduino {
 		} else {
 			limit = start + 4;
 		}
-		for (int i = 0; i < limit; i++) {
+		for (int i = start; i < limit; i++) {
 			result = result | ((0xFF & array[i]) << 8 * i);
 		}
 		return result;
+	}
+
+	/**
+	 * Delay calling thread by amount of ms
+	 * 
+	 * @param i
+	 */
+	public void delay(int i) {
+		try {
+			Thread.sleep(i);
+		} catch (InterruptedException exc) {
+			System.out.println(exc);
+		}
+	}
+
+	/**
+	 * Clears serial port from remaining bytes
+	 * 
+	 * @return returns amount of bytes that it cleared
+	 */
+	public int clean() {
+		int num = port.bytesAvailable();
+		byte[] array = new byte[1];
+		while (port.bytesAvailable() > 0) {
+			port.readBytes(array, 1);
+		}
+		return num;
 	}
 
 	/**
@@ -59,12 +93,13 @@ public class Arduino {
 	 *            how many bytes from input write (starting from least significant)
 	 */
 	public void write(int c, int quantity) {
+
 		byte[] buffer = new byte[quantity];
 
 		for (int i = 0; i < quantity; i++) {
 			buffer[i] = (byte) (c >> 8 * i);
 		}
-		port.writeBytes(buffer, 1);
+		port.writeBytes(buffer, quantity);
 	}
 
 	/**
@@ -79,7 +114,7 @@ public class Arduino {
 		byte buffer[] = new byte[quantity];
 
 		int i = 0;
-		while (port.bytesAvailable() < quantity && i < 1500) {
+		while (port.bytesAvailable() < quantity && i < 1000) {
 			try {
 				Thread.sleep(1);
 				i++;
@@ -87,7 +122,7 @@ public class Arduino {
 				System.out.println(exc);
 			}
 		}
-		if (i > 1499) {
+		if (i > 999) {
 			throw new IOException("No bytes in port");
 		}
 
@@ -103,7 +138,7 @@ public class Arduino {
 	public SerialPort getComm() {
 		SerialPort[] ports = SerialPort.getCommPorts();
 		for (SerialPort port : ports) {
-			if (port.getDescriptivePortName().contains(ConstArdu.DEVICE_ID.getValue())) {
+			if (port.getDescriptivePortName().contains(DEVICE_ID)) {
 				return port;
 			}
 		}

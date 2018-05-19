@@ -10,8 +10,9 @@ import java.util.List;
 
 public class PendriveMount {
 	private List<String> disks = new ArrayList<String>();
-	private String deviceAddress;
-	private String mountPoint;
+	private String deviceAddress = null;
+
+	public static final String MOUNT_POINT = "/home/piotr/mnt";
 
 	/**
 	 * Returns list of root addresses of connected drives
@@ -20,10 +21,9 @@ public class PendriveMount {
 	 */
 	public PendriveMount() {
 		disks = getDiskArray();
-		mountPoint = ConstPen.MOUNT_POINT.getValue();
 	}
 
-	public String getDeviceAddress() {
+	public synchronized String getDeviceAddress() {
 		return deviceAddress;
 	}
 
@@ -32,7 +32,7 @@ public class PendriveMount {
 	 * 
 	 * @return True if no output in console, false if there are errors
 	 */
-	public Boolean unmountDrive() {
+	public synchronized Boolean unmountDrive() {
 		String command = "sudo umount " + deviceAddress;
 		Boolean status = false;
 
@@ -58,7 +58,7 @@ public class PendriveMount {
 	 */
 	public Boolean mountDrive(String address) {
 		deviceAddress = address;
-		String command = "sudo mount -t vfat " + deviceAddress + " " + mountPoint + " -o uid=1000,gid=1000,umask=022";
+		String command = "sudo mount -t vfat " + deviceAddress + " " + MOUNT_POINT + " -o uid=1000,gid=1000,umask=022";
 		Boolean status = false;
 
 		BufferedReader output = this.executeCommand(command);
@@ -93,7 +93,7 @@ public class PendriveMount {
 	 * 
 	 * @return List of devices
 	 */
-	private ArrayList<String> getDiskArray() {
+	public ArrayList<String> getDiskArray() {
 		String line;
 		BufferedReader reader;
 		ArrayList<String> DiskList = new ArrayList<String>();
@@ -130,7 +130,6 @@ public class PendriveMount {
 	private BufferedReader executeCommand(String command) {
 		File workingFolder = new File("/home");
 		BufferedReader readerOutput = null;
-		BufferedReader readerError = null;
 
 		try {
 			Process bash = new ProcessBuilder("bash").directory(workingFolder).start();
@@ -139,8 +138,7 @@ public class PendriveMount {
 			outputStreamWriter.write(command);
 			outputStreamWriter.close();
 
-			int code = bash.waitFor();
-			readerError = new BufferedReader(new InputStreamReader(bash.getErrorStream()));
+			bash.waitFor();
 			readerOutput = new BufferedReader(new InputStreamReader(bash.getInputStream()));
 		} catch (Exception e) {
 			System.out.println(e);
