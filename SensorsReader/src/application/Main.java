@@ -2,14 +2,12 @@ package application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import logger.ReadingsLogger;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import arduino.*;
-import Sensors.*;
-import pendrive.*;
-import Sensors.SensorFactory.Type;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
+import sensors.*;
+import sensors.SensorFactory.Type;
 
 public class Main extends Application {
 	@Override
@@ -33,11 +31,11 @@ public class Main extends Application {
 		Arduino serial = Arduino.getInstance();
 		serial.open();
 
-		SensorFactory.createSensor(Type.ENCODER);
-		SensorFactory.createSensor(Type.ENCODER);
-		SensorFactory.createSensor(Type.TENSOMETER);
+		SensorFactory.createSensor(Type.ENCODER).setName("Enc1");
+		SensorFactory.createSensor(Type.ENCODER).setName("Enc2");
+		SensorFactory.createSensor(Type.TENSOMETER).setName("Ten1");
 
-		ReadingsLogger logger = new ReadingsLogger(serial);
+		ReadingsLogger logger = new ReadingsLogger();
 		Thread thread = new Thread(logger);
 		thread.start();
 		serial.delay(10000);

@@ -9,16 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PendriveMount {
+	public static final String MOUNT_POINT = "/home/piotr/mnt";
+
 	private List<String> disks = new ArrayList<String>();
 	private String deviceAddress = null;
 
-	public static final String MOUNT_POINT = "/home/piotr/mnt";
-
-	/**
-	 * Returns list of root addresses of connected drives
-	 * 
-	 * 
-	 */
 	public PendriveMount() {
 		disks = getDiskArray();
 	}

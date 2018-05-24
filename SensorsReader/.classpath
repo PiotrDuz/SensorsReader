@@ -8,6 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="lib" path="src/arduino/jSerialComm-2.0.2.jar"/>
-	<classpathentry kind="lib" path="commons-csv-1.5.jar"/>
+	<classpathentry kind="lib" path="src/application/commons-csv-1.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

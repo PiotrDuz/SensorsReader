@@ -4,12 +4,21 @@ import com.fazecast.jSerialComm.*;
 import java.io.IOException;
 
 public class Arduino {
+	private String DEVICE_ID = "ch341";
+
 	public final SerialPort port;
-	private static final Arduino serial = new Arduino();
+	private static Arduino serial;
 
-	public static final String DEVICE_ID = "ch341";
-
+	/**
+	 * Return Instance of a singleton. There is only one Arduino object for program,
+	 * only one COM port connected at all times
+	 * 
+	 * @return Arduino object
+	 */
 	public static Arduino getInstance() {
+		if (serial == null) {
+			serial = new Arduino();
+		}
 		return serial;
 	}
 
@@ -19,6 +28,10 @@ public class Arduino {
 		port.setComPortParameters(115200, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
 	}
 
+	/**
+	 * Opens USB COM port and waits 4seconds to initialize Port has to be closed
+	 * after using !
+	 */
 	public void open() {
 		port.openPort();
 		try {
@@ -143,6 +156,15 @@ public class Arduino {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Set deviceId as reported in linux system
+	 * 
+	 * @param Id
+	 */
+	public void setDeviceId(String Id) {
+		DEVICE_ID = Id;
 	}
 
 }
