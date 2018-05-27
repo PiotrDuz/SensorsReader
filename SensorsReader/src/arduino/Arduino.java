@@ -3,11 +3,19 @@ package arduino;
 import com.fazecast.jSerialComm.*;
 import java.io.IOException;
 
-public class Arduino {
-	private String DEVICE_ID = "ch341";
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlValue;
 
-	public final SerialPort port;
-	private static Arduino serial;
+@XmlRootElement(name = "Arduino")
+public class Arduino {
+
+	private String DEVICE_ID;
+	@XmlTransient
+	public SerialPort port;
+	@XmlTransient
+	private static Arduino arduino;
 
 	/**
 	 * Return Instance of a singleton. There is only one Arduino object for program,
@@ -16,13 +24,28 @@ public class Arduino {
 	 * @return Arduino object
 	 */
 	public static Arduino getInstance() {
-		if (serial == null) {
-			serial = new Arduino();
+		if (arduino == null) {
+			arduino = new Arduino();
+			arduino.initialize();
 		}
-		return serial;
+		return arduino;
+	}
+
+	public static void setInstance(Arduino instance) {
+		if (arduino == null) {
+			arduino = instance;
+			arduino.initialize();
+		}
 	}
 
 	private Arduino() {
+	}
+
+	/**
+	 * Used to initialize SerialPort settings within class Sets timeout
+	 * (read_blocking), speed (115200 baud) 8bit, 1 stop, noparity
+	 */
+	private void initialize() {
 		port = getComm();
 		port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 1, 1);
 		port.setComPortParameters(115200, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
@@ -160,11 +183,16 @@ public class Arduino {
 
 	/**
 	 * Set deviceId as reported in linux system
-	 * 
+	 *
 	 * @param Id
 	 */
 	public void setDeviceId(String Id) {
 		DEVICE_ID = Id;
+	}
+
+	@XmlElement(name = "deviceId")
+	public String getDeviceId() {
+		return DEVICE_ID;
 	}
 
 }

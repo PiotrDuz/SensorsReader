@@ -3,11 +3,17 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import logger.ReadingsLogger;
+import pendrive.PendriveKeeper;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import arduino.*;
 import sensors.*;
 import sensors.SensorFactory.Type;
+
+import java.io.File;
+
+import javax.xml.bind.*;
+import initializator.*;
 
 public class Main extends Application {
 	@Override
@@ -24,24 +30,40 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
+		Xml.retrieveXml();
+		System.out.println(SensorFactory.sensorMap.get(Type.ENCODER).get(0).getName());
 		launch(args);
-
-		System.out.println("test");
-
-		Arduino serial = Arduino.getInstance();
-		serial.open();
-
-		SensorFactory.createSensor(Type.ENCODER).setName("Enc1");
-		SensorFactory.createSensor(Type.ENCODER).setName("Enc2");
-		SensorFactory.createSensor(Type.TENSOMETER).setName("Ten1");
-
+		PendriveKeeper keeper = new PendriveKeeper();
+		Thread thread1 = new Thread(keeper);
+		thread1.start();
+		while (!keeper.isMounted()) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		ReadingsLogger logger = new ReadingsLogger();
-		Thread thread = new Thread(logger);
-		thread.start();
-		serial.delay(10000);
-
+		Thread thread2 = new Thread(logger);
+		thread2.start();
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		logger.stop();
-		serial.delay(1000);
-		serial.close();
+		System.out.println("logging stopped");
+		try {
+			Thread.sleep(60000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		keeper.unmount();
+		keeper.stop();
+
 	}
+
 }

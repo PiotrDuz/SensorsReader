@@ -40,6 +40,7 @@ public class PendriveMount {
 		}
 
 		deviceAddress = null;
+		System.out.println("Unmounted");
 		return status;
 	}
 
@@ -63,6 +64,7 @@ public class PendriveMount {
 			}
 		} catch (IOException exc) {
 		}
+		System.out.println("Mounted");
 		return status;
 	}
 
