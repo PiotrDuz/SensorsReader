@@ -1,4 +1,4 @@
-package arduino;
+package operations.arduino;
 
 import com.fazecast.jSerialComm.*;
 import java.io.IOException;
@@ -6,7 +6,6 @@ import java.io.IOException;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlValue;
 
 @XmlRootElement(name = "Arduino")
 public class Arduino {
