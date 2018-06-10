@@ -1,0 +1,7 @@
+application
+operations.arduino
+operations.initializator
+operations.logger
+operations.pendrive
+operations.sensors
+userInterface.main
