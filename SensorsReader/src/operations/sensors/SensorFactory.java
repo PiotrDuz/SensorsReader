@@ -3,17 +3,27 @@ package operations.sensors;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
+/**
+ * Class to create, and hold all {@link Sensor} objects.
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 public class SensorFactory {
-
+	/**
+	 * ConcurrentHashMap holding all sensors, having <br>
+	 * key1={@link Type}, key2=ID, value={@link Sensor}
+	 */
 	public static final ConcurrentHashMap<Type, ConcurrentHashMap<Integer, Sensor>> sensorMap = new ConcurrentHashMap<>();
 	/**
-	 * Defines what is the order of types, and which should be used
+	 * Defines what is the order of types ({@link Type}, and which should be used.
 	 */
 	public final static Type[] typePrecedence = { Type.ENCODER, Type.TENSOMETER };
 
 	/**
-	 * Returns array with int values, where each record holds quantity of sensors of
-	 * given {@link Type} as specified in {@link SensorFactory#typePrecedence}.
+	 * Returns array with int values, where each record holds quantity of sensors
+	 * of<br>
+	 * given {@link Type} as specified in {@link SensorFactory#typePrecedence}.<br>
 	 * Values are properly ordered to send message to AVR.
 	 * 
 	 * @return
@@ -30,7 +40,7 @@ public class SensorFactory {
 	 * Return a {@link Sensor} array, with properly ordered sensors to read data
 	 * from AVR
 	 * 
-	 * @return
+	 * @return Sensor Array, ordered as in {@link SensorFactory#typePrecedence}
 	 */
 	public static Sensor[] getOrderedArray() {
 		int num = 0;
@@ -54,7 +64,7 @@ public class SensorFactory {
 	}
 
 	/**
-	 * Return the number of sensors of given Type
+	 * Return the number of sensors of given {@link Type}
 	 * 
 	 * @param classType
 	 * @return
@@ -72,8 +82,8 @@ public class SensorFactory {
 	}
 
 	/**
-	 * Creates object basing on provided enum parameter. Tensometer/Encoder objects
-	 * supported
+	 * Creates object basing on provided enum parameter. <br>
+	 * Tensometer/Encoder objects supported.
 	 * 
 	 * @param classType
 	 *            Provide type of class to create object (must extend Sensor)

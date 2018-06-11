@@ -8,6 +8,15 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Mounting, unmounting, detecting pendrive.<br>
+ * Holds list of devices being present at system bootup,<br>
+ * compares it on demand with actual devices, finds difference. <br>
+ * Asks system via bash terminal commands.
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 public class PendriveMount {
 	public static final String MOUNT_POINT = "/home/piotr/mnt";
 
@@ -23,7 +32,8 @@ public class PendriveMount {
 	}
 
 	/**
-	 * Unmounts drive It HAS TO BE UNMOUNTED always, even when is already unplugged!
+	 * Unmounts drive. It HAS TO BE UNMOUNTED always, even when is already
+	 * unplugged!
 	 * 
 	 * @return True if no output in console, false if there are errors
 	 */
@@ -45,8 +55,8 @@ public class PendriveMount {
 	}
 
 	/**
-	 * Mounts drive for provided address Mounting point specified by MOUNT_POINT in
-	 * Const
+	 * Mounts drive for provided address. <br>
+	 * Mounting point specified by MOUNT_POINT in Const
 	 * 
 	 * @param address
 	 *            Address of device to be mounted

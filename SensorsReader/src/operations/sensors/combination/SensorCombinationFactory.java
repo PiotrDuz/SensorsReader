@@ -8,6 +8,12 @@ import operations.sensors.SensorFactory;
 import operations.sensors.SensorFactory.Type;
 import operations.sensors.Sensorable;
 
+/**
+ * Class for holding {@link SensorCombination} objects, and managing them.
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 public class SensorCombinationFactory {
 	/**
 	 * List holding all SensorCombination objects
@@ -19,10 +25,18 @@ public class SensorCombinationFactory {
 		return combinationMap.size();
 	}
 
+	/**
+	 * Get {@link CombinationData} object holding all parameters.
+	 * 
+	 * @param data
+	 */
 	public static void addToDataList(CombinationData data) {
 		combinationDataList.add(data);
 	}
 
+	/**
+	 * Retrieve data from {@link CombinationData} and save to object with proper ID.
+	 */
 	public static void setData() {
 		for (CombinationData data : combinationDataList) {
 			combinationMap.get(data.getiD()).setCombinationData(data);

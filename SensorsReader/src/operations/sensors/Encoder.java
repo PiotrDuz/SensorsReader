@@ -2,17 +2,15 @@ package operations.sensors;
 
 import javax.xml.bind.annotation.*;
 
+/**
+ * Class extending {@link Sensor}. <br>
+ * Hold settings exclusive for "Encoder", that are not common for all sensors.
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 @XmlRootElement(name = "Encoder")
 public class Encoder extends Sensor {
-	private int variable = 69;
-
-	public int getVariable() {
-		return variable;
-	}
-
-	public void setVariable(int i) {
-		variable = i;
-	}
 
 	public Encoder() {
 	}

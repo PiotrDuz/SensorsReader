@@ -1,7 +1,13 @@
 package operations.sensors;
 
-import java.util.LinkedHashMap;
-
+/**
+ * Common methods to plot measurement objects on GUI. <br>
+ * Also used as common base to hold objects in measurement map, <br>
+ * within {@link ReadingsLogger#run()}
+ * 
+ * @author piotr
+ *
+ */
 public interface Sensorable {
 	public String getName();
 

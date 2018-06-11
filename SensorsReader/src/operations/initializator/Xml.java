@@ -16,15 +16,12 @@ import operations.sensors.Tensometer;
 import operations.sensors.combination.CombinationData;
 import operations.sensors.combination.SensorCombination;
 import operations.sensors.combination.SensorCombinationFactory;
-import operations.sensors.combination.Variable;
-import userInterface.main.ChartData;
 import operations.sensors.SensorFactory.Type;
 
 /**
- * Class that saves user settings to XML file and retrieves them to objects
- * Currently, Arduino and Sensors classes are being saved.
- * <p>
- * Retrieving is a first invoked method inside Main()
+ * Class that saves user settings to XML file and retrieves them to objects.<br>
+ * Currently, Arduino and Sensors classes are being saved. <br>
+ * Retrieving should be invoked before classes are used by program.
  * 
  * @author piotr
  *
@@ -33,7 +30,13 @@ public class Xml {
 	public static final String CONFIG_NAME = "settings.xml";
 
 	/**
-	 * Retrieves Arduino and Sensor objects from XML
+	 * Retrieves objects from .XML file. {@link JAXBContext} class-input has to be
+	 * only the class of top object,<br>
+	 * which hold others. In this example, it is {@link XmlHelper} so for further
+	 * edits<br>
+	 * there is no need to change it.<br>
+	 * Whenever new class is added to XML, its retrieval has to be managed here.
+	 * 
 	 */
 	public static void retrieveXml() {
 		XmlHelper helperClass = null;
@@ -79,13 +82,17 @@ public class Xml {
 	}
 
 	/**
-	 * Saves Sensor and Arduino objects to XML
+	 * Saves objects to XML.<br>
+	 * {@link JAXBContext} doesn't have to be changed, the {@link XmlHelper} class
+	 * is a <br>
+	 * parent class that holds other objects. The only thing to add <br>
+	 * is a code that adds new objects to {@link XmlHelper#addToList(Object)}.
 	 */
 	public static void saveXml() {
 
 		XmlHelper helperClass = new XmlHelper();
 
-		// add sensor objects to xml file.
+		// add Sensor objects to xml file.
 		for (Type key : SensorFactory.sensorMap.keySet()) {
 			for (Sensor sensor : SensorFactory.sensorMap.get(key).values()) {
 				helperClass.addToList(sensor);

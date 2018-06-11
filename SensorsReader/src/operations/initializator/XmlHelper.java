@@ -11,8 +11,11 @@ import operations.sensors.Tensometer;
 import operations.sensors.combination.CombinationData;
 
 /**
- * Helper class in creation of XML It holds all objects to write to XML in a
- * List<Object> Each class that will be written have to be preconfigured in
+ * Helper class in creation of XML. <br>
+ * It holds all objects that will be written to XML in a List<Object>.<br>
+ * Each class that will be saved to the list should be properly annotated (above
+ * the list, <br>
+ * and at each class definition)
  * 
  * @XmlElements annotation!!
  * @author piotr

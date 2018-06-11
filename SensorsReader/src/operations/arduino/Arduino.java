@@ -3,22 +3,30 @@ package operations.arduino;
 import com.fazecast.jSerialComm.*;
 import java.io.IOException;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Class that interacts with Arduino microcontroller. <br>
+ * Uses JSerialComm library to handle serial ports (linux only). <br>
+ * Class is a singleton.
+ * 
+ * @author Piotr Duzniak
+ */
 @XmlRootElement(name = "Arduino")
 public class Arduino {
 
-	private String DEVICE_ID;
+	private String DEVICE_ID; // ch341
 	@XmlTransient
-	public SerialPort port;
+	protected SerialPort port;
 	@XmlTransient
 	private static Arduino arduino;
 
 	/**
-	 * Return Instance of a singleton. There is only one Arduino object for program,
-	 * only one COM port connected at all times
+	 * Return Instance of a singleton.
+	 * <p>
+	 * There is only one Arduino object for program, only one COM port connected at
+	 * all times
 	 * 
 	 * @return Arduino object
 	 */
@@ -30,6 +38,11 @@ public class Arduino {
 		return arduino;
 	}
 
+	/**
+	 * Method that is used with XML data retrieval
+	 * 
+	 * @param instance
+	 */
 	public static void setInstance(Arduino instance) {
 		if (arduino == null) {
 			arduino = instance;
@@ -41,8 +54,9 @@ public class Arduino {
 	}
 
 	/**
-	 * Used to initialize SerialPort settings within class Sets timeout
-	 * (read_blocking), speed (115200 baud) 8bit, 1 stop, noparity
+	 * Used to initialize SerialPort settings within class.
+	 * <p>
+	 * Sets timeout (read_blocking), speed (115200 baud) 8bit, 1 stop, noparity
 	 */
 	private void initialize() {
 		port = getComm();
@@ -51,31 +65,32 @@ public class Arduino {
 	}
 
 	/**
-	 * Opens USB COM port and waits 4seconds to initialize Port has to be closed
-	 * after using !
+	 * Opens USB COM port and waits 3 seconds to initialize.
+	 * <p>
+	 * Port has to be closed with {@link Arduino#close()} after using !
 	 */
 	public void open() {
 		port.openPort();
-		try {
-			Thread.sleep(4000);
-		} catch (InterruptedException exc) {
-			System.out.println(exc);
-		}
+		delay(3000);
 	}
 
+	/**
+	 * Close serial port.
+	 */
 	public void close() {
 		port.closePort();
 	}
 
 	/**
-	 * Takes byte array and convert 4 consecutive bytes to int Starts point provided
-	 * by second param
+	 * Takes byte array and converts 4 consecutive bytes to int.
+	 * <p>
+	 * Start point defines from which index start taking 4 bytes.
 	 *
 	 * @param array
 	 *            Byte array
 	 * @param start
 	 *            Start point
-	 * @return int number
+	 * @return int Number
 	 */
 	public static int byteToInt(byte[] array, int start) {
 		int result = 0;
@@ -120,12 +135,14 @@ public class Arduino {
 	}
 
 	/**
-	 * Write given number of bytes from int input
+	 * Take int number and write its bytes to serial port.
+	 * <p>
+	 * Number of bytes written can be controlled.
 	 * 
 	 * @param c
-	 *            int input
+	 *            int number
 	 * @param quantity
-	 *            how many bytes from input write (starting from least significant)
+	 *            number of bytes to write (starting from least significant)
 	 */
 	public void write(int c, int quantity) {
 
@@ -138,12 +155,14 @@ public class Arduino {
 	}
 
 	/**
-	 * Read specified number of bytes from port Method will wait for bytes arrival
-	 * 3ms
+	 * Read specified number of bytes from port.
+	 * <p>
+	 * Method will wait for bytes arrival 1s.
 	 * 
 	 * @param quantity
 	 *            How many bytes to read
-	 * @return Bytes array or null if port doesn't have specified number of bytes
+	 * @return Bytes array or throws IOException if port doesn't have specified
+	 *         number of bytes
 	 */
 	public byte[] read(int quantity) throws IOException {
 		byte buffer[] = new byte[quantity];
@@ -166,7 +185,9 @@ public class Arduino {
 	}
 
 	/**
-	 * Get SerialPort of connected Arduino
+	 * Get {@link SerialPort} handle of connected Arduino.
+	 * <p>
+	 * Searches for DEVICE_ID String in name of connected devices.
 	 * 
 	 * @return SerialPort object or null if not found
 	 */
@@ -181,7 +202,9 @@ public class Arduino {
 	}
 
 	/**
-	 * Set deviceId as reported in linux system
+	 * Set DEVICE_ID of connected microcontroller.
+	 * <p>
+	 * DEVICE_ID has to be part of device's name, as reported in linux system.
 	 *
 	 * @param Id
 	 */
@@ -189,7 +212,6 @@ public class Arduino {
 		DEVICE_ID = Id;
 	}
 
-	@XmlElement(name = "deviceId")
 	public String getDeviceId() {
 		return DEVICE_ID;
 	}

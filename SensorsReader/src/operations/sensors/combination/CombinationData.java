@@ -3,15 +3,16 @@ package operations.sensors.combination;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import operations.sensors.Encoder;
-
+/**
+ * Class for holding {@link CombinationData} parameters and save them in XML.
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 @XmlRootElement(name = "CombinationData")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CombinationData {
@@ -19,8 +20,6 @@ public class CombinationData {
 	private String unit;
 	private int iD;
 
-	// @XmlElements({ @XmlElement(name = "variable", type = Variable.class) })
-	// @XmlElementWrapper(name = "variableList")
 	private ArrayList<Variable> variableList = new ArrayList<>();
 
 	public void insertVariableMap(HashMap<String, Double> map) {

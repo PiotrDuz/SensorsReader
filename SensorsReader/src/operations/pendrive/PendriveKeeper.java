@@ -1,9 +1,20 @@
 package operations.pendrive;
 
+/**
+ * Class that runs as a seperate thread.<br>
+ * Every few seconds it checks if a new storage device has appeared. <br>
+ * When it detects it, it is mounted. For details, see {@link PendriveMount}
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 public class PendriveKeeper implements Runnable {
 	private final PendriveMount pendrive = new PendriveMount();
 	private Boolean stop = false;
 
+	/**
+	 * Main method of a thread. Runs for all program's duration.
+	 */
 	public void run() {
 		while (stop == false) {
 			// when new drive detected, check if it has not been already mounted

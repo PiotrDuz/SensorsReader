@@ -6,10 +6,15 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import operations.initializator.Xml;
 
+/**
+ * Class displaying MainWindow.<br>
+ * Closing main window, closes program.
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 public class MainWindow extends Application {
 	public static MainWindowController controller;
 

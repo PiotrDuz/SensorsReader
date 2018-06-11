@@ -2,17 +2,13 @@ package userInterface.main;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
@@ -20,11 +16,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
 import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
-import operations.sensors.Sensor;
-import operations.sensors.SensorFactory;
-import operations.sensors.SensorFactory.Type;
 import operations.sensors.Sensorable;
 
+/**
+ * Controller class for {@link MainWindow}
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 public class MainWindowController implements Initializable {
 	// not FXML
 	ReadingsLogger readingsLogger;
@@ -58,7 +57,7 @@ public class MainWindowController implements Initializable {
 	MenuBar menuBar;
 	@FXML
 	MenuItem menuSettingsSave;
-
+	// Sensors real-time info
 	@FXML
 	VBox vboxSensors;
 
@@ -83,6 +82,10 @@ public class MainWindowController implements Initializable {
 		axisYBottom.setForceZeroInRange(false);
 	}
 
+	/**
+	 * Initialize elements that hold measurement objects.<br>
+	 * Method should be used whenever measurement's objects set changes.
+	 */
 	public void initializeElements() {
 		// actualize chartData map
 		chartData.actualizeSeries();
@@ -94,6 +97,11 @@ public class MainWindowController implements Initializable {
 
 	}
 
+	/**
+	 * Changes chart info and data on selection from ComboBox
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public synchronized void comboSelection(ActionEvent event) {
 		if (event.getSource().equals(comboChartTop)) {
@@ -104,6 +112,7 @@ public class MainWindowController implements Initializable {
 			chartTop.setTitle(measuredData.getName() + "  f( [s] ) = [" + measuredData.getUnit() + "]");
 			chartTop.getData().clear();
 			chartTop.getData().add(chartData.dataMap.get(measuredData));
+			chartTop.layout();
 		} else if (event.getSource().equals(comboChartBottom)) {
 			Sensorable measuredData = comboChartBottom.getValue();
 			if (measuredData == comboChartTop.getValue()) {
@@ -112,9 +121,15 @@ public class MainWindowController implements Initializable {
 			chartBottom.setTitle(measuredData.getName() + "  f( [s] ) = [" + measuredData.getUnit() + "]");
 			chartBottom.getData().clear();
 			chartBottom.getData().add(chartData.dataMap.get(measuredData));
+			chartBottom.layout();
 		}
 	}
 
+	/**
+	 * Button Start/Stop - launching and stopping reading data.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void buttonPress(ActionEvent event) {
 		if (event.getSource().equals(buttonStart)) {
@@ -136,6 +151,11 @@ public class MainWindowController implements Initializable {
 		}
 	}
 
+	/**
+	 * Reacts on actions done in MenuBar.
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void clickMenuItem(ActionEvent event) {
 		if (event.getSource().equals(menuSettingsSave)) {

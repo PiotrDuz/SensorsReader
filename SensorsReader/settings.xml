@@ -30,11 +30,11 @@
         <name>TestName1tedttt</name>
         <iD>0</iD>
         <variableList>
-            <name>var3</name>
+            <name>var2</name>
             <value>1.0</value>
         </variableList>
         <variableList>
-            <name>var0</name>
+            <name>var1</name>
             <value>1.0</value>
         </variableList>
     </CombinationData>

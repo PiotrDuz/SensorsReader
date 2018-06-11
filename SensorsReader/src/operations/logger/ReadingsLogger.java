@@ -4,21 +4,32 @@ import operations.arduino.Arduino;
 import operations.arduino.Command;
 import operations.sensors.Sensor;
 import operations.sensors.SensorFactory;
-import operations.sensors.SensorFactory.Type;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
+import operations.sensors.combination.SensorCombination;
 import operations.sensors.combination.SensorCombinationFactory;
 import userInterface.main.ChartData;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
-import javafx.collections.ObservableList;
-import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
-
+/**
+ * Class that is created as seperate thread. <br>
+ * It's main method {@link ReadingsLogger#run()} is responsible of setting
+ * variables <br>
+ * and continuous pulling the port, reading it if a packet arrives. <br>
+ * The process of constructing the main method:<br>
+ * -array of all sensors is returned, which order is the same as order of
+ * variables in Arduino's packet<br>
+ * (this is controlled by program's list {@link SensorFactory#typePrecedence}.
+ * <br>
+ * -the hashmap for storing sensor and corresponding measurement parameter's are
+ * initialized <br>
+ * -the quantity of each type's sensors is written to Arduino, reading begins.
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 public class ReadingsLogger implements Runnable {
 	private Boolean stop = false;
 	private Boolean save = false;
@@ -43,7 +54,6 @@ public class ReadingsLogger implements Runnable {
 		}
 
 		// set array of sensor, in correct reading order. Get number of sensors of each
-		// type
 		Sensor[] sensorArray = SensorFactory.getOrderedArray();
 		int[] orderedQuantity = SensorFactory.getOrderedQuantity();
 
@@ -53,9 +63,9 @@ public class ReadingsLogger implements Runnable {
 			intsToRead = intsToRead + orderedQuantity[i];
 		}
 		intsToRead++; // +1 because of time
+
 		// total amount of buckets needed in hashmap
 		int buckets = intsToRead + SensorCombinationFactory.combinationMap.size();
-		// include load factor
 		Float bucketsNeeded = buckets / LOAD_FACTOR;
 		buckets = bucketsNeeded.intValue();
 
@@ -81,20 +91,20 @@ public class ReadingsLogger implements Runnable {
 				System.out.println(exc);
 			}
 
+			// last value is a time
+			measureMap.put(TimeStamp.getInstance(),
+					TimeStamp.getInstance().getMeasurement(Arduino.byteToInt(array, (intsToRead - 1) * 4)));
 			// Convert read byte array to values array
 			for (int i = 0; i < sensorArray.length; i++) {
 				measureMap.put(sensorArray[i], sensorArray[i].getMeasurement(Arduino.byteToInt(array, i * 4)));
 			}
-			// last value is a time
-			measureMap.put(TimeStamp.getInstance(),
-					TimeStamp.getInstance().getMeasurement(Arduino.byteToInt(array, (intsToRead - 1) * 4)));
-
 			// Add any combination
+			for (SensorCombination sensComb : SensorCombinationFactory.combinationMap.values()) {
+				measureMap.put(sensComb, sensComb.getMeasurement(measureMap));
+			}
 
 			// add new values to corresponding chart's series
 			ChartData.getInstance().appendSeries(measureMap);
-
-			System.out.println(measureMap.get(TimeStamp.getInstance()));
 
 			if (save) {
 				csvCreator.saveCsv(measureMap);
@@ -111,6 +121,9 @@ public class ReadingsLogger implements Runnable {
 
 	}
 
+	/**
+	 * Call this method to stop reading loop, close the port, and exit thread.
+	 */
 	public synchronized void stop() {
 		stop = true;
 	}

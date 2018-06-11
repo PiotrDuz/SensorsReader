@@ -1,11 +1,11 @@
 package operations.sensors.combination;
 
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlAccessType;
-
-//@XmlRootElement(name = "Variable")
-//@XmlAccessorType(XmlAccessType.FIELD)
+/**
+ * Helper class, to store HashMap values.
+ * 
+ * @author Piotr Duzniak
+ *
+ */
 public class Variable {
 	private String name;
 	private Double value;

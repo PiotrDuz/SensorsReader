@@ -23,6 +23,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;;
 
+/**
+ * .CSV file creator class.<br>
+ * Uses Apache Commons CVS library.
+ */
 public class CsvCreator {
 	private static final String filePath = PendriveMount.MOUNT_POINT;
 	public static String fileName;
@@ -30,8 +34,11 @@ public class CsvCreator {
 
 	/**
 	 * Constructor and file creator. It creates new file and assigns to it actual
+	 * <br>
 	 * time. If the fileName is not null at the time of creation, it will stay as
-	 * unchanged.Also, prints header as a first line (.name of all sensors)
+	 * <br>
+	 * unchanged.Also, prints header as a first line (.name of all
+	 * sensors/combinations) <br>
 	 */
 	public CsvCreator() {
 		// Create new file name if already not exist
@@ -96,6 +103,9 @@ public class CsvCreator {
 		}
 	}
 
+	/**
+	 * Closes open file for writing/reading.
+	 */
 	public void close() {
 		fileName = null;
 		try {
