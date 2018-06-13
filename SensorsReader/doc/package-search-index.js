@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"application"},{"l":"operations.arduino"},{"l":"operations.initializator"},{"l":"operations.logger"},{"l":"operations.pendrive"},{"l":"operations.sensors"},{"l":"operations.sensors.combination"},{"l":"userInterface.main"}]
