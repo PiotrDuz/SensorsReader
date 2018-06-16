@@ -12,4 +12,12 @@ public interface Sensorable {
 	public String getName();
 
 	public String getUnit();
+
+	default public Double getMax() {
+		return 0.0;
+	}
+
+	default public Double getMin() {
+		return 0.0;
+	}
 }

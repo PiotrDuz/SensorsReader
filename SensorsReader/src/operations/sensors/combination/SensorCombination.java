@@ -8,17 +8,23 @@ import operations.sensors.Sensor;
 import operations.sensors.Sensorable;
 
 /**
- * Class for defining non-linear transformation from raw measurement to Add
- * {@link Sensor} to sensors list via {@link SensorCombination#addSensor()}.
- * Then, inside corresponding method of new SensorCombination object, invoke
- * them with proper index. Remember to initialize equation string.
+ * Class for defining non-linear transformation from raw measurement to final.
+ * <br>
+ * Add {@link Sensor} to sensors list via {@link SensorCombination#addSensor()}.
+ * <br>
+ * Add a coefficient (Variable) via
+ * {@link SensorCombination#addVariable(String)}. <br>
+ * Then, inside {@link SensorCombination#getMeasurement(LinkedHashMap)} , invoke
+ * them with proper index. Remember to also initialize equation string
+ * ({@link SensorCombination#equationText()}.
  * <p>
  * Use defined fields in object:
  * <p>
- * --{@link SensorCombination#sensors} : a list, use for retrieving measurement
- * from LinkedHashMap
+ * --{@link SensorCombination#sensors} : a list of added sensors, use for
+ * retrieving measurements from LinkedHashMap
  * <p>
- * --{@link SensorCombination#variables} : an array, use for using variables
+ * --{@link SensorCombination#variables} : an array, use for referring to
+ * variables
  * 
  * @author Piotr Duzniak
  *
@@ -28,11 +34,14 @@ public class SensorCombination implements Sensorable {
 	private String unit;
 	private String equation;
 	private int iD;
+
+	private double maxValue;
+	private double minValue;
+
 	protected ArrayList<Sensor> sensors = new ArrayList<>();
 	protected HashMap<String, Double> variables = new HashMap<>();
 
 	public SensorCombination() {
-
 	}
 
 	public SensorCombination(int iD) {
@@ -55,7 +64,26 @@ public class SensorCombination implements Sensorable {
 	}
 
 	public double getMeasurement(LinkedHashMap<Sensorable, Double> map) {
+		double result = customMeasurementMethod(map);
+		if (result > maxValue) {
+			maxValue = result;
+		} else if (result < minValue) {
+			minValue = result;
+		}
+
+		return result;
+	}
+
+	public double customMeasurementMethod(LinkedHashMap<Sensorable, Double> map) {
 		return 0.0;
+	}
+
+	public Double getMax() {
+		return maxValue;
+	}
+
+	public Double getMin() {
+		return minValue;
 	}
 
 	public SensorCombination addSensor(Sensor sensor) {
@@ -81,9 +109,8 @@ public class SensorCombination implements Sensorable {
 		return name;
 	}
 
-	public SensorCombination setName(String name) {
+	public void setName(String name) {
 		this.name = name;
-		return this;
 	}
 
 	public String getUnit() {

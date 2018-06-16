@@ -11,7 +11,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -31,11 +30,13 @@
           <Menu mnemonicParsing="false" text="Ustawienia">
             <items>
               <MenuItem fx:id="menuSettingsSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapisz" />
+                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Help">
+          <Menu mnemonicParsing="false" text="Pendrive">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem fx:id="menuPendriveSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapis" />
+                  <MenuItem fx:id="menuPendriveUnmount" mnemonicParsing="false" onAction="#clickMenuItem" text="Odlacz" />
             </items>
           </Menu>
         </menus>
@@ -129,20 +130,7 @@
                   <Separator prefWidth="200.0" GridPane.rowIndex="3" />
                   <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2">
                      <content>
-                        <VBox fx:id="vboxSensors" alignment="TOP_CENTER" maxWidth="200.0" prefWidth="200.0">
-                           <children>
-                              <TitledPane animated="false" text="untitled">
-                                <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                </content>
-                              </TitledPane>
-                              <TitledPane animated="false" text="untitled">
-                                <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                                </content>
-                              </TitledPane>
-                           </children>
-                        </VBox>
+                        <VBox fx:id="vboxSensors" alignment="TOP_CENTER" maxWidth="200.0" prefWidth="200.0" />
                      </content>
                   </ScrollPane>
                   <GridPane GridPane.rowIndex="4">
@@ -163,7 +151,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <Label fx:id="labelSaving" text="Label" />
+                              <Label fx:id="labelSaving" text="BRAK" textFill="#e80808" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
@@ -173,7 +161,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <Label fx:id="labelPendrive" text="Label" />
+                              <Label fx:id="labelPendrive" text="BRAK" textFill="#f20909" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

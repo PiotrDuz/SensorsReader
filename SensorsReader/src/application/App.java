@@ -2,6 +2,7 @@ package application;
 
 import javafx.application.Application;
 import operations.initializator.Xml;
+import operations.pendrive.PendriveKeeper;
 import operations.sensors.combination.SensorCombinationFactory;
 import userInterface.main.MainWindow;
 
@@ -21,8 +22,14 @@ public class App {
 		Xml.retrieveXml();
 		// initialize custom sensor combinations
 		SensorCombinationFactory.initialize();
+		// launch pendrive checking thread
+		PendriveKeeper pendriveKeeper = PendriveKeeper.getInstance();
+		Thread thread = new Thread(pendriveKeeper);
+		thread.start();
 
 		Application.launch(MainWindow.class, args);
 
+		// stop checking for pendrive
+		pendriveKeeper.stop();
 	}
 }

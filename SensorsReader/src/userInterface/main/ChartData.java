@@ -11,6 +11,7 @@ import operations.sensors.SensorFactory.Type;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
 import operations.sensors.combination.SensorCombinationFactory;
+import userInterface.main.SensorPaneFactory.PaneValues;
 
 /**
  * Class responsible for holding and handling data series that are displayed on
@@ -22,12 +23,13 @@ import operations.sensors.combination.SensorCombinationFactory;
  */
 public class ChartData {
 	private int dataPointsNumber = 800;
+	private int speedPointsNumber = 5;
 	public volatile Boolean isBusy = false;
 	static private ChartData chartData;
 
 	/**
-	 * Holds Chart Data series corresponding to every Sensor in
-	 * {@link SensorFactory#sensorMap}
+	 * Holds XYChart.Series data series corresponding to every {@link Sensor},
+	 * {@link SensorCombination} and {@link TimeStamp}
 	 */
 	public final ConcurrentHashMap<Sensorable, XYChart.Series<Double, Double>> dataMap = new ConcurrentHashMap<>();
 
@@ -65,6 +67,19 @@ public class ChartData {
 						dataList.add(chartPoint);
 						if (dataList.size() > dataPointsNumber) {
 							dataList.remove(0);
+						}
+
+						// actualize Panes values
+						PaneValues paneValues = SensorPaneFactory.mapPane.get(sensor);
+						paneValues.setValue(map.get(sensor));
+						paneValues.setMax(sensor.getMax());
+						paneValues.setMin(sensor.getMin());
+						if (dataList.size() >= speedPointsNumber) {
+							double dTime = dataList.get(dataList.size() - 1).getXValue()
+									- dataList.get(dataList.size() - speedPointsNumber).getXValue();
+							double dMeasurement = dataList.get(dataList.size() - 1).getYValue()
+									- dataList.get(dataList.size() - speedPointsNumber).getYValue();
+							paneValues.setSpeed(dMeasurement / dTime);
 						}
 					}
 					isBusy = false;

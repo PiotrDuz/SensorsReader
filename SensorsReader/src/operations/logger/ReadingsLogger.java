@@ -36,7 +36,8 @@ public class ReadingsLogger implements Runnable {
 	private final Arduino serial = Arduino.getInstance();
 	private final float LOAD_FACTOR = (float) 0.7;
 
-	public ReadingsLogger() {
+	public ReadingsLogger(boolean save) {
+		this.save = save;
 	}
 
 	/**
@@ -64,8 +65,8 @@ public class ReadingsLogger implements Runnable {
 		}
 		intsToRead++; // +1 because of time
 
-		// total amount of buckets needed in hashmap
-		int buckets = intsToRead + SensorCombinationFactory.combinationMap.size();
+		// total amount of buckets needed in hashmap (+1 for safety)
+		int buckets = intsToRead + SensorCombinationFactory.combinationMap.size() + 1;
 		Float bucketsNeeded = buckets / LOAD_FACTOR;
 		buckets = bucketsNeeded.intValue();
 

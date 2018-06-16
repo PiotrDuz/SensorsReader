@@ -53,6 +53,14 @@ public class Sensor implements Sensorable {
 		return name;
 	}
 
+	public Double getMax() {
+		return maxValue;
+	}
+
+	public Double getMin() {
+		return minValue;
+	}
+
 	public double getScale() {
 		return scale;
 	}

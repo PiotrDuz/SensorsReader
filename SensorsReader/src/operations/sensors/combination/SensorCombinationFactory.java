@@ -63,8 +63,8 @@ public class SensorCombinationFactory {
 		// !!-!! initialize 1 object
 		combinationMap.put(size(), new SensorCombination(size()) {
 			@Override
-			public double getMeasurement(LinkedHashMap<Sensorable, Double> map) {
-				return variables.get("var1") * map.get(sensors.get(0)) / map.get(sensors.get(1))
+			public double customMeasurementMethod(LinkedHashMap<Sensorable, Double> map) {
+				return variables.get("var1") / map.get(sensors.get(1)) * map.get(sensors.get(0))
 						* Math.pow(variables.get("var2"), 2);
 			}
 
@@ -77,7 +77,6 @@ public class SensorCombinationFactory {
 				.addVariable("var2") //
 				.addSensor(SensorFactory.sensorMap.get(Type.ENCODER).get(0)) // sensor0
 				.addSensor(SensorFactory.sensorMap.get(Type.TENSOMETER).get(0)) // sensor1
-				.setName("TestName1")
 
 		);
 

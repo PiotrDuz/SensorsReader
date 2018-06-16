@@ -64,6 +64,7 @@ public class CsvCreator {
 	private String[] createHeader() {
 		ArrayList<String> header = new ArrayList<>();
 
+		header.add(TimeStamp.getInstance().getName());
 		for (Type type : SensorFactory.typePrecedence) {
 			for (int i = 0; i < SensorFactory.sensorMap.get(type).values().size(); i++) {
 				header.add(SensorFactory.sensorMap.get(type).get(i).getName());
@@ -72,7 +73,6 @@ public class CsvCreator {
 		for (int i = 0; i < SensorCombinationFactory.combinationMap.size(); i++) {
 			header.add(SensorCombinationFactory.combinationMap.get(i).getName());
 		}
-		header.add(TimeStamp.getInstance().getName());
 
 		return header.toArray(new String[header.size()]);
 	}

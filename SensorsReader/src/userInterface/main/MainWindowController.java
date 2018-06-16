@@ -11,11 +11,14 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
+import operations.pendrive.PendriveKeeper;
 import operations.sensors.Sensorable;
 
 /**
@@ -26,8 +29,9 @@ import operations.sensors.Sensorable;
  */
 public class MainWindowController implements Initializable {
 	// not FXML
-	ReadingsLogger readingsLogger;
+	private ReadingsLogger readingsLogger;
 	final ChartData chartData = ChartData.getInstance();
+	private boolean saveToFile = false;
 	//
 	// ComboBox
 	@FXML
@@ -57,16 +61,23 @@ public class MainWindowController implements Initializable {
 	MenuBar menuBar;
 	@FXML
 	MenuItem menuSettingsSave;
+	@FXML
+	MenuItem menuPendriveSave;
+	@FXML
+	MenuItem menuPendriveUnmount;
 	// Sensors real-time info
 	@FXML
 	VBox vboxSensors;
+	// info
+	@FXML
+	Label labelSaving;
+	@FXML
+	Label labelPendrive;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		initializeElements();
-
-		vboxSensors.getChildren().add(SensorPaneFactory.getPane(null));
 
 		buttonStop.setDisable(true);
 		// set chart properties
@@ -95,6 +106,12 @@ public class MainWindowController implements Initializable {
 		comboChartTop.setItems(FXCollections.observableList(dataList));
 		comboChartBottom.setItems(FXCollections.observableList(dataList));
 
+		// clear old Pane map, fill with new Panes
+		vboxSensors.getChildren().clear();
+		SensorPaneFactory.mapPane.clear();
+		for (Sensorable sensor : chartData.dataMap.keySet()) {
+			vboxSensors.getChildren().add(SensorPaneFactory.createPane(sensor));
+		}
 	}
 
 	/**
@@ -139,7 +156,8 @@ public class MainWindowController implements Initializable {
 			buttonStart.setDisable(true);
 			// enable STOP button
 			buttonStop.setDisable(false);
-			readingsLogger = new ReadingsLogger();
+
+			readingsLogger = new ReadingsLogger(saveToFile);
 			Thread thread = new Thread(readingsLogger, "ReadingsLogger");
 			thread.start();
 		} else if (event.getSource().equals(buttonStop)) {
@@ -161,6 +179,28 @@ public class MainWindowController implements Initializable {
 		if (event.getSource().equals(menuSettingsSave)) {
 			Xml.saveXml();
 			System.out.println("saved");
+		} else if (event.getSource().equals(menuPendriveSave)) {
+			if (saveToFile == false) {
+				saveToFile = true;
+				labelSaving.setTextFill(Color.GREEN);
+				labelSaving.setText("TAK");
+			} else {
+				saveToFile = false;
+				labelSaving.setTextFill(Color.RED);
+				labelSaving.setText("BRAK");
+			}
+		} else if (event.getSource().equals(menuPendriveUnmount)) {
+			PendriveKeeper.getInstance().orderUnmount();
+		}
+	}
+
+	public void changePendriveMountStatus(boolean flag) {
+		if (flag == true) {
+			labelPendrive.setTextFill(Color.GREEN);
+			labelPendrive.setText("OBECNY");
+		} else {
+			labelPendrive.setTextFill(Color.RED);
+			labelPendrive.setText("BRAK");
 		}
 	}
 }
