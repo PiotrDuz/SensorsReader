@@ -65,10 +65,9 @@ public class TimeStamp implements Sensorable {
 	 */
 	@Override
 	public int hashCode() {
-		final int prime = 31;
+		final int prime = 29;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+		result = prime * result;
 		return result;
 	}
 

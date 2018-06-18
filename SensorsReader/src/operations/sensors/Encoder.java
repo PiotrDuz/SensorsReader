@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.*;
  *
  */
 @XmlRootElement(name = "Encoder")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Encoder extends Sensor {
 
 	public Encoder() {

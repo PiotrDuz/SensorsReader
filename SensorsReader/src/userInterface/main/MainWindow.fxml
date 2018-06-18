@@ -30,7 +30,7 @@
           <Menu mnemonicParsing="false" text="Ustawienia">
             <items>
               <MenuItem fx:id="menuSettingsSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapisz" />
-                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                  <MenuItem fx:id="menuSettingsSensors" mnemonicParsing="false" onAction="#clickMenuItem" text="Czujniki" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Pendrive">

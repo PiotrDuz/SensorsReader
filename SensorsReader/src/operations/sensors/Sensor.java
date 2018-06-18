@@ -2,6 +2,8 @@ package operations.sensors;
 
 import javax.xml.bind.annotation.*;
 
+import operations.sensors.SensorFactory.Type;
+
 /**
  * Class holding all settings for sensor.<br>
  * Use method {@link Sensor#getMeasurement(int)} to go from raw to final values.
@@ -10,10 +12,11 @@ import javax.xml.bind.annotation.*;
  *
  */
 @XmlSeeAlso({ Encoder.class, Tensometer.class })
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Sensor implements Sensorable {
 	protected double scale = 1;
 	protected int maxReading;
-	protected int zeroValue = 0;
+	protected Double zeroValue = 0.0;
 
 	protected double maxValue = 0;
 	protected double minValue = 0;
@@ -22,6 +25,8 @@ public class Sensor implements Sensorable {
 	protected String unit = "N";
 
 	protected int iD;
+	@XmlTransient
+	protected Type type;
 
 	/**
 	 * Assign new ID and add object to the List of all sensors
@@ -36,8 +41,7 @@ public class Sensor implements Sensorable {
 	 * @return
 	 */
 	public double getMeasurement(int value) {
-		int var = value - zeroValue;
-		double measurement = var * scale;
+		double measurement = value / scale - zeroValue;
 
 		if (measurement > maxValue) {
 			maxValue = measurement;
@@ -61,7 +65,7 @@ public class Sensor implements Sensorable {
 		return minValue;
 	}
 
-	public double getScale() {
+	public Double getScale() {
 		return scale;
 	}
 
@@ -77,11 +81,15 @@ public class Sensor implements Sensorable {
 		return maxReading;
 	}
 
-	public void setZeroValue(int number) {
+	public void setZeroValue(double number) {
 		zeroValue = number;
 	}
 
-	public int getId() {
+	public Double getZeroValue() {
+		return zeroValue;
+	}
+
+	public Integer getId() {
 		return iD;
 	}
 
@@ -105,6 +113,21 @@ public class Sensor implements Sensorable {
 		unit = text;
 	}
 
+	/**
+	 * @return the type
+	 */
+	public Type getType() {
+		return type;
+	}
+
+	/**
+	 * @param type
+	 *            the type to set
+	 */
+	public void setType(Type type) {
+		this.type = type;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -115,9 +138,8 @@ public class Sensor implements Sensorable {
 		final int prime = 17;
 		int result = 1;
 		result = prime * result + iD;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((unit == null) ? 0 : unit.hashCode());
-		result = prime * result + zeroValue;
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+
 		return result;
 	}
 
@@ -151,4 +173,5 @@ public class Sensor implements Sensorable {
 			return false;
 		return true;
 	}
+
 }

@@ -103,9 +103,11 @@ public class SensorFactory {
 
 		if (classType == Type.ENCODER) {
 			object = new Encoder();
+			object.setType(Type.ENCODER);
 			object.setId(sizeMap);
 		} else if (classType == Type.TENSOMETER) {
 			object = new Tensometer();
+			object.setType(Type.TENSOMETER);
 			object.setId(sizeMap);
 		}
 

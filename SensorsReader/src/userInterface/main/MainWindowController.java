@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
@@ -20,6 +21,7 @@ import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
 import operations.pendrive.PendriveKeeper;
 import operations.sensors.Sensorable;
+import userInterface.sensorsWindow.SensorsWindow;
 
 /**
  * Controller class for {@link MainWindow}
@@ -61,6 +63,8 @@ public class MainWindowController implements Initializable {
 	MenuBar menuBar;
 	@FXML
 	MenuItem menuSettingsSave;
+	@FXML
+	MenuItem menuSettingsSensors;
 	@FXML
 	MenuItem menuPendriveSave;
 	@FXML
@@ -123,7 +127,7 @@ public class MainWindowController implements Initializable {
 	public synchronized void comboSelection(ActionEvent event) {
 		if (event.getSource().equals(comboChartTop)) {
 			Sensorable measuredData = comboChartTop.getValue();
-			if (measuredData == comboChartBottom.getValue()) {
+			if (measuredData == comboChartBottom.getValue() || measuredData == null) {
 				return;
 			}
 			chartTop.setTitle(measuredData.getName() + "  f( [s] ) = [" + measuredData.getUnit() + "]");
@@ -132,7 +136,7 @@ public class MainWindowController implements Initializable {
 			chartTop.layout();
 		} else if (event.getSource().equals(comboChartBottom)) {
 			Sensorable measuredData = comboChartBottom.getValue();
-			if (measuredData == comboChartTop.getValue()) {
+			if (measuredData == comboChartTop.getValue() || measuredData == null) {
 				return;
 			}
 			chartBottom.setTitle(measuredData.getName() + "  f( [s] ) = [" + measuredData.getUnit() + "]");
@@ -191,6 +195,10 @@ public class MainWindowController implements Initializable {
 			}
 		} else if (event.getSource().equals(menuPendriveUnmount)) {
 			PendriveKeeper.getInstance().orderUnmount();
+		} else if (event.getSource().equals(menuSettingsSensors)) {
+			SensorsWindow sensorsWindow = new SensorsWindow((Node) menuBar);
+			sensorsWindow.openWindow();
+			initializeElements();
 		}
 	}
 

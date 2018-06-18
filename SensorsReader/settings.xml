@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ObjectsList>
     <Tensometer>
-        <id>0</id>
-        <maxReading>0</maxReading>
-        <name>Ten1</name>
         <scale>1.0</scale>
+        <maxReading>0</maxReading>
+        <zeroValue>0.0</zeroValue>
+        <maxValue>0.0</maxValue>
+        <minValue>0.0</minValue>
+        <name>Ten1</name>
         <unit>N</unit>
+        <iD>0</iD>
     </Tensometer>
     <Encoder>
-        <id>0</id>
-        <maxReading>0</maxReading>
-        <name>Enc1</name>
         <scale>1.0</scale>
+        <maxReading>0</maxReading>
+        <zeroValue>0.0</zeroValue>
+        <maxValue>0.0</maxValue>
+        <minValue>0.0</minValue>
+        <name>Enc2</name>
         <unit>N</unit>
-        <variable>12</variable>
+        <iD>1</iD>
     </Encoder>
     <Encoder>
-        <id>1</id>
-        <maxReading>0</maxReading>
-        <name>Enc2</name>
         <scale>1.0</scale>
+        <maxReading>0</maxReading>
+        <zeroValue>0.0</zeroValue>
+        <maxValue>0.0</maxValue>
+        <minValue>0.0</minValue>
+        <name>Enc1</name>
         <unit>N</unit>
-        <variable>12</variable>
+        <iD>0</iD>
     </Encoder>
     <Arduino>
         <deviceId>ch341</deviceId>

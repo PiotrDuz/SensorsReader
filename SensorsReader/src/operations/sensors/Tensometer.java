@@ -1,5 +1,7 @@
 package operations.sensors;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -11,6 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  */
 @XmlRootElement(name = "Tensometer")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Tensometer extends Sensor {
 
 	public Tensometer() {
