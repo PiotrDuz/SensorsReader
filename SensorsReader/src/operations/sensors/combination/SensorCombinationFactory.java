@@ -60,7 +60,9 @@ public class SensorCombinationFactory {
 	 * with saved values in xml
 	 */
 	private static void defineCombinations() {
-		// !!-!! initialize 1 object
+
+		//////////// !!-!! initialize 1 object
+
 		combinationMap.put(size(), new SensorCombination(size()) {
 			@Override
 			public double customMeasurementMethod(LinkedHashMap<Sensorable, Double> map) {
@@ -80,6 +82,26 @@ public class SensorCombinationFactory {
 
 		);
 
-		// !!-!! Initialize 2 object
+		/////////// !!-!! Initialize 2 object
+
+		combinationMap.put(size(), new SensorCombination(size()) {
+			@Override
+			public double customMeasurementMethod(LinkedHashMap<Sensorable, Double> map) {
+				return variables.get("naprezenie") / map.get(sensors.get(1)) * map.get(sensors.get(0))
+						* Math.pow(variables.get("nacisk"), 2);
+			}
+
+			@Override
+			public String equationText() {
+				return "naprezenie " + " * " + sensors.get(0).getName() + " / " + sensors.get(1).getName() + " * "
+						+ "nacisk ^2";
+			}
+		}// variables setting section:
+				.addVariable("naprezenie") //
+				.addVariable("nacisk") //
+				.addSensor(SensorFactory.sensorMap.get(Type.ENCODER).get(1)) // sensor0 = encoder1
+				.addSensor(SensorFactory.sensorMap.get(Type.TENSOMETER).get(0)) // sensor1 = tenso0
+
+		);
 	}
 }

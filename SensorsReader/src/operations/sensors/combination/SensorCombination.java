@@ -117,6 +117,10 @@ public class SensorCombination implements Sensorable {
 		return unit;
 	}
 
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
+
 	public int getId() {
 		return iD;
 	}

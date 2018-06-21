@@ -21,6 +21,7 @@ import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
 import operations.pendrive.PendriveKeeper;
 import operations.sensors.Sensorable;
+import userInterface.combinationWindow.CombinationWindow;
 import userInterface.sensorsWindow.SensorsWindow;
 
 /**
@@ -65,6 +66,8 @@ public class MainWindowController implements Initializable {
 	MenuItem menuSettingsSave;
 	@FXML
 	MenuItem menuSettingsSensors;
+	@FXML
+	MenuItem menuSettingsCombinations;
 	@FXML
 	MenuItem menuPendriveSave;
 	@FXML
@@ -180,10 +183,12 @@ public class MainWindowController implements Initializable {
 	 */
 	@FXML
 	public void clickMenuItem(ActionEvent event) {
-		if (event.getSource().equals(menuSettingsSave)) {
+		MenuItem menuItem = (MenuItem) event.getSource();
+
+		if (menuItem == menuSettingsSave) {
 			Xml.saveXml();
 			System.out.println("saved");
-		} else if (event.getSource().equals(menuPendriveSave)) {
+		} else if (menuItem == menuPendriveSave) {
 			if (saveToFile == false) {
 				saveToFile = true;
 				labelSaving.setTextFill(Color.GREEN);
@@ -193,11 +198,15 @@ public class MainWindowController implements Initializable {
 				labelSaving.setTextFill(Color.RED);
 				labelSaving.setText("BRAK");
 			}
-		} else if (event.getSource().equals(menuPendriveUnmount)) {
+		} else if (menuItem == menuPendriveUnmount) {
 			PendriveKeeper.getInstance().orderUnmount();
-		} else if (event.getSource().equals(menuSettingsSensors)) {
+		} else if (menuItem == menuSettingsSensors) {
 			SensorsWindow sensorsWindow = new SensorsWindow((Node) menuBar);
 			sensorsWindow.openWindow();
+			initializeElements();
+		} else if (menuItem == menuSettingsCombinations) {
+			CombinationWindow combinationWindow = new CombinationWindow((Node) menuBar);
+			combinationWindow.openWindow();
 			initializeElements();
 		}
 	}
