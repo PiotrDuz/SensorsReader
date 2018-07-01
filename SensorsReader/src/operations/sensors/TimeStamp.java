@@ -10,7 +10,7 @@ package operations.sensors;
  */
 public class TimeStamp implements Sensorable {
 
-	private static TimeStamp stamp;
+	private static volatile TimeStamp stamp;
 
 	private String name = "time";
 	private String unit = "s";
@@ -18,7 +18,8 @@ public class TimeStamp implements Sensorable {
 
 	public static TimeStamp getInstance() {
 		if (stamp == null) {
-			return new TimeStamp();
+			stamp = new TimeStamp();
+			return stamp;
 		} else {
 			return stamp;
 		}
@@ -50,12 +51,19 @@ public class TimeStamp implements Sensorable {
 		this.unit = unit;
 	}
 
-	public double getScale() {
+	public Double getScale() {
 		return scale;
 	}
 
 	public void setScale(double scale) {
 		this.scale = scale;
+	}
+
+	public void setZeroValue(double number) {
+	}
+
+	public Double getZeroValue() {
+		return 0.0;
 	}
 
 	/*

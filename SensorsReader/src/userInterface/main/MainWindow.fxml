@@ -10,6 +10,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -22,24 +23,28 @@
    <children>
       <MenuBar fx:id="menuBar" maxHeight="25.0" prefHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Ustawienia">
+          <Menu fx:id="menuSettings" mnemonicParsing="false" text="Ustawienia">
             <items>
               <MenuItem fx:id="menuSettingsSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapisz" />
                   <MenuItem fx:id="menuSettingsSensors" mnemonicParsing="false" onAction="#clickMenuItem" text="Czujniki" />
                   <MenuItem fx:id="menuSettingsCombinations" mnemonicParsing="false" onAction="#clickMenuItem" text="Kombinacje" />
+                  <MenuItem fx:id="menuSettingsTime" mnemonicParsing="false" onAction="#clickMenuItem" text="Czas" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Pendrive">
+          <Menu fx:id="menuPendrive" mnemonicParsing="false" text="Pendrive">
             <items>
               <MenuItem fx:id="menuPendriveSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapis" />
                   <MenuItem fx:id="menuPendriveUnmount" mnemonicParsing="false" onAction="#clickMenuItem" text="Odlacz" />
             </items>
           </Menu>
+            <Menu fx:id="menuAction" mnemonicParsing="false" text="Akcja">
+              <items>
+                <MenuItem fx:id="menuActionTare" mnemonicParsing="false" onAction="#clickMenuItem" text="Taruj" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="menuActionClean" mnemonicParsing="false" onAction="#clickMenuItem" text="Czysc Maks/Min" />
+                  <MenuItem fx:id="menuActionCleanAll" mnemonicParsing="false" onAction="#clickMenuItem" text="Czysc wszystkie Maks/Min" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
       <GridPane gridLinesVisible="true" layoutX="22.0" layoutY="166.0" prefHeight="623.0" prefWidth="682.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
@@ -94,12 +99,12 @@
                            <children>
                               <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Label text="Wykres" />
+                                    <Label text="Wykres" underline="true" />
                                  </children>
                               </HBox>
                               <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                                  <children>
-                                    <Label text="Górny" />
+                                    <Label text="Górny" underline="true" />
                                  </children>
                               </HBox>
                            </children>

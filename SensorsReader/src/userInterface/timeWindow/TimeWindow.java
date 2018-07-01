@@ -1,28 +1,26 @@
-package userInterface.sensorsWindow;
+package userInterface.timeWindow;
 
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import java.io.IOException;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
-/*
- * Displays sensor settings window.
- */
-public class SensorsWindow {
-	private SensorsWindowController controller = new SensorsWindowController();
+public class TimeWindow {
+	private TimeWindowController controller = new TimeWindowController();
 	private Window ownerWindow;
 
-	public SensorsWindow(Node node) {
+	public TimeWindow(Node node) {
 		ownerWindow = node.getScene().getWindow();
 	}
 
 	public void openWindow() {
 		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("./userInterface/sensorsWindow/sensorsWindow.fxml"));
+				getClass().getClassLoader().getResource("./userInterface/timeWindow/timeWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {
@@ -34,7 +32,7 @@ public class SensorsWindow {
 		Stage stage = new Stage();
 		stage.initOwner(ownerWindow);
 		stage.initModality(Modality.WINDOW_MODAL);
-		stage.setTitle("sensorsWindow");
+		stage.setTitle("timeWindow");
 		stage.setScene(new Scene(root));
 		stage.showAndWait();
 	}

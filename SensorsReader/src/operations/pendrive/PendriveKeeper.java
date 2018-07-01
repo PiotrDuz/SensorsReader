@@ -1,13 +1,7 @@
 package operations.pendrive;
 
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.XYChart;
-import operations.sensors.Sensorable;
-import operations.sensors.TimeStamp;
 import userInterface.main.MainWindow;
-import userInterface.main.SensorPaneFactory;
-import userInterface.main.SensorPaneFactory.PaneValues;
 
 /**
  * Class that runs as a seperate thread.<br>

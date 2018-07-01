@@ -15,7 +15,6 @@ import operations.sensors.SensorFactory.Type;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Sensor implements Sensorable {
 	protected double scale = 1;
-	protected int maxReading;
 	protected Double zeroValue = 0.0;
 
 	protected double maxValue = 0;
@@ -73,15 +72,7 @@ public class Sensor implements Sensorable {
 		scale = number;
 	}
 
-	public void setMaxReading(int number) {
-		maxReading = number;
-	}
-
-	public int getMaxReading() {
-		return maxReading;
-	}
-
-	public void setZeroValue(double number) {
+	public synchronized void setZeroValue(double number) {
 		zeroValue = number;
 	}
 

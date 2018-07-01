@@ -19,6 +19,7 @@ public class CombinationData {
 	private String name;
 	private String unit;
 	private int iD;
+	private double zeroValue;
 
 	private ArrayList<Variable> variableList = new ArrayList<>();
 
@@ -58,5 +59,20 @@ public class CombinationData {
 
 	public void setiD(int iD) {
 		this.iD = iD;
+	}
+
+	/**
+	 * @return the zeroValue
+	 */
+	public double getZeroValue() {
+		return zeroValue;
+	}
+
+	/**
+	 * @param zeroValue
+	 *            the zeroValue to set
+	 */
+	public void setZeroValue(double zeroValue) {
+		this.zeroValue = zeroValue;
 	}
 }

@@ -50,11 +50,9 @@ public class Xml {
 		for (Object object : helperClass.getList()) {
 			if (object instanceof Encoder) {
 				Encoder enc = (Encoder) object;
-				enc.setType(Type.ENCODER);
 				insertToMap(enc, Type.ENCODER);
 			} else if (object instanceof Tensometer) {
 				Tensometer ten = (Tensometer) object;
-				ten.setType(Type.TENSOMETER);
 				insertToMap(ten, Type.TENSOMETER);
 			} else if (object instanceof Arduino) {
 				Arduino ard = (Arduino) object;
@@ -75,6 +73,9 @@ public class Xml {
 	 *            Type
 	 */
 	private static void insertToMap(Sensor sensor, Type type) {
+
+		sensor.setType(type);
+
 		ConcurrentHashMap<Integer, Sensor> temporaryMap = SensorFactory.sensorMap.get(type);
 		if (temporaryMap == null) {
 			temporaryMap = new ConcurrentHashMap<>();

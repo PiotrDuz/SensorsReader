@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ObjectsList>
-    <Tensometer>
-        <scale>1.0</scale>
-        <maxReading>0</maxReading>
-        <zeroValue>0.0</zeroValue>
-        <maxValue>0.0</maxValue>
-        <minValue>0.0</minValue>
-        <name>Ten1</name>
-        <unit>N</unit>
-        <iD>0</iD>
-    </Tensometer>
     <Encoder>
         <scale>1.0</scale>
-        <maxReading>0</maxReading>
-        <zeroValue>0.0</zeroValue>
-        <maxValue>0.0</maxValue>
-        <minValue>0.0</minValue>
-        <name>Enc2</name>
-        <unit>N</unit>
-        <iD>1</iD>
-    </Encoder>
-    <Encoder>
-        <scale>1.0</scale>
-        <maxReading>0</maxReading>
         <zeroValue>0.0</zeroValue>
         <maxValue>0.0</maxValue>
         <minValue>0.0</minValue>
@@ -30,18 +9,50 @@
         <unit>N</unit>
         <iD>0</iD>
     </Encoder>
+    <Encoder>
+        <scale>1.0</scale>
+        <zeroValue>0.0</zeroValue>
+        <maxValue>0.0</maxValue>
+        <minValue>0.0</minValue>
+        <name>Enc2</name>
+        <unit>N</unit>
+        <iD>1</iD>
+    </Encoder>
+    <Tensometer>
+        <scale>1.0</scale>
+        <zeroValue>0.0</zeroValue>
+        <maxValue>0.0</maxValue>
+        <minValue>0.0</minValue>
+        <name>Ten1</name>
+        <unit>N</unit>
+        <iD>0</iD>
+    </Tensometer>
     <Arduino>
         <deviceId>ch341</deviceId>
     </Arduino>
     <CombinationData>
         <name>TestName1tedttt</name>
         <iD>0</iD>
+        <zeroValue>0.0</zeroValue>
         <variableList>
             <name>var2</name>
             <value>1.0</value>
         </variableList>
         <variableList>
             <name>var1</name>
+            <value>1.0</value>
+        </variableList>
+    </CombinationData>
+    <CombinationData>
+        <name>KOMB1</name>
+        <iD>1</iD>
+        <zeroValue>0.0</zeroValue>
+        <variableList>
+            <name>naprezenie</name>
+            <value>1.0</value>
+        </variableList>
+        <variableList>
+            <name>nacisk</name>
             <value>1.0</value>
         </variableList>
     </CombinationData>

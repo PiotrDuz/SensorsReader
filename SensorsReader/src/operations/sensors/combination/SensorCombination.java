@@ -32,11 +32,12 @@ import operations.sensors.Sensorable;
 public class SensorCombination implements Sensorable {
 	private String name;
 	private String unit;
-	private String equation;
 	private int iD;
 
 	private double maxValue;
 	private double minValue;
+
+	protected double zeroValue = 0;
 
 	protected ArrayList<Sensor> sensors = new ArrayList<>();
 	protected HashMap<String, Double> variables = new HashMap<>();
@@ -52,6 +53,7 @@ public class SensorCombination implements Sensorable {
 		this.name = data.getName();
 		this.unit = data.getUnit();
 		this.variables = data.getVariableMap();
+		this.zeroValue = data.getZeroValue();
 	}
 
 	public CombinationData getCombinationData() {
@@ -60,6 +62,7 @@ public class SensorCombination implements Sensorable {
 		data.setUnit(this.unit);
 		data.insertVariableMap(this.variables);
 		data.setiD(this.iD);
+		data.setZeroValue(this.zeroValue);
 		return data;
 	}
 
@@ -131,6 +134,14 @@ public class SensorCombination implements Sensorable {
 
 	public void setVariables(HashMap<String, Double> variables) {
 		this.variables = variables;
+	}
+
+	public synchronized void setZeroValue(double number) {
+		zeroValue = number;
+	}
+
+	public Double getZeroValue() {
+		return zeroValue;
 	}
 
 	/*

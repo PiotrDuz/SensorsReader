@@ -3,6 +3,11 @@ package userInterface.main;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +18,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.VBox;
@@ -21,8 +27,11 @@ import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
 import operations.pendrive.PendriveKeeper;
 import operations.sensors.Sensorable;
+import operations.sensors.TimeStamp;
 import userInterface.combinationWindow.CombinationWindow;
 import userInterface.sensorsWindow.SensorsWindow;
+import userInterface.tareWindow.TareWindow;
+import userInterface.timeWindow.TimeWindow;
 
 /**
  * Controller class for {@link MainWindow}
@@ -35,6 +44,7 @@ public class MainWindowController implements Initializable {
 	private ReadingsLogger readingsLogger;
 	final ChartData chartData = ChartData.getInstance();
 	private boolean saveToFile = false;
+	BooleanProperty menuDisable = new SimpleBooleanProperty(false);
 	//
 	// ComboBox
 	@FXML
@@ -63,15 +73,30 @@ public class MainWindowController implements Initializable {
 	@FXML
 	MenuBar menuBar;
 	@FXML
+	Menu menuSettings;
+	@FXML
 	MenuItem menuSettingsSave;
 	@FXML
 	MenuItem menuSettingsSensors;
 	@FXML
 	MenuItem menuSettingsCombinations;
 	@FXML
+	MenuItem menuSettingsTime;
+	@FXML
+	Menu menuPendrive;
+	@FXML
 	MenuItem menuPendriveSave;
 	@FXML
 	MenuItem menuPendriveUnmount;
+	@FXML
+	Menu menuAction;
+	@FXML
+	MenuItem menuActionTare;
+	@FXML
+	MenuItem menuActionClean;
+	@FXML
+	MenuItem menuActionCleanAll;
+
 	// Sensors real-time info
 	@FXML
 	VBox vboxSensors;
@@ -98,6 +123,10 @@ public class MainWindowController implements Initializable {
 		chartBottom.setLegendVisible(false);
 		axisXBottom.setForceZeroInRange(false);
 		axisYBottom.setForceZeroInRange(false);
+		// menu items binding
+		menuSettings.disableProperty().bind(menuDisable);
+		menuPendrive.disableProperty().bind(menuDisable);
+		menuAction.disableProperty().bind(menuDisable.not());
 	}
 
 	/**
@@ -133,7 +162,8 @@ public class MainWindowController implements Initializable {
 			if (measuredData == comboChartBottom.getValue() || measuredData == null) {
 				return;
 			}
-			chartTop.setTitle(measuredData.getName() + "  f( [s] ) = [" + measuredData.getUnit() + "]");
+			chartTop.setTitle(measuredData.getName() + "  f( [" + TimeStamp.getInstance().getUnit() + "] ) = ["
+					+ measuredData.getUnit() + "]");
 			chartTop.getData().clear();
 			chartTop.getData().add(chartData.dataMap.get(measuredData));
 			chartTop.layout();
@@ -142,7 +172,8 @@ public class MainWindowController implements Initializable {
 			if (measuredData == comboChartTop.getValue() || measuredData == null) {
 				return;
 			}
-			chartBottom.setTitle(measuredData.getName() + "  f( [s] ) = [" + measuredData.getUnit() + "]");
+			chartBottom.setTitle(measuredData.getName() + "  f( [" + TimeStamp.getInstance().getUnit() + "] ) = ["
+					+ measuredData.getUnit() + "]");
 			chartBottom.getData().clear();
 			chartBottom.getData().add(chartData.dataMap.get(measuredData));
 			chartBottom.layout();
@@ -159,7 +190,9 @@ public class MainWindowController implements Initializable {
 		if (event.getSource().equals(buttonStart)) {
 			// clean all data series, for new measurements to come
 			chartData.cleanSeries();
-			menuBar.setDisable(true);
+
+			menuDisable.set(true);
+
 			buttonStart.setDisable(true);
 			// enable STOP button
 			buttonStop.setDisable(false);
@@ -167,8 +200,10 @@ public class MainWindowController implements Initializable {
 			readingsLogger = new ReadingsLogger(saveToFile);
 			Thread thread = new Thread(readingsLogger, "ReadingsLogger");
 			thread.start();
+
 		} else if (event.getSource().equals(buttonStop)) {
-			menuBar.setDisable(false);
+			menuDisable.set(false);
+
 			buttonStart.setDisable(false);
 			// disable STOP button
 			buttonStop.setDisable(true);
@@ -208,6 +243,13 @@ public class MainWindowController implements Initializable {
 			CombinationWindow combinationWindow = new CombinationWindow((Node) menuBar);
 			combinationWindow.openWindow();
 			initializeElements();
+		} else if (menuItem == menuSettingsTime) {
+			TimeWindow timeWindow = new TimeWindow((Node) menuBar);
+			timeWindow.openWindow();
+			initializeElements();
+		} else if (menuItem == menuActionTare) {
+			TareWindow tareWindow = new TareWindow((Node) menuBar, comboChartTop.getValue());
+			tareWindow.openWindow();
 		}
 	}
 

@@ -19,7 +19,7 @@ import operations.sensors.TimeStamp;
  *
  */
 public class SensorPaneFactory {
-	public final static ConcurrentHashMap<Sensorable, PaneValues> mapPane = new ConcurrentHashMap();
+	public final static ConcurrentHashMap<Sensorable, PaneValues> mapPane = new ConcurrentHashMap<>();
 
 	/**
 	 * 
@@ -30,7 +30,7 @@ public class SensorPaneFactory {
 		TitledPane tp = new TitledPane();
 		tp.setText(sensor.getName()); // sensor name;
 		Text textValue = new Text(".");
-		Text textValueName = new Text("Wartosc:");
+		Text textValueName = new Text("Wart:");
 		Text textValueUnit = new Text(sensor.getUnit());
 		Text textMax = new Text(".");
 		Text textMaxName = new Text("Maks:");
@@ -46,13 +46,13 @@ public class SensorPaneFactory {
 		grid.setMinWidth(200);
 		// Setting columns size in percent
 		ColumnConstraints column = new ColumnConstraints();
-		column.setPercentWidth(35);
+		column.setPercentWidth(25);
 		grid.getColumnConstraints().add(column);
 		column = new ColumnConstraints();
 		column.setPercentWidth(45);
 		grid.getColumnConstraints().add(column);
 		column = new ColumnConstraints();
-		column.setPercentWidth(20);
+		column.setPercentWidth(30);
 		grid.getColumnConstraints().add(column);
 
 		grid.add(textValueName, 0, 0);

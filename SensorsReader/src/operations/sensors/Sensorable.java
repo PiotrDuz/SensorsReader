@@ -20,4 +20,8 @@ public interface Sensorable {
 	default public Double getMin() {
 		return 0.0;
 	}
+
+	public void setZeroValue(double number);
+
+	public Double getZeroValue();
 }
