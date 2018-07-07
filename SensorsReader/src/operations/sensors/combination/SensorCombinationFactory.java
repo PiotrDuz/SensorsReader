@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import operations.sensors.SensorFactory;
 import operations.sensors.SensorFactory.Type;
-import operations.sensors.Sensorable;
+import operations.sensors.Measurable;
 
 /**
  * Class for holding {@link SensorCombination} objects, and managing them.
@@ -65,7 +65,7 @@ public class SensorCombinationFactory {
 
 		combinationMap.put(size(), new SensorCombination(size()) {
 			@Override
-			public double customMeasurementMethod(LinkedHashMap<Sensorable, Double> map) {
+			public double customMeasurementMethod(LinkedHashMap<Measurable, Double> map) {
 				return variables.get("var1") / map.get(sensors.get(1)) * map.get(sensors.get(0))
 						* Math.pow(variables.get("var2"), 2);
 			}
@@ -86,7 +86,7 @@ public class SensorCombinationFactory {
 
 		combinationMap.put(size(), new SensorCombination(size()) {
 			@Override
-			public double customMeasurementMethod(LinkedHashMap<Sensorable, Double> map) {
+			public double customMeasurementMethod(LinkedHashMap<Measurable, Double> map) {
 				return variables.get("naprezenie") / map.get(sensors.get(1)) * map.get(sensors.get(0))
 						* Math.pow(variables.get("nacisk"), 2);
 			}

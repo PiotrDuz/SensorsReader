@@ -4,7 +4,7 @@ import operations.arduino.Arduino;
 import operations.arduino.Command;
 import operations.sensors.Sensor;
 import operations.sensors.SensorFactory;
-import operations.sensors.Sensorable;
+import operations.sensors.Measurable;
 import operations.sensors.TimeStamp;
 import operations.sensors.combination.SensorCombination;
 import operations.sensors.combination.SensorCombinationFactory;
@@ -83,7 +83,7 @@ public class ReadingsLogger implements Runnable {
 		// loop for constant reading
 		while (stop == false) {
 			// create each time new map holding new measurements
-			LinkedHashMap<Sensorable, Double> measureMap = new LinkedHashMap<>(buckets, LOAD_FACTOR, false);
+			LinkedHashMap<Measurable, Double> measureMap = new LinkedHashMap<>(buckets, LOAD_FACTOR, false);
 
 			// each number is sent as arduino's long (4 bytes)
 			try {

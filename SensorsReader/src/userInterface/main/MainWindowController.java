@@ -26,6 +26,7 @@ import javafx.scene.paint.Color;
 import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
 import operations.pendrive.PendriveKeeper;
+import operations.sensors.Measurable;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
 import userInterface.combinationWindow.CombinationWindow;

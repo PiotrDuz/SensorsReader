@@ -11,7 +11,7 @@ import org.apache.commons.csv.CSVPrinter;
 import operations.pendrive.PendriveMount;
 import operations.sensors.SensorFactory;
 import operations.sensors.SensorFactory.Type;
-import operations.sensors.Sensorable;
+import operations.sensors.Measurable;
 import operations.sensors.TimeStamp;
 import operations.sensors.combination.SensorCombinationFactory;
 
@@ -87,10 +87,10 @@ public class CsvCreator {
 	 *            Map of sensor-value pairs
 	 * 
 	 */
-	public void saveCsv(LinkedHashMap<Sensorable, Double> valuesMap) {
+	public void saveCsv(LinkedHashMap<Measurable, Double> valuesMap) {
 		int i = 0;
 		String[] row = new String[valuesMap.size()];
-		for (Sensorable sensor : valuesMap.keySet()) {
+		for (Measurable sensor : valuesMap.keySet()) {
 			row[i] = String.format("%.4f", valuesMap.get(sensor));
 			i++;
 		}

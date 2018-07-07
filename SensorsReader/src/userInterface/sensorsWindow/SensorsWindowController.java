@@ -49,7 +49,7 @@ public class SensorsWindowController implements Initializable {
 		textFieldName.setText(comboBox.getValue().getName());
 		textFieldUnit.setText(comboBox.getValue().getUnit());
 		textFieldScale.setText(comboBox.getValue().getScale().toString());
-		textFieldZero.setText(comboBox.getValue().getZeroValue().toString());
+		textFieldZero.setText(comboBox.getValue().getZeroValueScaled().toString());
 		labelId.setText(comboBox.getValue().getId().toString());
 		labelType.setText(comboBox.getValue().getType().toString());
 	}
@@ -97,7 +97,7 @@ public class SensorsWindowController implements Initializable {
 				if (parsable == false) {
 					return;
 				}
-				comboBox.getValue().setZeroValue(number);
+				comboBox.getValue().setZeroValueScaled(number);
 			}
 			field.setText(keyboard.getText());
 		}

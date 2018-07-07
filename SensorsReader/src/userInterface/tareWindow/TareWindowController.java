@@ -12,9 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import operations.sensors.SensorFactory;
-import operations.sensors.Sensorable;
+import operations.sensors.Measurable;
 import userInterface.main.ChartData;
 import operations.sensors.SensorFactory.Type;
+import operations.sensors.Sensorable;
 
 public class TareWindowController implements Initializable {
 	Sensorable measureComponent;
@@ -53,7 +54,7 @@ public class TareWindowController implements Initializable {
 			return;
 		}
 
-		value = measureComponent.getZeroValue() + list.get(list.size() - 1).getYValue();
+		value = list.get(list.size() - 1).getYValue();
 		labelValue.setText(value.toString());
 	}
 
@@ -62,7 +63,7 @@ public class TareWindowController implements Initializable {
 		Button button = (Button) event.getSource();
 
 		if (button == buttonYes) {
-			measureComponent.setZeroValue(value);
+			measureComponent.setZeroValueScaled(value);
 		} else if (button == buttonAll) {
 			for (Sensorable measureCompLoop : ChartData.getInstance().dataMap.keySet()) {
 				ObservableList<XYChart.Data<Double, Double>> list = ChartData.getInstance().dataMap.get(measureCompLoop)
@@ -74,8 +75,8 @@ public class TareWindowController implements Initializable {
 					return;
 				}
 
-				double zeroValue = measureCompLoop.getZeroValue() + list.get(list.size() - 1).getYValue();
-				measureCompLoop.setZeroValue(zeroValue);
+				double zeroValue = list.get(list.size() - 1).getYValue();
+				measureCompLoop.setZeroValueScaled(zeroValue);
 			}
 		}
 

@@ -1,27 +1,19 @@
 package operations.sensors;
 
-/**
- * Common methods to plot measurement objects on GUI. <br>
- * Also used as common base to hold objects in measurement map, <br>
- * within {@link ReadingsLogger#run()}
- * 
- * @author piotr
- *
- */
 public interface Sensorable {
+
+	public void setZeroValue(double number);
+
+	public Double getZeroValueScaled();
+
+	public void setZeroValueScaled(double number);
+
+	public Double getMax();
+
+	public Double getMin();
+
 	public String getName();
 
 	public String getUnit();
 
-	default public Double getMax() {
-		return 0.0;
-	}
-
-	default public Double getMin() {
-		return 0.0;
-	}
-
-	public void setZeroValue(double number);
-
-	public Double getZeroValue();
 }

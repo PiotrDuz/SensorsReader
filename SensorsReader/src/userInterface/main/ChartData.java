@@ -1,14 +1,15 @@
 package userInterface.main;
 
 import java.util.LinkedHashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
+import java.util.concurrent.ConcurrentHashMap;
+import operations.sensors.Sensorable;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import operations.sensors.SensorFactory;
 import operations.sensors.SensorFactory.Type;
-import operations.sensors.Sensorable;
+import operations.sensors.Measurable;
 import operations.sensors.TimeStamp;
 import operations.sensors.combination.SensorCombinationFactory;
 import userInterface.main.SensorPaneFactory.PaneValues;
@@ -53,27 +54,27 @@ public class ChartData {
 	 * @param map
 	 *            LinkedHashMap holding measurements mapped to sensors/combinations.
 	 */
-	public void appendSeries(LinkedHashMap<Sensorable, Double> map) {
+	public void appendSeries(LinkedHashMap<Measurable, Double> map) {
 		if (isBusy != true) {
 			isBusy = true;
 
 			Platform.runLater(new Runnable() {
 				@Override
 				public void run() {
-					for (Sensorable sensor : dataMap.keySet()) {
-						ObservableList<XYChart.Data<Double, Double>> dataList = dataMap.get(sensor).getData();
+					for (Sensorable measurement : dataMap.keySet()) {
+						ObservableList<XYChart.Data<Double, Double>> dataList = dataMap.get(measurement).getData();
 						XYChart.Data<Double, Double> chartPoint = new XYChart.Data<>(map.get(TimeStamp.getInstance()),
-								map.get(sensor));
+								map.get((Measurable) measurement));
 						dataList.add(chartPoint);
 						if (dataList.size() > dataPointsNumber) {
 							dataList.remove(0);
 						}
 
 						// actualize Panes values
-						PaneValues paneValues = SensorPaneFactory.mapPane.get(sensor);
-						paneValues.setValue(map.get(sensor));
-						paneValues.setMax(sensor.getMax());
-						paneValues.setMin(sensor.getMin());
+						PaneValues paneValues = SensorPaneFactory.mapPane.get(measurement);
+						paneValues.setValue(map.get((Measurable) measurement));
+						paneValues.setMax(measurement.getMax());
+						paneValues.setMin(measurement.getMin());
 						if (dataList.size() >= speedPointsNumber) {
 							double dTime = dataList.get(dataList.size() - 1).getXValue()
 									- dataList.get(dataList.size() - speedPointsNumber).getXValue();

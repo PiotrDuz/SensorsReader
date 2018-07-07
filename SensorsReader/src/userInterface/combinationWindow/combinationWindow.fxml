@@ -74,8 +74,14 @@
                            <GridPane.margin>
                               <Insets right="2.0" top="2.0" />
                            </GridPane.margin>
+                           <children>
+                              <Label text="Tara:" />
+                           </children>
                         </VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <TextField fx:id="textFieldTare" onAction="#textFieldClick" onMouseClicked="#textFieldClick" />
+                           </children></VBox>
                      </children>
                      <GridPane.margin>
                         <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 import operations.sensors.Sensor;
 import operations.sensors.Sensorable;
+import operations.sensors.Measurable;
 
 /**
  * Class for defining non-linear transformation from raw measurement to final.
@@ -29,7 +30,7 @@ import operations.sensors.Sensorable;
  * @author Piotr Duzniak
  *
  */
-public class SensorCombination implements Sensorable {
+public class SensorCombination implements Measurable, Sensorable {
 	private String name;
 	private String unit;
 	private int iD;
@@ -66,7 +67,7 @@ public class SensorCombination implements Sensorable {
 		return data;
 	}
 
-	public double getMeasurement(LinkedHashMap<Sensorable, Double> map) {
+	public double getMeasurement(LinkedHashMap<Measurable, Double> map) {
 		double result = customMeasurementMethod(map);
 		if (result > maxValue) {
 			maxValue = result;
@@ -77,7 +78,7 @@ public class SensorCombination implements Sensorable {
 		return result;
 	}
 
-	public double customMeasurementMethod(LinkedHashMap<Sensorable, Double> map) {
+	public double customMeasurementMethod(LinkedHashMap<Measurable, Double> map) {
 		return 0.0;
 	}
 
@@ -141,6 +142,20 @@ public class SensorCombination implements Sensorable {
 	}
 
 	public Double getZeroValue() {
+		return zeroValue;
+	}
+
+	/**
+	 * There is no scale, so new value is just added to old zeroValue.
+	 */
+	public synchronized void setZeroValueScaled(double number) {
+		zeroValue = zeroValue + number;
+	}
+
+	/**
+	 * There is no scale, so zeroValue is just returned.
+	 */
+	public Double getZeroValueScaled() {
 		return zeroValue;
 	}
 

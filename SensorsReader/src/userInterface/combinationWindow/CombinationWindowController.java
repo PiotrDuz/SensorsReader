@@ -27,6 +27,8 @@ public class CombinationWindowController implements Initializable {
 	@FXML
 	TextField textFieldUnit;
 	@FXML
+	TextField textFieldTare;
+	@FXML
 	GridPane gridPaneValues;
 	@FXML
 	Button buttonExit;
@@ -46,6 +48,7 @@ public class CombinationWindowController implements Initializable {
 	public void comboBoxChoose(ActionEvent event) {
 		textFieldName.setText(comboBox.getValue().getName());
 		textFieldUnit.setText(comboBox.getValue().getUnit());
+		textFieldTare.setText(comboBox.getValue().getZeroValueScaled().toString());
 		// clear grid
 		gridPaneValues.getChildren().clear();
 		SensorCombination combination = comboBox.getValue();
@@ -119,12 +122,25 @@ public class CombinationWindowController implements Initializable {
 		keyboard.display((Node) field);
 		// check if user has not cancelled the edit
 		if (keyboard.getText() != null) {
-
+			// check if number
+			boolean parsable = true;
+			Double number = null;
+			try {
+				number = Double.parseDouble(keyboard.getText());
+			} catch (NumberFormatException exc) {
+				parsable = false;
+				System.out.println(exc);
+			}
 			// find out which box data is entered
 			if (field == textFieldName) {
 				comboBox.getValue().setName(keyboard.getText());
 			} else if (field == textFieldUnit) {
 				comboBox.getValue().setUnit(keyboard.getText());
+			} else if (field == textFieldTare) {
+				if (parsable == false) {
+					return;
+				}
+				comboBox.getValue().setZeroValueScaled(number);
 			}
 			field.setText(keyboard.getText());
 		}

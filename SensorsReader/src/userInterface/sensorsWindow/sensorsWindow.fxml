@@ -106,8 +106,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wynik = pomiar / Skala - Tara&#10;Typ dziesietny, czesc calkowita &#10;oddziela kropka!" GridPane.rowIndex="3" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wynik = pomiar / Skala - Tara&#10;Typ dziesietny, czesc calkowita &#10;oddziela kropka!" GridPane.rowIndex="5" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wynik = (pomiar - tara) / SKALA&#10;Typ Double." GridPane.rowIndex="3" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wynik = (pomiar - TARA) / skala&#10;Typ Double. Wartosc zostanie&#10;przeliczona na bezwzgledna." GridPane.rowIndex="5" />
                   <Separator prefWidth="200.0" GridPane.rowIndex="2" />
                   <Separator prefWidth="200.0" GridPane.rowIndex="4" />
                </children>

@@ -25,10 +25,10 @@
         <menus>
           <Menu fx:id="menuSettings" mnemonicParsing="false" text="Ustawienia">
             <items>
-              <MenuItem fx:id="menuSettingsSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapisz" />
                   <MenuItem fx:id="menuSettingsSensors" mnemonicParsing="false" onAction="#clickMenuItem" text="Czujniki" />
                   <MenuItem fx:id="menuSettingsCombinations" mnemonicParsing="false" onAction="#clickMenuItem" text="Kombinacje" />
                   <MenuItem fx:id="menuSettingsTime" mnemonicParsing="false" onAction="#clickMenuItem" text="Czas" />
+              <MenuItem fx:id="menuSettingsSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapisz" />
             </items>
           </Menu>
           <Menu fx:id="menuPendrive" mnemonicParsing="false" text="Pendrive">

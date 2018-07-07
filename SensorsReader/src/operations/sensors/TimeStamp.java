@@ -8,7 +8,7 @@ package operations.sensors;
  * @author Piotr Duzniak
  *
  */
-public class TimeStamp implements Sensorable {
+public class TimeStamp implements Measurable {
 
 	private static volatile TimeStamp stamp;
 

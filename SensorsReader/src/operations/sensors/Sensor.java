@@ -13,7 +13,7 @@ import operations.sensors.SensorFactory.Type;
  */
 @XmlSeeAlso({ Encoder.class, Tensometer.class })
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Sensor implements Sensorable {
+public class Sensor implements Measurable, Sensorable {
 	protected double scale = 1;
 	protected Double zeroValue = 0.0;
 
@@ -40,7 +40,7 @@ public class Sensor implements Sensorable {
 	 * @return
 	 */
 	public double getMeasurement(int value) {
-		double measurement = value / scale - zeroValue;
+		double measurement = (value - zeroValue) / scale;
 
 		if (measurement > maxValue) {
 			maxValue = measurement;
@@ -78,6 +78,14 @@ public class Sensor implements Sensorable {
 
 	public Double getZeroValue() {
 		return zeroValue;
+	}
+
+	public synchronized void setZeroValueScaled(double number) {
+		zeroValue = zeroValue + number * scale;
+	}
+
+	public Double getZeroValueScaled() {
+		return zeroValue / scale;
 	}
 
 	public Integer getId() {
