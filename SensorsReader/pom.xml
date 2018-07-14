@@ -16,11 +16,18 @@
     </resources>
     <plugins>
       <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.7.0</version>
-        <configuration>
-          <release>10</release>
-        </configuration>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.1.0</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <mainClass>application.App</mainClass>
+              </manifest>
+            </archive>                  
+              <source>1.10</source>
+              <target>1.10</target>
+          </configuration>
       </plugin>
     </plugins>
   </build>
