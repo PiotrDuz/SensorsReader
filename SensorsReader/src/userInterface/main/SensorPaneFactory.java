@@ -7,7 +7,6 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import operations.sensors.Measurable;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
 

@@ -9,9 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import operations.sensors.Measurable;
 import operations.sensors.Sensorable;
-import userInterface.timeWindow.TimeWindowController;
 
 public class TareWindow {
 	private TareWindowController controller;

@@ -6,8 +6,6 @@ import java.util.ResourceBundle;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +24,6 @@ import javafx.scene.paint.Color;
 import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
 import operations.pendrive.PendriveKeeper;
-import operations.sensors.Measurable;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
 import userInterface.combinationWindow.CombinationWindow;

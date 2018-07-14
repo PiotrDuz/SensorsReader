@@ -11,10 +11,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import operations.sensors.SensorFactory;
-import operations.sensors.Measurable;
 import userInterface.main.ChartData;
-import operations.sensors.SensorFactory.Type;
 import operations.sensors.Sensorable;
 
 public class TareWindowController implements Initializable {
