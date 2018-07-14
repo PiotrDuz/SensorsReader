@@ -38,7 +38,7 @@
 	        <archive>
 	          <manifest>
 	          	<addClasspath>true</addClasspath>
-	            <mainClass>application.App</mainClass>
+	            <mainClass>main.java.application.App</mainClass>
 	          </manifest>
 	        </archive>
 	        <descriptorRefs>
