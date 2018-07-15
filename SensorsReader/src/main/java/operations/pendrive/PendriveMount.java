@@ -18,7 +18,7 @@ import java.util.List;
  *
  */
 public class PendriveMount {
-	public static final String MOUNT_POINT = "~/mnt";
+	public static final String MOUNT_POINT = System.getProperty("user.home") + "/mnt";
 
 	private List<String> disks = new ArrayList<String>();
 	private String deviceAddress = null;
