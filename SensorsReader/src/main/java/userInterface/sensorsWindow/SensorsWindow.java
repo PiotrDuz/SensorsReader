@@ -22,7 +22,7 @@ public class SensorsWindow {
 
 	public void openWindow() {
 		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/sensorsWindow.fxml"));
+				getClass().getClassLoader().getResource("main/resources/gui/SensorsWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {

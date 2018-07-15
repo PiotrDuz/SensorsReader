@@ -47,6 +47,7 @@ public class PendriveMount {
 				status = true;
 			}
 		} catch (IOException exc) {
+			System.out.println(exc);
 		}
 
 		deviceAddress = null;
@@ -73,6 +74,7 @@ public class PendriveMount {
 				status = true;
 			}
 		} catch (IOException exc) {
+			System.out.println(exc);
 		}
 		System.out.println("Mounted");
 		return status;

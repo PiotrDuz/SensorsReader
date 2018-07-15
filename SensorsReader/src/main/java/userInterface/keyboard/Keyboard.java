@@ -17,7 +17,7 @@ public class Keyboard {
 	public void display(Node node) {
 		try {
 			FXMLLoader loader = new FXMLLoader(
-					getClass().getClassLoader().getResource("main/resources/gui/keyboard.fxml"));
+					getClass().getClassLoader().getResource("main/resources/gui/Keyboard.fxml"));
 			loader.setController(keyboardController);
 			Parent root = loader.load();
 			Scene scene1 = new Scene(root);

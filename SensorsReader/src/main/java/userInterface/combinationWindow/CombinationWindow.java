@@ -20,7 +20,7 @@ public class CombinationWindow {
 
 	public void openWindow() {
 		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/combinationWindow.fxml"));
+				getClass().getClassLoader().getResource("main/resources/gui/CombinationWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {
