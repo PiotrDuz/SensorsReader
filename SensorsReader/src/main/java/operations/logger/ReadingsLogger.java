@@ -105,7 +105,7 @@ public class ReadingsLogger implements Runnable {
 			}
 
 			// add new values to corresponding chart's series
-			ChartData.getInstance().appendSeries(measureMap);
+			ChartData.getInstance(null, null).appendSeries(measureMap);
 
 			if (save) {
 				csvCreator.saveCsv(measureMap);

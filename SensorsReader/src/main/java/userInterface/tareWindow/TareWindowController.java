@@ -3,11 +3,11 @@ package main.java.userInterface.tareWindow;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javafx.collections.ObservableList;
+import org.jfree.data.xy.XYSeries;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
@@ -42,16 +42,15 @@ public class TareWindowController implements Initializable {
 		}
 
 		labelName.setText(measureComponent.getName());
-		ObservableList<XYChart.Data<Double, Double>> list = ChartData.getInstance().dataMap.get(measureComponent)
-				.getData();
+		XYSeries list = ChartData.getInstance(null, null).dataMap.get(measureComponent);
 
-		if (list.size() == 0) {
+		if (list.getItemCount() == 0) {
 			buttonYes.setDisable(true);
 			labelName.setText("BRAK DANYCH W PAMIECI");
 			return;
 		}
 
-		value = list.get(list.size() - 1).getYValue();
+		value = list.getDataItem(list.getItemCount() - 1).getYValue();
 		labelValue.setText(value.toString());
 	}
 
@@ -62,17 +61,16 @@ public class TareWindowController implements Initializable {
 		if (button == buttonYes) {
 			measureComponent.setZeroValueScaled(value);
 		} else if (button == buttonAll) {
-			for (Sensorable measureCompLoop : ChartData.getInstance().dataMap.keySet()) {
-				ObservableList<XYChart.Data<Double, Double>> list = ChartData.getInstance().dataMap.get(measureCompLoop)
-						.getData();
+			for (Sensorable measureCompLoop : ChartData.getInstance(null, null).dataMap.keySet()) {
+				XYSeries list = ChartData.getInstance().dataMap.get(measureCompLoop);
 
-				if (list.size() == 0) {
+				if (list.getItemCount() == 0) {
 					buttonAll.setDisable(true);
 					labelName.setText("BRAK DANYCH W PAMIECI");
 					return;
 				}
 
-				double zeroValue = list.get(list.size() - 1).getYValue();
+				double zeroValue = list.getDataItem(list.getItemCount() - 1).getYValue();
 				measureCompLoop.setZeroValueScaled(zeroValue);
 			}
 		}

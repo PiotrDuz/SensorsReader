@@ -4,9 +4,10 @@ import java.util.LinkedHashMap;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.jfree.chart.fx.ChartCanvas;
+import org.jfree.data.xy.XYSeries;
+
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.XYChart;
 import main.java.operations.sensors.Measurable;
 import main.java.operations.sensors.SensorFactory;
 import main.java.operations.sensors.Sensorable;
@@ -26,24 +27,34 @@ import main.java.userInterface.main.SensorPaneFactory.PaneValues;
 public class ChartData {
 	private int dataPointsNumber = 800;
 	private int speedPointsNumber = 5;
-	public volatile Boolean isBusy = false;
 	static private ChartData chartData;
+	// multithreaded data
+	private volatile Boolean isBusy = false;
+	private volatile Boolean chartTickTock = false;
+
+	ChartCanvas chartTop;
+	ChartCanvas chartBottom;
 
 	/**
 	 * Holds XYChart.Series data series corresponding to every {@link Sensor},
 	 * {@link SensorCombination} and {@link TimeStamp}
 	 */
-	public final ConcurrentHashMap<Sensorable, XYChart.Series<Double, Double>> dataMap = new ConcurrentHashMap<>();
+	public final ConcurrentHashMap<Sensorable, XYSeries> dataMap = new ConcurrentHashMap<>();
 
-	public static ChartData getInstance() {
+	public static ChartData getInstance(ChartCanvas combo1, ChartCanvas combo2) {
 		if (chartData == null) {
-			chartData = new ChartData();
+			chartData = new ChartData(combo1, combo2);
 		}
 		return chartData;
 	}
 
-	private ChartData() {
+	public static ChartData getInstance() {
+		return ChartData.getInstance(null, null);
+	}
 
+	private ChartData(ChartCanvas combo1, ChartCanvas combo2) {
+		this.chartTop = combo1;
+		this.chartBottom = combo2;
 	}
 
 	/**
@@ -63,26 +74,30 @@ public class ChartData {
 				@Override
 				public void run() {
 					for (Sensorable measurement : dataMap.keySet()) {
-						ObservableList<XYChart.Data<Double, Double>> dataList = dataMap.get(measurement).getData();
-						XYChart.Data<Double, Double> chartPoint = new XYChart.Data<>(map.get(TimeStamp.getInstance()),
-								map.get((Measurable) measurement));
-						dataList.add(chartPoint);
-						if (dataList.size() > dataPointsNumber) {
-							dataList.remove(0);
-						}
+
+						XYSeries dataList = dataMap.get(measurement);
+						dataList.add(map.get(TimeStamp.getInstance()), map.get((Measurable) measurement));
 
 						// actualize Panes values
 						PaneValues paneValues = SensorPaneFactory.mapPane.get(measurement);
+
 						paneValues.setValue(map.get((Measurable) measurement));
 						paneValues.setMax(measurement.getMax());
 						paneValues.setMin(measurement.getMin());
-						if (dataList.size() >= speedPointsNumber) {
-							double dTime = dataList.get(dataList.size() - 1).getXValue()
-									- dataList.get(dataList.size() - speedPointsNumber).getXValue();
-							double dMeasurement = dataList.get(dataList.size() - 1).getYValue()
-									- dataList.get(dataList.size() - speedPointsNumber).getYValue();
+						if (dataList.getItemCount() >= speedPointsNumber) {
+							double dTime = dataList.getDataItem(dataList.getItemCount() - 1).getXValue()
+									- dataList.getDataItem(dataList.getItemCount() - speedPointsNumber).getXValue();
+							double dMeasurement = dataList.getDataItem(dataList.getItemCount() - 1).getYValue()
+									- dataList.getDataItem(dataList.getItemCount() - speedPointsNumber).getYValue();
 							paneValues.setSpeed(dMeasurement / dTime);
 						}
+					}
+					if (chartTickTock == false) {
+						ChartCreator.actualizeChart(chartTop);
+						chartTickTock = true;
+					} else {
+						ChartCreator.actualizeChart(chartBottom);
+						chartTickTock = false;
 					}
 					isBusy = false;
 				}
@@ -102,12 +117,18 @@ public class ChartData {
 		// insert all available sensors that are meant to work
 		for (Type type : SensorFactory.typePrecedence) {
 			for (int i = 0; i < SensorFactory.sensorMap.get(type).values().size(); i++) {
-				dataMap.put(SensorFactory.sensorMap.get(type).get(i), new XYChart.Series<Double, Double>());
+				Sensorable sensor = SensorFactory.sensorMap.get(type).get(i);
+				XYSeries newSeries = new XYSeries(sensor.getName(), false, true);
+				newSeries.setMaximumItemCount(dataPointsNumber);
+				dataMap.put(sensor, newSeries);
 			}
 		}
 		// insert all available combinations
 		for (int i = 0; i < SensorCombinationFactory.size(); i++) {
-			dataMap.put(SensorCombinationFactory.combinationMap.get(i), new XYChart.Series<Double, Double>());
+			Sensorable sensor = SensorCombinationFactory.combinationMap.get(i);
+			XYSeries newSeries = new XYSeries(sensor.getName(), false, true);
+			newSeries.setMaximumItemCount(dataPointsNumber);
+			dataMap.put(sensor, newSeries);
 		}
 	}
 
@@ -115,8 +136,8 @@ public class ChartData {
 	 * Erase all data from all series. (but don't delete series)
 	 */
 	public synchronized void cleanSeries() {
-		for (XYChart.Series<Double, Double> series : dataMap.values()) {
-			series.getData().clear();
+		for (XYSeries series : dataMap.values()) {
+			series.clear();
 		}
 	}
 }

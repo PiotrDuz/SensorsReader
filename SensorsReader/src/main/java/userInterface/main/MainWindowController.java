@@ -4,28 +4,31 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.jfree.chart.fx.ChartCanvas;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import main.java.operations.initializator.Xml;
 import main.java.operations.logger.ReadingsLogger;
 import main.java.operations.pendrive.PendriveKeeper;
 import main.java.operations.sensors.Sensorable;
-import main.java.operations.sensors.TimeStamp;
 import main.java.userInterface.combinationWindow.CombinationWindow;
 import main.java.userInterface.sensorsWindow.SensorsWindow;
 import main.java.userInterface.tareWindow.TareWindow;
@@ -40,28 +43,26 @@ import main.java.userInterface.timeWindow.TimeWindow;
 public class MainWindowController implements Initializable {
 	// not FXML
 	private ReadingsLogger readingsLogger;
-	final ChartData chartData = ChartData.getInstance();
+	private ChartData chartData;
 	private boolean saveToFile = false;
 	BooleanProperty menuDisable = new SimpleBooleanProperty(false);
-	//
+	// ROOT
+	@FXML
+	AnchorPane root;
 	// ComboBox
 	@FXML
 	ComboBox<Sensorable> comboChartTop;
 	@FXML
 	ComboBox<Sensorable> comboChartBottom;
 	// Chart
+	ChartCanvas chartTop;
+
+	ChartCanvas chartBottom;
+
 	@FXML
-	LineChart<Double, Double> chartTop;
+	GridPane gridChartTop;
 	@FXML
-	NumberAxis axisXTop;
-	@FXML
-	NumberAxis axisYTop;
-	@FXML
-	LineChart<Double, Double> chartBottom;
-	@FXML
-	NumberAxis axisXBottom;
-	@FXML
-	NumberAxis axisYBottom;
+	GridPane gridChartBottom;
 	// Buttons
 	@FXML
 	Button buttonStart;
@@ -80,6 +81,8 @@ public class MainWindowController implements Initializable {
 	MenuItem menuSettingsCombinations;
 	@FXML
 	MenuItem menuSettingsTime;
+	@FXML
+	MenuItem menuSettingsAdd;
 	@FXML
 	Menu menuPendrive;
 	@FXML
@@ -106,21 +109,19 @@ public class MainWindowController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// set font
+		DoubleProperty fontSize = new SimpleDoubleProperty(8); // font size in pt
+		root.styleProperty().bind(Bindings.format("-fx-font-size: %.2fpt;", fontSize));
+		// set chart properties
+		chartTop = ChartCreator.getChart(gridChartTop);
+		chartBottom = ChartCreator.getChart(gridChartBottom);
+		// charts
+		chartData = ChartData.getInstance(chartTop, chartBottom);
 
 		initializeElements();
 
 		buttonStop.setDisable(true);
-		// set chart properties
-		chartTop.setAnimated(false);
-		chartTop.setLegendVisible(false);
-		chartTop.setCreateSymbols(false);
-		axisXTop.setForceZeroInRange(false);
-		axisYTop.setForceZeroInRange(false);
-		chartBottom.setAnimated(false);
-		chartBottom.setCreateSymbols(false);
-		chartBottom.setLegendVisible(false);
-		axisXBottom.setForceZeroInRange(false);
-		axisYBottom.setForceZeroInRange(false);
+
 		// menu items binding
 		menuSettings.disableProperty().bind(menuDisable);
 		menuPendrive.disableProperty().bind(menuDisable);
@@ -160,21 +161,17 @@ public class MainWindowController implements Initializable {
 			if (measuredData == comboChartBottom.getValue() || measuredData == null) {
 				return;
 			}
-			chartTop.setTitle(measuredData.getName() + "  f( [" + TimeStamp.getInstance().getUnit() + "] ) = ["
-					+ measuredData.getUnit() + "]");
-			chartTop.getData().clear();
-			chartTop.getData().add(chartData.dataMap.get(measuredData));
-			chartTop.layout();
+			ChartCreator.changeSeries(chartTop, measuredData, chartData.dataMap.get(measuredData));
+			ChartCreator.actualizeChart(chartTop);
+
 		} else if (event.getSource().equals(comboChartBottom)) {
 			Sensorable measuredData = comboChartBottom.getValue();
 			if (measuredData == comboChartTop.getValue() || measuredData == null) {
 				return;
 			}
-			chartBottom.setTitle(measuredData.getName() + "  f( [" + TimeStamp.getInstance().getUnit() + "] ) = ["
-					+ measuredData.getUnit() + "]");
-			chartBottom.getData().clear();
-			chartBottom.getData().add(chartData.dataMap.get(measuredData));
-			chartBottom.layout();
+
+			ChartCreator.changeSeries(chartBottom, measuredData, chartData.dataMap.get(measuredData));
+			ChartCreator.actualizeChart(chartBottom);
 		}
 	}
 
@@ -248,6 +245,8 @@ public class MainWindowController implements Initializable {
 		} else if (menuItem == menuActionTare) {
 			TareWindow tareWindow = new TareWindow((Node) menuBar, comboChartTop.getValue());
 			tareWindow.openWindow();
+		} else if (menuItem == menuSettingsAdd) {
+			// IS EMPTY RIGHT NOW
 		}
 	}
 

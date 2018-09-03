@@ -79,5 +79,10 @@
   		<artifactId>javax.activation</artifactId>
   		<version>1.2.0</version>
   	</dependency>
+  	<dependency>
+	    <groupId>org.jfree</groupId>
+	    <artifactId>jfreechart-fx</artifactId>
+    <version>1.0.1</version>
+</dependency>
   </dependencies>
 </project>
