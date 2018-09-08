@@ -20,6 +20,7 @@ public class CombinationData {
 	private String unit;
 	private int iD;
 	private double zeroValue;
+	private boolean isCharted;
 
 	private ArrayList<Variable> variableList = new ArrayList<>();
 
@@ -74,5 +75,20 @@ public class CombinationData {
 	 */
 	public void setZeroValue(double zeroValue) {
 		this.zeroValue = zeroValue;
+	}
+
+	/**
+	 * @return the isCharted
+	 */
+	public boolean isCharted() {
+		return isCharted;
+	}
+
+	/**
+	 * @param isCharted
+	 *            the isCharted to set
+	 */
+	public void setCharted(boolean isCharted) {
+		this.isCharted = isCharted;
 	}
 }

@@ -118,6 +118,9 @@ public class ChartData {
 		for (Type type : SensorFactory.typePrecedence) {
 			for (int i = 0; i < SensorFactory.sensorMap.get(type).values().size(); i++) {
 				Sensorable sensor = SensorFactory.sensorMap.get(type).get(i);
+				if (!sensor.isCharted()) {
+					continue;
+				}
 				XYSeries newSeries = new XYSeries(sensor.getName(), false, true);
 				newSeries.setMaximumItemCount(dataPointsNumber);
 				dataMap.put(sensor, newSeries);
@@ -126,6 +129,9 @@ public class ChartData {
 		// insert all available combinations
 		for (int i = 0; i < SensorCombinationFactory.size(); i++) {
 			Sensorable sensor = SensorCombinationFactory.combinationMap.get(i);
+			if (!sensor.isCharted()) {
+				continue;
+			}
 			XYSeries newSeries = new XYSeries(sensor.getName(), false, true);
 			newSeries.setMaximumItemCount(dataPointsNumber);
 			dataMap.put(sensor, newSeries);

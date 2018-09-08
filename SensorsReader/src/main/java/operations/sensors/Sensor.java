@@ -23,7 +23,10 @@ public class Sensor implements Measurable, Sensorable {
 	protected String name;
 	protected String unit = "N";
 
+	protected boolean isCharted = true;
+
 	protected int iD;
+
 	@XmlTransient
 	protected Type type;
 
@@ -110,6 +113,14 @@ public class Sensor implements Measurable, Sensorable {
 
 	public void setUnit(String text) {
 		unit = text;
+	}
+
+	public boolean isCharted() {
+		return isCharted;
+	}
+
+	public void isChartedSet(boolean flag) {
+		this.isCharted = flag;
 	}
 
 	/**

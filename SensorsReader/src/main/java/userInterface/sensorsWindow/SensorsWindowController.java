@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -34,6 +35,8 @@ public class SensorsWindowController implements Initializable {
 	Label labelId;
 	@FXML
 	Button buttonExit;
+	@FXML
+	CheckBox checkIsCharted;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -52,6 +55,7 @@ public class SensorsWindowController implements Initializable {
 		textFieldZero.setText(comboBox.getValue().getZeroValueScaled().toString());
 		labelId.setText(comboBox.getValue().getId().toString());
 		labelType.setText(comboBox.getValue().getType().toString());
+		checkIsCharted.setSelected(comboBox.getValue().isCharted());
 	}
 
 	@FXML
@@ -101,6 +105,14 @@ public class SensorsWindowController implements Initializable {
 			}
 			field.setText(keyboard.getText());
 		}
+	}
 
+	@FXML
+	public void checkBox(ActionEvent event) {
+		if (comboBox.getValue() == null) {
+			return;
+		}
+
+		comboBox.getValue().isChartedSet(checkIsCharted.isSelected());
 	}
 }

@@ -16,4 +16,8 @@ public interface Sensorable {
 
 	public String getUnit();
 
+	public boolean isCharted();
+
+	public void isChartedSet(boolean flag);
+
 }

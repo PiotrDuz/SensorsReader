@@ -40,6 +40,8 @@ public class SensorCombination implements Measurable, Sensorable {
 
 	protected double zeroValue = 0;
 
+	protected boolean isCharted = true;
+
 	protected ArrayList<Sensor> sensors = new ArrayList<>();
 	protected HashMap<String, Double> variables = new HashMap<>();
 
@@ -55,6 +57,7 @@ public class SensorCombination implements Measurable, Sensorable {
 		this.unit = data.getUnit();
 		this.variables = data.getVariableMap();
 		this.zeroValue = data.getZeroValue();
+		this.isCharted = data.isCharted();
 	}
 
 	public CombinationData getCombinationData() {
@@ -64,6 +67,7 @@ public class SensorCombination implements Measurable, Sensorable {
 		data.insertVariableMap(this.variables);
 		data.setiD(this.iD);
 		data.setZeroValue(this.zeroValue);
+		data.setCharted(this.isCharted);
 		return data;
 	}
 
@@ -143,6 +147,14 @@ public class SensorCombination implements Measurable, Sensorable {
 
 	public Double getZeroValue() {
 		return zeroValue;
+	}
+
+	public boolean isCharted() {
+		return isCharted;
+	}
+
+	public void isChartedSet(boolean flag) {
+		this.isCharted = flag;
 	}
 
 	/**
