@@ -15,7 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import main.java.operations.sensors.Sensor;
 import main.java.operations.sensors.SensorFactory;
-import main.java.operations.sensors.SensorFactory.Type;
+import main.java.operations.sensors.SensorFactory.SensorType;
 import main.java.userInterface.keyboard.Keyboard;
 
 public class SensorsWindowController implements Initializable {
@@ -40,7 +40,7 @@ public class SensorsWindowController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		for (Type sensorType : SensorFactory.typePrecedence) {
+		for (SensorType sensorType : SensorFactory.typePrecedence) {
 			for (int i = 0; i < SensorFactory.sensorMap.get(sensorType).size(); i++) {
 				comboBox.getItems().add(SensorFactory.sensorMap.get(sensorType).get(i));
 			}

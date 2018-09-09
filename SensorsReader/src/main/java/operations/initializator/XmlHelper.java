@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.*;
 import main.java.operations.arduino.Arduino;
 import main.java.operations.sensors.Encoder;
 import main.java.operations.sensors.Tensometer;
+import main.java.operations.sensors.TimeStamp;
 import main.java.operations.sensors.combination.CombinationData;
 
 /**
@@ -27,7 +28,8 @@ public class XmlHelper {
 	@XmlElements({ @XmlElement(name = "Encoder", type = Encoder.class),
 			@XmlElement(name = "Tensometer", type = Tensometer.class),
 			@XmlElement(name = "Arduino", type = Arduino.class),
-			@XmlElement(name = "CombinationData", type = CombinationData.class) })
+			@XmlElement(name = "CombinationData", type = CombinationData.class),
+			@XmlElement(name = "TimeStamp", type = TimeStamp.class) })
 	private List<Object> objects = new ArrayList<>();
 
 	public List<Object> getList() {

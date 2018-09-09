@@ -2,7 +2,7 @@ package main.java.operations.sensors;
 
 import javax.xml.bind.annotation.*;
 
-import main.java.operations.sensors.SensorFactory.Type;
+import main.java.operations.sensors.SensorFactory.SensorType;
 
 /**
  * Class holding all settings for sensor.<br>
@@ -17,18 +17,19 @@ public class Sensor implements Measurable, Sensorable {
 	protected double scale = 1;
 	protected Double zeroValue = 0.0;
 
-	protected double maxValue = 0;
-	protected double minValue = 0;
+	@XmlTransient
+	protected Double maxValue = null;
+	@XmlTransient
+	protected Double minValue = null;
 
-	protected String name;
+	protected String name = "sens";
 	protected String unit = "N";
 
 	protected boolean isCharted = true;
 
 	protected int iD;
 
-	@XmlTransient
-	protected Type type;
+	protected SensorType type;
 
 	/**
 	 * Assign new ID and add object to the List of all sensors
@@ -37,7 +38,7 @@ public class Sensor implements Measurable, Sensorable {
 	}
 
 	/**
-	 * Take raw reading and alter it to get final gauged value.
+	 * Take raw reading and alter (scale) it to get final gauged value.
 	 * 
 	 * @param value
 	 * @return
@@ -45,10 +46,10 @@ public class Sensor implements Measurable, Sensorable {
 	public double getMeasurement(int value) {
 		double measurement = (value - zeroValue) / scale;
 
-		if (measurement > maxValue) {
+		if (maxValue == null || measurement > maxValue) {
 			maxValue = measurement;
 		}
-		if (measurement < minValue) {
+		if (minValue == null || measurement < minValue) {
 			minValue = measurement;
 		}
 		return measurement;
@@ -59,8 +60,16 @@ public class Sensor implements Measurable, Sensorable {
 		return name;
 	}
 
+	public void setMax(Double max) {
+		this.maxValue = max;
+	}
+
 	public Double getMax() {
 		return maxValue;
+	}
+
+	public void setMin(Double min) {
+		this.minValue = min;
 	}
 
 	public Double getMin() {
@@ -126,7 +135,7 @@ public class Sensor implements Measurable, Sensorable {
 	/**
 	 * @return the type
 	 */
-	public Type getType() {
+	public SensorType getType() {
 		return type;
 	}
 
@@ -134,7 +143,7 @@ public class Sensor implements Measurable, Sensorable {
 	 * @param type
 	 *            the type to set
 	 */
-	public void setType(Type type) {
+	public void setType(SensorType type) {
 		this.type = type;
 	}
 

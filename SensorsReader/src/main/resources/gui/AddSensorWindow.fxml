@@ -45,7 +45,7 @@
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Label text="Ilosc elementow:">
+                  <Label text="Aktualna ilosc elementow:">
                      <opaqueInsets>
                         <Insets bottom="4.0" />
                      </opaqueInsets>
@@ -71,8 +71,6 @@
             <Separator prefWidth="200.0" GridPane.rowIndex="3" />
             <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Separator prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Separator prefWidth="200.0" GridPane.rowIndex="1" />
-            <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Separator prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <children>

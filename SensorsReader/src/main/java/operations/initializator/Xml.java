@@ -16,7 +16,8 @@ import main.java.operations.sensors.Encoder;
 import main.java.operations.sensors.Sensor;
 import main.java.operations.sensors.SensorFactory;
 import main.java.operations.sensors.Tensometer;
-import main.java.operations.sensors.SensorFactory.Type;
+import main.java.operations.sensors.TimeStamp;
+import main.java.operations.sensors.SensorFactory.SensorType;
 import main.java.operations.sensors.combination.CombinationData;
 import main.java.operations.sensors.combination.SensorCombination;
 import main.java.operations.sensors.combination.SensorCombinationFactory;
@@ -68,16 +69,18 @@ public class Xml {
 		for (Object object : helperClass.getList()) {
 			if (object instanceof Encoder) {
 				Encoder enc = (Encoder) object;
-				insertToMap(enc, Type.ENCODER);
+				insertToMap(enc, enc.getType());
 			} else if (object instanceof Tensometer) {
 				Tensometer ten = (Tensometer) object;
-				insertToMap(ten, Type.TENSOMETER);
+				insertToMap(ten, ten.getType());
 			} else if (object instanceof Arduino) {
 				Arduino ard = (Arduino) object;
 				Arduino.setInstance(ard);
 			} else if (object instanceof CombinationData) {
 				CombinationData combData = (CombinationData) object;
 				SensorCombinationFactory.addToDataList(combData);
+			} else if (object instanceof TimeStamp) {
+				TimeStamp.setInstance((TimeStamp) object);
 			}
 		}
 	}
@@ -90,7 +93,7 @@ public class Xml {
 	 * @param type
 	 *            Type
 	 */
-	private static void insertToMap(Sensor sensor, Type type) {
+	private static void insertToMap(Sensor sensor, SensorType type) {
 
 		sensor.setType(type);
 
@@ -114,17 +117,21 @@ public class Xml {
 		XmlHelper helperClass = new XmlHelper();
 
 		// add Sensor objects to xml file.
-		for (Type key : SensorFactory.sensorMap.keySet()) {
+		for (SensorType key : SensorFactory.sensorMap.keySet()) {
 			for (Sensor sensor : SensorFactory.sensorMap.get(key).values()) {
 				helperClass.addToList(sensor);
 			}
 		}
 		// add Arduino object to xml file.
 		helperClass.addToList(Arduino.getInstance());
+
 		// add CombinationData objects
 		for (SensorCombination combination : SensorCombinationFactory.combinationMap.values()) {
 			helperClass.addToList(combination.getCombinationData());
 		}
+
+		// add TimeStamp object
+		helperClass.addToList(TimeStamp.getInstance());
 
 		// marshall list to XML. Let JAXB know which classes will be used
 		try {

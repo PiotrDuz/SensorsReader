@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import main.java.operations.sensors.Measurable;
 import main.java.operations.sensors.SensorFactory;
-import main.java.operations.sensors.SensorFactory.Type;
+import main.java.operations.sensors.SensorFactory.SensorType;
 
 /**
  * Class for holding {@link SensorCombination} objects, and managing them.
@@ -41,6 +41,7 @@ public class SensorCombinationFactory {
 		for (CombinationData data : combinationDataList) {
 			combinationMap.get(data.getiD()).setCombinationData(data);
 		}
+		combinationDataList.clear();
 	}
 
 	public static void initialize() {
@@ -64,6 +65,7 @@ public class SensorCombinationFactory {
 		//////////// !!-!! initialize 1 object
 
 		combinationMap.put(size(), new SensorCombination(size()) {
+
 			@Override
 			public double customMeasurementMethod(LinkedHashMap<Measurable, Double> map) {
 				return variables.get("var1") / map.get(sensors.get(1)) * map.get(sensors.get(0))
@@ -77,14 +79,15 @@ public class SensorCombinationFactory {
 		}// variables setting section:
 				.addVariable("var1") //
 				.addVariable("var2") //
-				.addSensor(SensorFactory.sensorMap.get(Type.ENCODER).get(0)) // sensor0
-				.addSensor(SensorFactory.sensorMap.get(Type.TENSOMETER).get(0)) // sensor1
+				.addSensor(SensorFactory.sensorMap.get(SensorType.ENCODER).get(0)) // sensor0
+				.addSensor(SensorFactory.sensorMap.get(SensorType.TENSOMETER).get(0)) // sensor1
 
 		);
 
 		/////////// !!-!! Initialize 2 object
 
 		combinationMap.put(size(), new SensorCombination(size()) {
+
 			@Override
 			public double customMeasurementMethod(LinkedHashMap<Measurable, Double> map) {
 				return variables.get("naprezenie") / map.get(sensors.get(1)) * map.get(sensors.get(0))
@@ -99,9 +102,10 @@ public class SensorCombinationFactory {
 		}// variables setting section:
 				.addVariable("naprezenie") //
 				.addVariable("nacisk") //
-				.addSensor(SensorFactory.sensorMap.get(Type.ENCODER).get(1)) // sensor0 = encoder1
-				.addSensor(SensorFactory.sensorMap.get(Type.TENSOMETER).get(0)) // sensor1 = tenso0
+				.addSensor(SensorFactory.sensorMap.get(SensorType.ENCODER).get(1)) // sensor0= encoder1
+				.addSensor(SensorFactory.sensorMap.get(SensorType.TENSOMETER).get(0)) // sensor1 = tenso0
 
 		);
+
 	}
 }

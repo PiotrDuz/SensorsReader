@@ -97,7 +97,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wynik = czasSurowy / Skala&#10;Typ dziesietny, czesc calkowita &#10;oddziela kropka!" GridPane.rowIndex="3" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wynik = czasSurowy / Skala&#10;czasSurowy to [ms]&#10;Przyklad: 1000.0 " GridPane.rowIndex="3" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Jest to czas, ktorym operuje&#10;caly program. Zmiana tego&#10;parametru moze wplynac na&#10;pozostale funkcje.&#10;" GridPane.rowIndex="5" />
                   <Separator prefWidth="200.0" GridPane.rowIndex="2" />
                   <Separator prefWidth="200.0" GridPane.rowIndex="4" />

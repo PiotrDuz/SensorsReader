@@ -1,6 +1,11 @@
 package main.java.operations.sensors;
 
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlEnumValue;
+import javax.xml.bind.annotation.XmlType;
+
 import java.util.Map;
 
 /**
@@ -12,18 +17,20 @@ import java.util.Map;
 public class SensorFactory {
 	/**
 	 * ConcurrentHashMap holding all sensors, having <br>
-	 * key1={@link Type}, key2=ID, value={@link Sensor}
+	 * key1={@link SensorType}, key2=ID, value={@link Sensor}
 	 */
-	public static final ConcurrentHashMap<Type, ConcurrentHashMap<Integer, Sensor>> sensorMap = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<SensorType, ConcurrentHashMap<Integer, Sensor>> sensorMap = new ConcurrentHashMap<>();
 	/**
-	 * Defines what is the order of types ({@link Type}, and which should be used.
+	 * Defines what is the order of types ({@link SensorType}, and which should be
+	 * used.
 	 */
-	public final static Type[] typePrecedence = { Type.ENCODER, Type.TENSOMETER };
+	public final static SensorType[] typePrecedence = { SensorType.ENCODER, SensorType.TENSOMETER };
 
 	/**
 	 * Returns array with int values, where each record holds quantity of sensors
 	 * of<br>
-	 * given {@link Type} as specified in {@link SensorFactory#typePrecedence}.<br>
+	 * given {@link SensorType} as specified in
+	 * {@link SensorFactory#typePrecedence}.<br>
 	 * Values are properly ordered to send message to AVR.
 	 * 
 	 * @return
@@ -44,14 +51,14 @@ public class SensorFactory {
 	 */
 	public static Sensor[] getOrderedArray() {
 		int num = 0;
-		for (Type type : Type.values()) {
+		for (SensorType type : SensorType.values()) {
 			num = num + countSensors(type);
 		}
 
 		Sensor[] array = new Sensor[num];
 		int k = 0;
 		for (int j = 0; j < typePrecedence.length; j++) {
-			Type type = typePrecedence[j];
+			SensorType type = typePrecedence[j];
 			if (j != 0) {
 				k = k + countSensors(typePrecedence[j - 1]);
 			}
@@ -64,12 +71,12 @@ public class SensorFactory {
 	}
 
 	/**
-	 * Return the number of sensors of given {@link Type}
+	 * Return the number of sensors of given {@link SensorType}
 	 * 
 	 * @param classType
 	 * @return
 	 */
-	public static int countSensors(Type classType) {
+	public static int countSensors(SensorType classType) {
 		Map<Integer, Sensor> tempMap = sensorMap.get(classType);
 		int num = 0;
 
@@ -89,7 +96,7 @@ public class SensorFactory {
 	 *            Provide type of class to create object (must extend Sensor)
 	 * @return newly created object
 	 */
-	public static Sensor createSensor(Type classType) {
+	public static Sensor createSensor(SensorType classType) {
 		Sensor object = null;
 		int sizeMap = 0;
 
@@ -101,13 +108,13 @@ public class SensorFactory {
 			sizeMap = temporaryMap.size();
 		}
 
-		if (classType == Type.ENCODER) {
+		if (classType == SensorType.ENCODER) {
 			object = new Encoder();
-			object.setType(Type.ENCODER);
+			object.setType(classType);
 			object.setId(sizeMap);
-		} else if (classType == Type.TENSOMETER) {
+		} else if (classType == SensorType.TENSOMETER) {
 			object = new Tensometer();
-			object.setType(Type.TENSOMETER);
+			object.setType(classType);
 			object.setId(sizeMap);
 		}
 
@@ -124,7 +131,14 @@ public class SensorFactory {
 	 * @author piotr
 	 *
 	 */
-	public static enum Type {
-		TENSOMETER, ENCODER;
+
+	@XmlEnum
+	public static enum SensorType {
+	//@formatter:off
+		@XmlEnumValue("Tensometer")
+		TENSOMETER, 
+		@XmlEnumValue("Encoder")
+		ENCODER;
+	//@formatter:on
 	}
 }

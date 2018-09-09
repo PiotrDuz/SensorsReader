@@ -35,6 +35,7 @@ public class TareWindowController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// check if there is component chosen
 		if (measureComponent == null) {
 			labelName.setText("Nie wybrano komponentu");
 			buttonYes.setDisable(true);
@@ -42,15 +43,16 @@ public class TareWindowController implements Initializable {
 		}
 
 		labelName.setText(measureComponent.getName());
-		XYSeries list = ChartData.getInstance(null, null).dataMap.get(measureComponent);
+		XYSeries list = ChartData.getInstance().dataMap.get(measureComponent);
 
+		// check if there is data for component
 		if (list.getItemCount() == 0) {
 			buttonYes.setDisable(true);
 			labelName.setText("BRAK DANYCH W PAMIECI");
 			return;
 		}
 
-		value = list.getDataItem(list.getItemCount() - 1).getYValue();
+		value = getAverage(list, 10);
 		labelValue.setText(value.toString());
 	}
 
@@ -70,12 +72,22 @@ public class TareWindowController implements Initializable {
 					return;
 				}
 
-				double zeroValue = list.getDataItem(list.getItemCount() - 1).getYValue();
+				double zeroValue = getAverage(list, 10);
 				measureCompLoop.setZeroValueScaled(zeroValue);
 			}
 		}
 
 		Stage stage1 = (Stage) button.getScene().getWindow();
 		stage1.close();
+	}
+
+	private double getAverage(XYSeries list, int avgPeriod) {
+		int totalItems = list.getItemCount();
+		double avgValue = 0.0;
+		for (int i = 1; i <= avgPeriod; i++) {
+			avgValue = avgValue + list.getDataItem(totalItems - i).getYValue();
+		}
+		avgValue = avgValue / avgPeriod;
+		return avgValue;
 	}
 }

@@ -25,10 +25,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import main.java.operations.initializator.Xml;
 import main.java.operations.logger.ReadingsLogger;
 import main.java.operations.pendrive.PendriveKeeper;
 import main.java.operations.sensors.Sensorable;
+import main.java.operations.sensors.TimeStamp;
+import main.java.userInterface.addSensorWindow.AddSensorWindow;
 import main.java.userInterface.combinationWindow.CombinationWindow;
 import main.java.userInterface.sensorsWindow.SensorsWindow;
 import main.java.userInterface.tareWindow.TareWindow;
@@ -63,6 +66,11 @@ public class MainWindowController implements Initializable {
 	GridPane gridChartTop;
 	@FXML
 	GridPane gridChartBottom;
+	// Time display
+	@FXML
+	Text textTimeValue;
+	@FXML
+	Text textTimeUnit;
 	// Buttons
 	@FXML
 	Button buttonStart;
@@ -115,13 +123,15 @@ public class MainWindowController implements Initializable {
 		// set chart properties
 		chartTop = ChartCreator.getChart(gridChartTop);
 		chartBottom = ChartCreator.getChart(gridChartBottom);
-		// charts
+		// initialize chart data arrays database
 		chartData = ChartData.getInstance(chartTop, chartBottom);
+		// connect timeValue with PaneFactory holding data
+		SensorPaneFactory.setTimeTextValue(textTimeValue);
 
 		initializeElements();
 
+		// disable stop button
 		buttonStop.setDisable(true);
-
 		// menu items binding
 		menuSettings.disableProperty().bind(menuDisable);
 		menuPendrive.disableProperty().bind(menuDisable);
@@ -141,6 +151,9 @@ public class MainWindowController implements Initializable {
 		comboChartTop.setItems(FXCollections.observableList(dataList));
 		comboChartBottom.setItems(FXCollections.observableList(dataList));
 
+		// reset time units and value
+		textTimeValue.setText(".");
+		textTimeUnit.setText(TimeStamp.getInstance().getUnit());
 		// clear old Pane map, fill with new Panes
 		vboxSensors.getChildren().clear();
 		SensorPaneFactory.mapPane.clear();
@@ -242,14 +255,31 @@ public class MainWindowController implements Initializable {
 			TimeWindow timeWindow = new TimeWindow((Node) menuBar);
 			timeWindow.openWindow();
 			initializeElements();
+		} else if (menuItem == menuSettingsAdd) {
+			AddSensorWindow addSensorWindow = new AddSensorWindow((Node) menuBar);
+			addSensorWindow.openWindow();
+			initializeElements();
 		} else if (menuItem == menuActionTare) {
 			TareWindow tareWindow = new TareWindow((Node) menuBar, comboChartTop.getValue());
 			tareWindow.openWindow();
-		} else if (menuItem == menuSettingsAdd) {
-			// IS EMPTY RIGHT NOW
+		} else if (menuItem == menuActionClean) {
+			if (comboChartTop.getValue() != null) {
+				comboChartTop.getValue().setMax(null);
+				comboChartTop.getValue().setMin(null);
+			}
+		} else if (menuItem == menuActionCleanAll) {
+			for (Sensorable component : ChartData.getInstance().dataMap.keySet()) {
+				component.setMax(null);
+				component.setMin(null);
+			}
 		}
 	}
 
+	/**
+	 * Called by pendrive keeping thread to update on screen information
+	 * 
+	 * @param flag
+	 */
 	public void changePendriveMountStatus(boolean flag) {
 		if (flag == true) {
 			labelPendrive.setTextFill(Color.GREEN);

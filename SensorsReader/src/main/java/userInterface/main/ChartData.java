@@ -12,7 +12,7 @@ import main.java.operations.sensors.Measurable;
 import main.java.operations.sensors.SensorFactory;
 import main.java.operations.sensors.Sensorable;
 import main.java.operations.sensors.TimeStamp;
-import main.java.operations.sensors.SensorFactory.Type;
+import main.java.operations.sensors.SensorFactory.SensorType;
 import main.java.operations.sensors.combination.SensorCombinationFactory;
 import main.java.userInterface.main.SensorPaneFactory.PaneValues;
 
@@ -77,7 +77,8 @@ public class ChartData {
 
 						XYSeries dataList = dataMap.get(measurement);
 						dataList.add(map.get(TimeStamp.getInstance()), map.get((Measurable) measurement));
-
+						// actualize time
+						SensorPaneFactory.getTimeTextValue().setText(map.get(TimeStamp.getInstance()).toString());
 						// actualize Panes values
 						PaneValues paneValues = SensorPaneFactory.mapPane.get(measurement);
 
@@ -92,6 +93,7 @@ public class ChartData {
 							paneValues.setSpeed(dMeasurement / dTime);
 						}
 					}
+					//
 					if (chartTickTock == false) {
 						ChartCreator.actualizeChart(chartTop);
 						chartTickTock = true;
@@ -115,9 +117,13 @@ public class ChartData {
 		// clear map holding chart serieses
 		dataMap.clear();
 		// insert all available sensors that are meant to work
-		for (Type type : SensorFactory.typePrecedence) {
+		for (SensorType type : SensorFactory.typePrecedence) {
+			if (SensorFactory.sensorMap.get(type) == null) {
+				continue;
+			}
 			for (int i = 0; i < SensorFactory.sensorMap.get(type).values().size(); i++) {
 				Sensorable sensor = SensorFactory.sensorMap.get(type).get(i);
+
 				if (!sensor.isCharted()) {
 					continue;
 				}

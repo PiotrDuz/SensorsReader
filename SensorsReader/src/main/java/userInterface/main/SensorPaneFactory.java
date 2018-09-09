@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import main.java.operations.sensors.Sensorable;
 import main.java.operations.sensors.TimeStamp;
@@ -19,7 +20,17 @@ import main.java.operations.sensors.TimeStamp;
  *
  */
 public class SensorPaneFactory {
+	private static final int PANE_WIDTH = 200;
 	public final static ConcurrentHashMap<Sensorable, PaneValues> mapPane = new ConcurrentHashMap<>();
+	private volatile static Text timeTextValue = null;
+
+	public static void setTimeTextValue(Text text) {
+		timeTextValue = text;
+	}
+
+	public static Text getTimeTextValue() {
+		return timeTextValue;
+	}
 
 	/**
 	 * 
@@ -43,7 +54,7 @@ public class SensorPaneFactory {
 		Text textSpeedUnit = new Text(sensor.getUnit() + "/" + TimeStamp.getInstance().getUnit());
 
 		GridPane grid = new GridPane();
-		grid.setMinWidth(200);
+		grid.setMinWidth(PANE_WIDTH);
 		// Setting columns size in percent
 		ColumnConstraints column = new ColumnConstraints();
 		column.setPercentWidth(25);
@@ -82,7 +93,7 @@ public class SensorPaneFactory {
 		protected Text max;
 		protected Text min;
 		protected Text speed;
-		public static DecimalFormat df = new DecimalFormat("#.00");
+		public static DecimalFormat df = new DecimalFormat("#.000");
 
 		public PaneValues(Text value, Text max, Text min, Text speed) {
 			this.value = value;
@@ -96,11 +107,19 @@ public class SensorPaneFactory {
 		}
 
 		public void setMax(Double numb) {
-			max.setText(df.format(numb));
+			if (numb != null) {
+				max.setText(df.format(numb));
+			} else {
+				max.setText(".");
+			}
 		}
 
 		public void setMin(Double numb) {
-			min.setText(df.format(numb));
+			if (numb != null) {
+				min.setText(df.format(numb));
+			} else {
+				min.setText(".");
+			}
 		}
 
 		public void setSpeed(Double numb) {

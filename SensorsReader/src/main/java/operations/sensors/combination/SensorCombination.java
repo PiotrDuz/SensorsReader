@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 import main.java.operations.sensors.Measurable;
 import main.java.operations.sensors.Sensor;
 import main.java.operations.sensors.Sensorable;
@@ -30,13 +32,14 @@ import main.java.operations.sensors.Sensorable;
  * @author Piotr Duzniak
  *
  */
+
 public class SensorCombination implements Measurable, Sensorable {
-	private String name;
+	private String name = "Comb";
 	private String unit;
 	private int iD;
 
-	private double maxValue;
-	private double minValue;
+	private Double maxValue = null;
+	private Double minValue = null;
 
 	protected double zeroValue = 0;
 
@@ -73,9 +76,9 @@ public class SensorCombination implements Measurable, Sensorable {
 
 	public double getMeasurement(LinkedHashMap<Measurable, Double> map) {
 		double result = customMeasurementMethod(map);
-		if (result > maxValue) {
+		if (maxValue == null || result > maxValue) {
 			maxValue = result;
-		} else if (result < minValue) {
+		} else if (minValue == null || result < minValue) {
 			minValue = result;
 		}
 
@@ -86,8 +89,16 @@ public class SensorCombination implements Measurable, Sensorable {
 		return 0.0;
 	}
 
+	public void setMax(Double max) {
+		this.maxValue = max;
+	}
+
 	public Double getMax() {
 		return maxValue;
+	}
+
+	public void setMin(Double min) {
+		this.minValue = min;
 	}
 
 	public Double getMin() {

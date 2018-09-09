@@ -10,7 +10,11 @@ public interface Sensorable {
 
 	public Double getMax();
 
+	public void setMax(Double max);
+
 	public Double getMin();
+
+	public void setMin(Double min);
 
 	public String getName();
 

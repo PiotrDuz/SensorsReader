@@ -79,6 +79,7 @@ public class ReadingsLogger implements Runnable {
 		}
 
 		serial.write(Command.START_MEASURING.get(), 1);
+		serial.clean();
 
 		// loop for constant reading
 		while (stop == false) {
@@ -105,7 +106,7 @@ public class ReadingsLogger implements Runnable {
 			}
 
 			// add new values to corresponding chart's series
-			ChartData.getInstance(null, null).appendSeries(measureMap);
+			ChartData.getInstance().appendSeries(measureMap);
 
 			if (save) {
 				csvCreator.saveCsv(measureMap);

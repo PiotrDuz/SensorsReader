@@ -10,9 +10,11 @@ import org.apache.commons.csv.CSVPrinter;
 
 import main.java.operations.pendrive.PendriveMount;
 import main.java.operations.sensors.Measurable;
+import main.java.operations.sensors.Sensor;
 import main.java.operations.sensors.SensorFactory;
 import main.java.operations.sensors.TimeStamp;
-import main.java.operations.sensors.SensorFactory.Type;
+import main.java.operations.sensors.SensorFactory.SensorType;
+import main.java.operations.sensors.combination.SensorCombination;
 import main.java.operations.sensors.combination.SensorCombinationFactory;
 
 import java.io.BufferedWriter;
@@ -65,13 +67,18 @@ public class CsvCreator {
 		ArrayList<String> header = new ArrayList<>();
 
 		header.add(TimeStamp.getInstance().getName());
-		for (Type type : SensorFactory.typePrecedence) {
+		for (SensorType type : SensorFactory.typePrecedence) {
+			if (SensorFactory.sensorMap.get(type) == null) {
+				continue;
+			}
 			for (int i = 0; i < SensorFactory.sensorMap.get(type).values().size(); i++) {
-				header.add(SensorFactory.sensorMap.get(type).get(i).getName());
+				Sensor sens = SensorFactory.sensorMap.get(type).get(i);
+				header.add(sens.getName() + " [" + sens.getUnit() + "]");
 			}
 		}
 		for (int i = 0; i < SensorCombinationFactory.combinationMap.size(); i++) {
-			header.add(SensorCombinationFactory.combinationMap.get(i).getName());
+			SensorCombination comb = SensorCombinationFactory.combinationMap.get(i);
+			header.add(comb.getName() + " [" + comb.getUnit() + "]");
 		}
 
 		return header.toArray(new String[header.size()]);

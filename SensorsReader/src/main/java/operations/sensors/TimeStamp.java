@@ -1,5 +1,10 @@
 package main.java.operations.sensors;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * Class to convert raw time reading to defined one.<br>
  * BEWARE! It may influence PID or other time-based processes.<br>
@@ -8,8 +13,9 @@ package main.java.operations.sensors;
  * @author Piotr Duzniak
  *
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TimeStamp implements Measurable {
-
+	@XmlTransient
 	private static volatile TimeStamp stamp;
 
 	private String name = "time";
@@ -23,6 +29,14 @@ public class TimeStamp implements Measurable {
 		} else {
 			return stamp;
 		}
+	}
+
+	public static void setInstance(TimeStamp timeStamp) {
+		stamp = timeStamp;
+	}
+
+	private TimeStamp() {
+
 	}
 
 	/**
