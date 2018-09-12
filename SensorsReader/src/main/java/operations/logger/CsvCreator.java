@@ -31,7 +31,7 @@ import java.nio.file.Paths;;
  */
 public class CsvCreator {
 	private static final String filePath = PendriveMount.MOUNT_POINT + "/";
-	public static String fileName;
+	private String fileName = null;
 	private CSVPrinter csvPrinter;
 
 	/**
@@ -42,11 +42,12 @@ public class CsvCreator {
 	 * unchanged.Also, prints header as a first line (.name of all
 	 * sensors/combinations) <br>
 	 */
-	public CsvCreator() {
+	public CsvCreator(String fileName) {
 		// Create new file name if already not exist
 		if (fileName == null) {
 			fileName = "Pomiar_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
 		}
+		this.fileName = fileName;
 		// create file and CSVPrinter
 		// write header
 		Path totalPath = Paths.get(filePath + fileName + ".csv");

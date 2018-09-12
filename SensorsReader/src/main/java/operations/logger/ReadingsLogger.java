@@ -35,9 +35,12 @@ public class ReadingsLogger implements Runnable {
 	private Boolean save = false;
 	private final Arduino serial = Arduino.getInstance();
 	private final float LOAD_FACTOR = (float) 0.7;
+	// name of file to save, null if not saving
+	String fileName = null;
 
-	public ReadingsLogger(boolean save) {
+	public ReadingsLogger(boolean save, String fileName) {
 		this.save = save;
+		this.fileName = fileName;
 	}
 
 	/**
@@ -51,7 +54,7 @@ public class ReadingsLogger implements Runnable {
 		// if save is selected, methods connected with csv printing activated
 		CsvCreator csvCreator = null;
 		if (save) {
-			csvCreator = new CsvCreator();
+			csvCreator = new CsvCreator(fileName);
 		}
 
 		// set array of sensor, in correct reading order. Get number of sensors of each

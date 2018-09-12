@@ -214,7 +214,7 @@ public class MainWindowController implements Initializable {
 			// enable STOP button
 			buttonStop.setDisable(false);
 
-			readingsLogger = new ReadingsLogger(saveToFile);
+			readingsLogger = new ReadingsLogger(saveToFile, fileName);
 			Thread thread = new Thread(readingsLogger, "ReadingsLogger");
 			thread.start();
 
