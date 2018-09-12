@@ -1,4 +1,4 @@
-package main.java.operations.sensors;
+package  operations.sensors;
 
 /**
  * Common methods to plot measurement objects on GUI. <br>

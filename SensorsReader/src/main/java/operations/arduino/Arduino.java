@@ -1,4 +1,4 @@
-package main.java.operations.arduino;
+package  operations.arduino;
 
 import com.fazecast.jSerialComm.*;
 import java.io.IOException;

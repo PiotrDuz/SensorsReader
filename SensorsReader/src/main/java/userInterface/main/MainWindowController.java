@@ -1,6 +1,8 @@
-package main.java.userInterface.main;
+package userInterface.main;
 
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -26,16 +28,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import main.java.operations.initializator.Xml;
-import main.java.operations.logger.ReadingsLogger;
-import main.java.operations.pendrive.PendriveKeeper;
-import main.java.operations.sensors.Sensorable;
-import main.java.operations.sensors.TimeStamp;
-import main.java.userInterface.addSensorWindow.AddSensorWindow;
-import main.java.userInterface.combinationWindow.CombinationWindow;
-import main.java.userInterface.sensorsWindow.SensorsWindow;
-import main.java.userInterface.tareWindow.TareWindow;
-import main.java.userInterface.timeWindow.TimeWindow;
+import operations.initializator.Xml;
+import operations.logger.ReadingsLogger;
+import operations.pendrive.PendriveKeeper;
+import operations.sensors.Sensorable;
+import operations.sensors.TimeStamp;
+import userInterface.addSensorWindow.AddSensorWindow;
+import userInterface.combinationWindow.CombinationWindow;
+import userInterface.dateSetting.DateWindow;
+import userInterface.keyboard.Keyboard;
+import userInterface.sensorsWindow.SensorsWindow;
+import userInterface.tareWindow.TareWindow;
+import userInterface.timeWindow.TimeWindow;
 
 /**
  * Controller class for {@link MainWindow}
@@ -48,6 +52,7 @@ public class MainWindowController implements Initializable {
 	private ReadingsLogger readingsLogger;
 	private ChartData chartData;
 	private boolean saveToFile = false;
+	private String fileName = null;
 	BooleanProperty menuDisable = new SimpleBooleanProperty(false);
 	// ROOT
 	@FXML
@@ -98,6 +103,8 @@ public class MainWindowController implements Initializable {
 	@FXML
 	MenuItem menuPendriveUnmount;
 	@FXML
+	MenuItem menuPendriveFileName;
+	@FXML
 	Menu menuAction;
 	@FXML
 	MenuItem menuActionTare;
@@ -105,6 +112,8 @@ public class MainWindowController implements Initializable {
 	MenuItem menuActionClean;
 	@FXML
 	MenuItem menuActionCleanAll;
+	@FXML
+	MenuItem menuSystemDate;
 
 	// Sensors real-time info
 	@FXML
@@ -243,6 +252,19 @@ public class MainWindowController implements Initializable {
 			}
 		} else if (menuItem == menuPendriveUnmount) {
 			PendriveKeeper.getInstance().orderUnmount();
+		} else if (menuItem == menuPendriveFileName) {
+			Keyboard keyboard;
+			if (fileName == null) {
+				keyboard = new Keyboard(
+						"Pomiar_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")));
+			} else {
+				keyboard = new Keyboard(fileName);
+			}
+			keyboard.display((Node) menuBar);
+			// check if user has not cancelled the input
+			if (keyboard.getText() != null) {
+				fileName = keyboard.getText();
+			}
 		} else if (menuItem == menuSettingsSensors) {
 			SensorsWindow sensorsWindow = new SensorsWindow((Node) menuBar);
 			sensorsWindow.openWindow();
@@ -272,6 +294,9 @@ public class MainWindowController implements Initializable {
 				component.setMax(null);
 				component.setMin(null);
 			}
+		} else if (menuItem == menuSystemDate) {
+			DateWindow dateWindow = new DateWindow((Node) menuBar);
+			dateWindow.openWindow();
 		}
 	}
 

@@ -1,4 +1,4 @@
-package main.java.operations.logger;
+package operations.logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -8,14 +8,14 @@ import java.util.LinkedHashMap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import main.java.operations.pendrive.PendriveMount;
-import main.java.operations.sensors.Measurable;
-import main.java.operations.sensors.Sensor;
-import main.java.operations.sensors.SensorFactory;
-import main.java.operations.sensors.TimeStamp;
-import main.java.operations.sensors.SensorFactory.SensorType;
-import main.java.operations.sensors.combination.SensorCombination;
-import main.java.operations.sensors.combination.SensorCombinationFactory;
+import operations.pendrive.PendriveMount;
+import operations.sensors.Measurable;
+import operations.sensors.Sensor;
+import operations.sensors.SensorFactory;
+import operations.sensors.TimeStamp;
+import operations.sensors.SensorFactory.SensorType;
+import operations.sensors.combination.SensorCombination;
+import operations.sensors.combination.SensorCombinationFactory;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -30,7 +30,7 @@ import java.nio.file.Paths;;
  * Uses Apache Commons CVS library.
  */
 public class CsvCreator {
-	private static final String filePath = PendriveMount.MOUNT_POINT;
+	private static final String filePath = PendriveMount.MOUNT_POINT + "/";
 	public static String fileName;
 	private CSVPrinter csvPrinter;
 
@@ -45,7 +45,7 @@ public class CsvCreator {
 	public CsvCreator() {
 		// Create new file name if already not exist
 		if (fileName == null) {
-			fileName = "/Pomiar_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+			fileName = "Pomiar_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
 		}
 		// create file and CSVPrinter
 		// write header

@@ -1,39 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ObjectsList>
-    <Encoder>
-        <scale>1.0</scale>
-        <zeroValue>0.0</zeroValue>
-        <maxValue>0.0</maxValue>
-        <minValue>0.0</minValue>
-        <name>Enc1</name>
-        <unit>N</unit>
-        <iD>0</iD>
-    </Encoder>
-    <Encoder>
-        <scale>1.0</scale>
-        <zeroValue>0.0</zeroValue>
-        <maxValue>0.0</maxValue>
-        <minValue>0.0</minValue>
-        <name>Enc2</name>
-        <unit>N</unit>
-        <iD>1</iD>
-    </Encoder>
     <Tensometer>
+        <scale>1000.0</scale>
+        <zeroValue>0.0</zeroValue>
+        <name>TEN1</name>
+        <unit>N</unit>
+        <isCharted>true</isCharted>
+        <iD>0</iD>
+        <type>Tensometer</type>
+    </Tensometer>
+    <Encoder>
         <scale>1.0</scale>
         <zeroValue>0.0</zeroValue>
-        <maxValue>0.0</maxValue>
-        <minValue>0.0</minValue>
-        <name>Ten1</name>
+        <name>ENC1</name>
         <unit>N</unit>
+        <isCharted>true</isCharted>
         <iD>0</iD>
-    </Tensometer>
+        <type>Encoder</type>
+    </Encoder>
+    <Encoder>
+        <scale>1.0</scale>
+        <zeroValue>0.0</zeroValue>
+        <name>ENC2</name>
+        <unit>N</unit>
+        <isCharted>true</isCharted>
+        <iD>1</iD>
+        <type>Encoder</type>
+    </Encoder>
     <Arduino>
         <deviceId>ch341</deviceId>
     </Arduino>
     <CombinationData>
-        <name>TestName1tedttt</name>
+        <name>COMB1</name>
+        <unit>F</unit>
         <iD>0</iD>
         <zeroValue>0.0</zeroValue>
+        <isCharted>true</isCharted>
         <variableList>
             <name>var2</name>
             <value>1.0</value>
@@ -44,16 +46,23 @@
         </variableList>
     </CombinationData>
     <CombinationData>
-        <name>KOMB1</name>
+        <name>C2</name>
+        <unit>G</unit>
         <iD>1</iD>
-        <zeroValue>0.0</zeroValue>
+        <zeroValue>3.0</zeroValue>
+        <isCharted>true</isCharted>
         <variableList>
             <name>naprezenie</name>
-            <value>1.0</value>
+            <value>67.0</value>
         </variableList>
         <variableList>
             <name>nacisk</name>
-            <value>1.0</value>
+            <value>90.0</value>
         </variableList>
     </CombinationData>
+    <TimeStamp>
+        <name>time</name>
+        <unit>s</unit>
+        <scale>1000.0</scale>
+    </TimeStamp>
 </ObjectsList>

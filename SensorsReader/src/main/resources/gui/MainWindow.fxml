@@ -32,6 +32,7 @@
           </Menu>
           <Menu fx:id="menuPendrive" mnemonicParsing="false" text="Pendrive">
             <items>
+                  <MenuItem fx:id="menuPendriveFileName" mnemonicParsing="false" onAction="#clickMenuItem" text="NazwaPliku" />
               <MenuItem fx:id="menuPendriveSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapis" />
                   <MenuItem fx:id="menuPendriveUnmount" mnemonicParsing="false" onAction="#clickMenuItem" text="Odlacz" />
             </items>
@@ -42,6 +43,11 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="menuActionClean" mnemonicParsing="false" onAction="#clickMenuItem" text="Czysc Maks/Min" />
                   <MenuItem fx:id="menuActionCleanAll" mnemonicParsing="false" onAction="#clickMenuItem" text="Czysc wszystkie Maks/Min" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="System">
+              <items>
+                <MenuItem fx:id="menuSystemDate" mnemonicParsing="false" onAction="#clickMenuItem" text="Data" />
               </items>
             </Menu>
         </menus>

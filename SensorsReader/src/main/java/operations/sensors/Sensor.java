@@ -1,8 +1,8 @@
-package main.java.operations.sensors;
+package  operations.sensors;
 
 import javax.xml.bind.annotation.*;
 
-import main.java.operations.sensors.SensorFactory.SensorType;
+import  operations.sensors.SensorFactory.SensorType;
 
 /**
  * Class holding all settings for sensor.<br>

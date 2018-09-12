@@ -1,4 +1,4 @@
-package main.java.userInterface.combinationWindow;
+package  userInterface.combinationWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,9 +16,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import main.java.operations.sensors.combination.SensorCombination;
-import main.java.operations.sensors.combination.SensorCombinationFactory;
-import main.java.userInterface.keyboard.Keyboard;
+import  operations.sensors.combination.SensorCombination;
+import  operations.sensors.combination.SensorCombinationFactory;
+import  userInterface.keyboard.Keyboard;
 
 public class CombinationWindowController implements Initializable {
 	@FXML

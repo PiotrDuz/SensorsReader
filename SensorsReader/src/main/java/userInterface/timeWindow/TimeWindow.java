@@ -1,4 +1,4 @@
-package main.java.userInterface.timeWindow;
+package  userInterface.timeWindow;
 
 import java.io.IOException;
 

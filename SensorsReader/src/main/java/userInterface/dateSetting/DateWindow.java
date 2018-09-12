@@ -1,4 +1,4 @@
-package  userInterface.tareWindow;
+package userInterface.dateSetting;
 
 import java.io.IOException;
 
@@ -9,20 +9,19 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import  operations.sensors.Sensorable;
+import userInterface.combinationWindow.CombinationWindowController;
 
-public class TareWindow {
-	private TareWindowController controller;
+public class DateWindow {
+	private DateWindowController controller = new DateWindowController();
 	private Window ownerWindow;
 
-	public TareWindow(Node node, Sensorable measureComponent) {
+	public DateWindow(Node node) {
 		ownerWindow = node.getScene().getWindow();
-		controller = new TareWindowController(measureComponent);
 	}
 
 	public void openWindow() {
 		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/TareWindow.fxml"));
+				getClass().getClassLoader().getResource("main/resources/gui/DateWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {
@@ -34,7 +33,7 @@ public class TareWindow {
 		Stage stage = new Stage();
 		stage.initOwner(ownerWindow);
 		stage.initModality(Modality.WINDOW_MODAL);
-		stage.setTitle("TareWindow");
+		stage.setTitle("combinationWindow");
 		stage.setScene(new Scene(root));
 		stage.showAndWait();
 	}

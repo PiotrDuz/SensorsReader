@@ -1,4 +1,4 @@
-package main.java.userInterface.sensorsWindow;
+package  userInterface.sensorsWindow;
 
 import javafx.stage.Modality;
 import javafx.stage.Stage;

@@ -1,4 +1,4 @@
-package main.java.userInterface.addSensorWindow;
+package  userInterface.addSensorWindow;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import main.java.operations.sensors.Sensor;
-import main.java.operations.sensors.SensorFactory;
-import main.java.operations.sensors.SensorFactory.SensorType;
+import  operations.sensors.Sensor;
+import  operations.sensors.SensorFactory;
+import  operations.sensors.SensorFactory.SensorType;
 
 public class AddSensorWindowController implements Initializable {
 	@FXML

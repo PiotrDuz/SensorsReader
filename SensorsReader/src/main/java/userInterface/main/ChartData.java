@@ -1,4 +1,4 @@
-package main.java.userInterface.main;
+package  userInterface.main;
 
 import java.util.LinkedHashMap;
 
@@ -8,13 +8,13 @@ import org.jfree.chart.fx.ChartCanvas;
 import org.jfree.data.xy.XYSeries;
 
 import javafx.application.Platform;
-import main.java.operations.sensors.Measurable;
-import main.java.operations.sensors.SensorFactory;
-import main.java.operations.sensors.Sensorable;
-import main.java.operations.sensors.TimeStamp;
-import main.java.operations.sensors.SensorFactory.SensorType;
-import main.java.operations.sensors.combination.SensorCombinationFactory;
-import main.java.userInterface.main.SensorPaneFactory.PaneValues;
+import  operations.sensors.Measurable;
+import  operations.sensors.SensorFactory;
+import  operations.sensors.Sensorable;
+import  operations.sensors.TimeStamp;
+import  operations.sensors.SensorFactory.SensorType;
+import  operations.sensors.combination.SensorCombinationFactory;
+import  userInterface.main.SensorPaneFactory.PaneValues;
 
 /**
  * Class responsible for holding and handling data series that are displayed on

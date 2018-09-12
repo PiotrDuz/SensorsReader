@@ -1,4 +1,4 @@
-package main.java.operations.sensors;
+package  operations.sensors;
 
 import java.util.concurrent.ConcurrentHashMap;
 

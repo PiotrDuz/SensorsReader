@@ -1,4 +1,4 @@
-package main.java.operations.sensors.combination;
+package  operations.sensors.combination;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.LinkedHashMap;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import main.java.operations.sensors.Measurable;
-import main.java.operations.sensors.Sensor;
-import main.java.operations.sensors.Sensorable;
+import  operations.sensors.Measurable;
+import  operations.sensors.Sensor;
+import  operations.sensors.Sensorable;
 
 /**
  * Class for defining non-linear transformation from raw measurement to final.

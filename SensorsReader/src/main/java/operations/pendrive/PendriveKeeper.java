@@ -1,7 +1,7 @@
-package main.java.operations.pendrive;
+package  operations.pendrive;
 
 import javafx.application.Platform;
-import main.java.userInterface.main.MainWindow;
+import  userInterface.main.MainWindow;
 
 /**
  * Class that runs as a seperate thread.<br>

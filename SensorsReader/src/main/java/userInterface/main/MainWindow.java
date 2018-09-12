@@ -1,4 +1,4 @@
-package main.java.userInterface.main;
+package userInterface.main;
 
 import java.io.IOException;
 

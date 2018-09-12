@@ -1,4 +1,4 @@
-package main.java.userInterface.keyboard;
+package userInterface.keyboard;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,7 +11,11 @@ public class Keyboard {
 	private KeyboardController keyboardController;
 
 	public Keyboard() {
-		keyboardController = new KeyboardController();
+		this(null);
+	}
+
+	public Keyboard(String initialText) {
+		keyboardController = new KeyboardController(initialText);
 	}
 
 	public void display(Node node) {
@@ -33,10 +37,10 @@ public class Keyboard {
 	}
 
 	public String getText() {
-		if (keyboardController.textHolder == null) {
+		if (keyboardController.getTextHolder() == null) {
 			return null;
 		} else {
-			return keyboardController.textHolder.toString();
+			return keyboardController.getTextHolder().toString();
 		}
 	}
 }

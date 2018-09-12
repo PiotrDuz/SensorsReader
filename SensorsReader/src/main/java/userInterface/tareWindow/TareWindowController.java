@@ -1,4 +1,4 @@
-package main.java.userInterface.tareWindow;
+package  userInterface.tareWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,8 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import main.java.operations.sensors.Sensorable;
-import main.java.userInterface.main.ChartData;
+import  operations.sensors.Sensorable;
+import  userInterface.main.ChartData;
 
 public class TareWindowController implements Initializable {
 	Sensorable measureComponent;

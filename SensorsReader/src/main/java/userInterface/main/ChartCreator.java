@@ -1,7 +1,8 @@
-package main.java.userInterface.main;
+package  userInterface.main;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.fx.ChartCanvas;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
@@ -9,14 +10,15 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
-import main.java.operations.sensors.Sensorable;
-import main.java.operations.sensors.TimeStamp;
+import  operations.sensors.Sensorable;
+import  operations.sensors.TimeStamp;
 
 public class ChartCreator {
 
 	public static ChartCanvas getChart(GridPane grid) {
 		XYSeriesCollection collection = new XYSeriesCollection();
 		JFreeChart chart = ChartFactory.createXYLineChart("Chart", "X", "Y", collection);
+
 		// fire chart repaint on demand
 		chart.setNotify(false);
 
@@ -56,7 +58,9 @@ public class ChartCreator {
 		collection.addSeries(series);
 
 		plot.getDomainAxis().setLabel(null); // ("Czas: " + TimeStamp.getInstance().getUnit());
-		plot.getRangeAxis().setLabel(null); // dataObject.getUnit());
+		NumberAxis rangeAx = (NumberAxis) plot.getRangeAxis();
+		rangeAx.setLabel(null); // dataObject.getUnit());
+		rangeAx.setAutoRangeIncludesZero(false);
 	}
 
 	public static void actualizeChart(ChartCanvas chart) {

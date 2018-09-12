@@ -1,4 +1,4 @@
-package main.java.userInterface.addSensorWindow;
+package  userInterface.addSensorWindow;
 
 import java.io.IOException;
 

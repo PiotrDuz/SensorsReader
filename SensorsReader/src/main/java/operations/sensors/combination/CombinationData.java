@@ -1,4 +1,4 @@
-package main.java.operations.sensors.combination;
+package  operations.sensors.combination;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package main.java.userInterface.main;
+package  userInterface.main;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.ConcurrentHashMap;
@@ -8,8 +8,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
-import main.java.operations.sensors.Sensorable;
-import main.java.operations.sensors.TimeStamp;
+import  operations.sensors.Sensorable;
+import  operations.sensors.TimeStamp;
 
 /**
  * Creating and managing TitledPanes that show real-time measurement parameters.

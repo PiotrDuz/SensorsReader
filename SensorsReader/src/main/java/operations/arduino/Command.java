@@ -1,4 +1,4 @@
-package main.java.operations.arduino;
+package operations.arduino;
 
 /**
  * Holds byte command that are send to Arduino, <br>
@@ -8,7 +8,7 @@ package main.java.operations.arduino;
  *
  */
 public enum Command {
-	SEND_SENSORS_QUANTITY(2), START_MEASURING(48), STOP_MEASURING(0), GET_DATE(38);
+	SEND_SENSORS_QUANTITY(2), START_MEASURING(48), STOP_MEASURING(0), GET_DATE(38), SET_DATE(39);
 
 	private int number;
 

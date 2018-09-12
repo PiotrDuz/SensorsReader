@@ -1,4 +1,4 @@
-package main.java.operations.pendrive;
+package operations.pendrive;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -136,7 +136,7 @@ public class PendriveMount {
 	 *            Bash command to be executed
 	 * @return BufferedReader containing terminal's answer for a command
 	 */
-	private BufferedReader executeCommand(String command) {
+	public static BufferedReader executeCommand(String command) {
 		File workingFolder = new File("/home");
 		BufferedReader readerOutput = null;
 

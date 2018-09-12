@@ -1,4 +1,4 @@
-package main.java.operations.sensors;
+package  operations.sensors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

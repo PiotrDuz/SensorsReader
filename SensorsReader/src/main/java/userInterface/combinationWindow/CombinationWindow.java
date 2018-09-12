@@ -1,4 +1,4 @@
-package main.java.userInterface.combinationWindow;
+package  userInterface.combinationWindow;
 
 import java.io.IOException;
 

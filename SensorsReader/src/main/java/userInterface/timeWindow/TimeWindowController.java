@@ -1,4 +1,4 @@
-package main.java.userInterface.timeWindow;
+package  userInterface.timeWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,8 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import main.java.operations.sensors.TimeStamp;
-import main.java.userInterface.keyboard.Keyboard;
+import  operations.sensors.TimeStamp;
+import  userInterface.keyboard.Keyboard;
 
 public class TimeWindowController implements Initializable {
 	@FXML

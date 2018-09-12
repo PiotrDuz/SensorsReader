@@ -1,17 +1,17 @@
-package main.java.operations.logger;
+package operations.logger;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-import main.java.operations.arduino.Arduino;
-import main.java.operations.arduino.Command;
-import main.java.operations.sensors.Measurable;
-import main.java.operations.sensors.Sensor;
-import main.java.operations.sensors.SensorFactory;
-import main.java.operations.sensors.TimeStamp;
-import main.java.operations.sensors.combination.SensorCombination;
-import main.java.operations.sensors.combination.SensorCombinationFactory;
-import main.java.userInterface.main.ChartData;
+import operations.arduino.Arduino;
+import operations.arduino.Command;
+import operations.sensors.Measurable;
+import operations.sensors.Sensor;
+import operations.sensors.SensorFactory;
+import operations.sensors.TimeStamp;
+import operations.sensors.combination.SensorCombination;
+import operations.sensors.combination.SensorCombinationFactory;
+import userInterface.main.ChartData;
 
 /**
  * Class that is created as seperate thread. <br>
@@ -45,7 +45,7 @@ public class ReadingsLogger implements Runnable {
 	 * drive
 	 */
 	public void run() {
-		// holds read arduino's byte stream
+		// array for arduino's byte stream
 		byte[] array = null;
 
 		// if save is selected, methods connected with csv printing activated

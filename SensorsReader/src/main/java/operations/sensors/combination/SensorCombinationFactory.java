@@ -1,12 +1,12 @@
-package main.java.operations.sensors.combination;
+package  operations.sensors.combination;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import main.java.operations.sensors.Measurable;
-import main.java.operations.sensors.SensorFactory;
-import main.java.operations.sensors.SensorFactory.SensorType;
+import  operations.sensors.Measurable;
+import  operations.sensors.SensorFactory;
+import  operations.sensors.SensorFactory.SensorType;
 
 /**
  * Class for holding {@link SensorCombination} objects, and managing them.
@@ -61,51 +61,56 @@ public class SensorCombinationFactory {
 	 * with saved values in xml
 	 */
 	private static void defineCombinations() {
-
-		//////////// !!-!! initialize 1 object
-
-		combinationMap.put(size(), new SensorCombination(size()) {
-
-			@Override
-			public double customMeasurementMethod(LinkedHashMap<Measurable, Double> map) {
-				return variables.get("var1") / map.get(sensors.get(1)) * map.get(sensors.get(0))
-						* Math.pow(variables.get("var2"), 2);
-			}
-
-			@Override
-			public String equationText() {
-				return "var1 " + " * " + sensors.get(0).getName() + " / " + sensors.get(1).getName() + " *" + "var2 ^2";
-			}
-		}// variables setting section:
-				.addVariable("var1") //
-				.addVariable("var2") //
-				.addSensor(SensorFactory.sensorMap.get(SensorType.ENCODER).get(0)) // sensor0
-				.addSensor(SensorFactory.sensorMap.get(SensorType.TENSOMETER).get(0)) // sensor1
-
-		);
-
-		/////////// !!-!! Initialize 2 object
-
-		combinationMap.put(size(), new SensorCombination(size()) {
-
-			@Override
-			public double customMeasurementMethod(LinkedHashMap<Measurable, Double> map) {
-				return variables.get("naprezenie") / map.get(sensors.get(1)) * map.get(sensors.get(0))
-						* Math.pow(variables.get("nacisk"), 2);
-			}
-
-			@Override
-			public String equationText() {
-				return "naprezenie " + " * " + sensors.get(0).getName() + " / " + sensors.get(1).getName() + " * "
-						+ "nacisk ^2";
-			}
-		}// variables setting section:
-				.addVariable("naprezenie") //
-				.addVariable("nacisk") //
-				.addSensor(SensorFactory.sensorMap.get(SensorType.ENCODER).get(1)) // sensor0= encoder1
-				.addSensor(SensorFactory.sensorMap.get(SensorType.TENSOMETER).get(0)) // sensor1 = tenso0
-
-		);
-
+		//@formatter:off
+		 //////////// !!-!! initialize 1 object
+		
+		 combinationMap.put(size(), new SensorCombination(size()) {
+		
+		 @Override
+		 public double customMeasurementMethod(LinkedHashMap<Measurable, Double> map)
+		 {
+		 return variables.get("var1") / map.get(sensors.get(1)) *
+		 map.get(sensors.get(0)) * Math.pow(variables.get("var2"), 2);
+		 }
+		
+		 @Override
+		 public String equationText() {
+		 return "var1 " + " * " + sensors.get(0).getName() + " / " +
+		 sensors.get(1).getName() + " *" + "var2 ^2";
+		 }
+		 }// variables setting section:
+		 .addVariable("var1") //
+		 .addVariable("var2") //
+		 .addSensor(SensorFactory.sensorMap.get(SensorType.ENCODER).get(0)) // sensor0
+		 .addSensor(SensorFactory.sensorMap.get(SensorType.TENSOMETER).get(0)) // sensor1
+		
+		 );
+		
+		 /////////// !!-!! Initialize 2 object
+		
+		 combinationMap.put(size(), new SensorCombination(size()) {
+		
+		 @Override
+		 public double customMeasurementMethod(LinkedHashMap<Measurable, Double> map)
+		 {
+		 return variables.get("naprezenie") / map.get(sensors.get(1)) *
+		 map.get(sensors.get(0))
+		 * Math.pow(variables.get("nacisk"), 2);
+		 }
+		
+		 @Override
+		 public String equationText() {
+		 return "naprezenie " + " * " + sensors.get(0).getName() + " / " +
+		 sensors.get(1).getName() + " * " + "nacisk ^2";
+		 }
+		 }// variables setting section:
+		 .addVariable("naprezenie") //
+		 .addVariable("nacisk") //
+		 .addSensor(SensorFactory.sensorMap.get(SensorType.ENCODER).get(1)) // sensor0= encoder1
+		 .addSensor(SensorFactory.sensorMap.get(SensorType.TENSOMETER).get(0)) // sensor1 = tenso0
+		
+		 );
+		 
+		 //@formatter:on
 	}
 }

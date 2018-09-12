@@ -1,4 +1,4 @@
-package main.java.operations.initializator;
+package  operations.initializator;
 
 import java.io.File;
 import java.net.URI;
@@ -10,17 +10,17 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import main.java.application.App;
-import main.java.operations.arduino.Arduino;
-import main.java.operations.sensors.Encoder;
-import main.java.operations.sensors.Sensor;
-import main.java.operations.sensors.SensorFactory;
-import main.java.operations.sensors.Tensometer;
-import main.java.operations.sensors.TimeStamp;
-import main.java.operations.sensors.SensorFactory.SensorType;
-import main.java.operations.sensors.combination.CombinationData;
-import main.java.operations.sensors.combination.SensorCombination;
-import main.java.operations.sensors.combination.SensorCombinationFactory;
+import  application.App;
+import  operations.arduino.Arduino;
+import  operations.sensors.Encoder;
+import  operations.sensors.Sensor;
+import  operations.sensors.SensorFactory;
+import  operations.sensors.Tensometer;
+import  operations.sensors.TimeStamp;
+import  operations.sensors.SensorFactory.SensorType;
+import  operations.sensors.combination.CombinationData;
+import  operations.sensors.combination.SensorCombination;
+import  operations.sensors.combination.SensorCombinationFactory;
 
 /**
  * Class that saves user settings to XML file and retrieves them to objects.<br>

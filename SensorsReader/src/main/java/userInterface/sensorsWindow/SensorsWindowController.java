@@ -1,4 +1,4 @@
-package main.java.userInterface.sensorsWindow;
+package  userInterface.sensorsWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,10 +13,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import main.java.operations.sensors.Sensor;
-import main.java.operations.sensors.SensorFactory;
-import main.java.operations.sensors.SensorFactory.SensorType;
-import main.java.userInterface.keyboard.Keyboard;
+import  operations.sensors.Sensor;
+import  operations.sensors.SensorFactory;
+import  operations.sensors.SensorFactory.SensorType;
+import  userInterface.keyboard.Keyboard;
 
 public class SensorsWindowController implements Initializable {
 	@FXML

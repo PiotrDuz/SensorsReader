@@ -1,15 +1,15 @@
-package main.java.operations.initializator;
+package  operations.initializator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.*;
 
-import main.java.operations.arduino.Arduino;
-import main.java.operations.sensors.Encoder;
-import main.java.operations.sensors.Tensometer;
-import main.java.operations.sensors.TimeStamp;
-import main.java.operations.sensors.combination.CombinationData;
+import  operations.arduino.Arduino;
+import  operations.sensors.Encoder;
+import  operations.sensors.Tensometer;
+import  operations.sensors.TimeStamp;
+import  operations.sensors.combination.CombinationData;
 
 /**
  * Helper class in creation of XML. <br>
