@@ -1,4 +1,4 @@
-package  userInterface.main;
+package userInterface.main;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -10,8 +10,8 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
-import  operations.sensors.Sensorable;
-import  operations.sensors.TimeStamp;
+import operations.sensors.Sensorable;
+import operations.sensors.TimeStamp;
 
 public class ChartCreator {
 
