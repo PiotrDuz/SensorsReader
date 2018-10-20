@@ -1,4 +1,4 @@
-package  operations.initializator;
+package operations.initializator;
 
 import java.io.File;
 import java.net.URI;
@@ -10,17 +10,17 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import  application.App;
-import  operations.arduino.Arduino;
-import  operations.sensors.Encoder;
-import  operations.sensors.Sensor;
-import  operations.sensors.SensorFactory;
-import  operations.sensors.Tensometer;
-import  operations.sensors.TimeStamp;
-import  operations.sensors.SensorFactory.SensorType;
-import  operations.sensors.combination.CombinationData;
-import  operations.sensors.combination.SensorCombination;
-import  operations.sensors.combination.SensorCombinationFactory;
+import application.App;
+import operations.arduino.Arduino;
+import operations.sensors.Encoder;
+import operations.sensors.Sensor;
+import operations.sensors.SensorFactory;
+import operations.sensors.Tensometer;
+import operations.sensors.TimeStamp;
+import operations.sensors.SensorFactory.SensorType;
+import operations.sensors.combination.CombinationData;
+import operations.sensors.combination.SensorCombination;
+import operations.sensors.combination.SensorCombinationFactory;
 
 /**
  * Class that saves user settings to XML file and retrieves them to objects.<br>
@@ -74,8 +74,8 @@ public class Xml {
 				Tensometer ten = (Tensometer) object;
 				insertToMap(ten, ten.getType());
 			} else if (object instanceof Arduino) {
-				Arduino ard = (Arduino) object;
-				Arduino.setInstance(ard);
+				// Arduino ard = (Arduino) object;
+				// Arduino.setInstance(ard);
 			} else if (object instanceof CombinationData) {
 				CombinationData combData = (CombinationData) object;
 				SensorCombinationFactory.addToDataList(combData);

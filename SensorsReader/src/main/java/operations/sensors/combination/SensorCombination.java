@@ -1,4 +1,4 @@
-package  operations.sensors.combination;
+package operations.sensors.combination;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.LinkedHashMap;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-import  operations.sensors.Measurable;
-import  operations.sensors.Sensor;
-import  operations.sensors.Sensorable;
+import operations.sensors.Measurable;
+import operations.sensors.Sensor;
+import operations.sensors.Sensorable;
 
 /**
  * Class for defining non-linear transformation from raw measurement to final.
@@ -180,6 +180,14 @@ public class SensorCombination implements Measurable, Sensorable {
 	 */
 	public Double getZeroValueScaled() {
 		return zeroValue;
+	}
+
+	public Measurable getXAxis() {
+		return null;
+	}
+
+	public Sensorable getYAxis() {
+		return null;
 	}
 
 	/*

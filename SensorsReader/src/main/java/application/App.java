@@ -40,7 +40,7 @@ public class App {
 		thread.start();
 
 		// set system date
-		setSystemDate();
+		// setSystemDate();
 
 		// launch main aaplication
 		Application.launch(MainWindow.class, args);

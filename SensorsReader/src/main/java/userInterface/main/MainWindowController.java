@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -57,6 +58,8 @@ public class MainWindowController implements Initializable {
 	// ROOT
 	@FXML
 	AnchorPane root;
+	@FXML
+	GridPane gridPaneMaster;
 	// ComboBox
 	@FXML
 	ComboBox<Sensorable> comboChartTop;
@@ -65,12 +68,8 @@ public class MainWindowController implements Initializable {
 	// Chart
 	ChartCanvas chartTop;
 
-	ChartCanvas chartBottom;
-
 	@FXML
 	GridPane gridChartTop;
-	@FXML
-	GridPane gridChartBottom;
 	// Time display
 	@FXML
 	Text textTimeValue;
@@ -114,6 +113,8 @@ public class MainWindowController implements Initializable {
 	MenuItem menuActionCleanAll;
 	@FXML
 	MenuItem menuSystemDate;
+	@FXML
+	CheckMenuItem menuChartShowPane;
 
 	// Sensors real-time info
 	@FXML
@@ -131,20 +132,20 @@ public class MainWindowController implements Initializable {
 		root.styleProperty().bind(Bindings.format("-fx-font-size: %.2fpt;", fontSize));
 		// set chart properties
 		chartTop = ChartCreator.getChart(gridChartTop);
-		chartBottom = ChartCreator.getChart(gridChartBottom);
 		// initialize chart data arrays database
-		chartData = ChartData.getInstance(chartTop, chartBottom);
+		chartData = ChartData.getInstance(chartTop, menuChartShowPane);
 		// connect timeValue with PaneFactory holding data
 		SensorPaneFactory.setTimeTextValue(textTimeValue);
+		setGridColumnSize(gridPaneMaster, 0, 2);
 
 		initializeElements();
 
 		// disable stop button
-		buttonStop.setDisable(true);
+		buttonStop.disableProperty().bind(menuDisable);
+		buttonStart.disableProperty().bind(menuDisable.not());
 		// menu items binding
 		menuSettings.disableProperty().bind(menuDisable);
 		menuPendrive.disableProperty().bind(menuDisable);
-		menuAction.disableProperty().bind(menuDisable.not());
 	}
 
 	/**
@@ -158,7 +159,6 @@ public class MainWindowController implements Initializable {
 		// Set comboBox items list
 		ArrayList<Sensorable> dataList = new ArrayList<>(chartData.dataMap.keySet());
 		comboChartTop.setItems(FXCollections.observableList(dataList));
-		comboChartBottom.setItems(FXCollections.observableList(dataList));
 
 		// reset time units and value
 		textTimeValue.setText(".");
@@ -186,14 +186,6 @@ public class MainWindowController implements Initializable {
 			ChartCreator.changeSeries(chartTop, measuredData, chartData.dataMap.get(measuredData));
 			ChartCreator.actualizeChart(chartTop);
 
-		} else if (event.getSource().equals(comboChartBottom)) {
-			Sensorable measuredData = comboChartBottom.getValue();
-			if (measuredData == comboChartTop.getValue() || measuredData == null) {
-				return;
-			}
-
-			ChartCreator.changeSeries(chartBottom, measuredData, chartData.dataMap.get(measuredData));
-			ChartCreator.actualizeChart(chartBottom);
 		}
 	}
 
@@ -210,10 +202,6 @@ public class MainWindowController implements Initializable {
 
 			menuDisable.set(true);
 
-			buttonStart.setDisable(true);
-			// enable STOP button
-			buttonStop.setDisable(false);
-
 			readingsLogger = new ReadingsLogger(saveToFile, fileName);
 			Thread thread = new Thread(readingsLogger, "ReadingsLogger");
 			thread.start();
@@ -221,9 +209,6 @@ public class MainWindowController implements Initializable {
 		} else if (event.getSource().equals(buttonStop)) {
 			menuDisable.set(false);
 
-			buttonStart.setDisable(false);
-			// disable STOP button
-			buttonStop.setDisable(true);
 			readingsLogger.stop();
 		}
 	}
@@ -297,7 +282,19 @@ public class MainWindowController implements Initializable {
 		} else if (menuItem == menuSystemDate) {
 			DateWindow dateWindow = new DateWindow((Node) menuBar);
 			dateWindow.openWindow();
+		} else if (menuItem == menuChartShowPane) {
+			if (menuChartShowPane.isSelected()) {
+				setGridColumnSize(gridPaneMaster, 0, 200);
+			} else {
+				setGridColumnSize(gridPaneMaster, 0, 2);
+			}
 		}
+	}
+
+	private void setGridColumnSize(GridPane grid, int column, int size) {
+		grid.getColumnConstraints().get(column).setMaxWidth(size);
+		grid.getColumnConstraints().get(column).setPrefWidth(size);
+		grid.getColumnConstraints().get(column).setMinWidth(size);
 	}
 
 	/**

@@ -1,8 +1,8 @@
-package  operations.sensors;
+package operations.sensors;
 
 import javax.xml.bind.annotation.*;
 
-import  operations.sensors.SensorFactory.SensorType;
+import operations.sensors.SensorFactory.SensorType;
 
 /**
  * Class holding all settings for sensor.<br>
@@ -13,7 +13,7 @@ import  operations.sensors.SensorFactory.SensorType;
  */
 @XmlSeeAlso({ Encoder.class, Tensometer.class })
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Sensor implements Measurable, Sensorable {
+public class Sensor implements Sensorable {
 	protected double scale = 1;
 	protected Double zeroValue = 0.0;
 
@@ -130,6 +130,10 @@ public class Sensor implements Measurable, Sensorable {
 
 	public void isChartedSet(boolean flag) {
 		this.isCharted = flag;
+	}
+
+	public Measurable getXAxis() {
+		return TimeStamp.getInstance();
 	}
 
 	/**
