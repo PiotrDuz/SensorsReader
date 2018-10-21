@@ -8,7 +8,7 @@ package operations.arduino;
  *
  */
 public enum Command {
-	SEND_SENSORS_QUANTITY(2), START_MEASURING(0), STOP_MEASURING(1), GET_DATE(3), SET_DATE(4);
+	SEND_SENSORS_QUANTITY(2), START_MEASURING(32), STOP_MEASURING(33), GET_DATE(3), SET_DATE(4);
 
 	private int number;
 
