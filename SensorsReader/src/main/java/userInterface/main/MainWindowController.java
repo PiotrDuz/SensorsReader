@@ -141,8 +141,8 @@ public class MainWindowController implements Initializable {
 		initializeElements();
 
 		// disable stop button
-		buttonStop.disableProperty().bind(menuDisable);
-		buttonStart.disableProperty().bind(menuDisable.not());
+		buttonStop.disableProperty().bind(menuDisable.not());
+		buttonStart.disableProperty().bind(menuDisable);
 		// menu items binding
 		menuSettings.disableProperty().bind(menuDisable);
 		menuPendrive.disableProperty().bind(menuDisable);
@@ -158,6 +158,7 @@ public class MainWindowController implements Initializable {
 
 		// Set comboBox items list
 		ArrayList<Sensorable> dataList = new ArrayList<>(chartData.dataMap.keySet());
+		System.out.println(dataList.size());
 		comboChartTop.setItems(FXCollections.observableList(dataList));
 
 		// reset time units and value

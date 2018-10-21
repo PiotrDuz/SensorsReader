@@ -64,6 +64,7 @@ public class SensorCombinationFactory {
 		//@formatter:off
 		//!!-!! initialize 1 object
 		
+		/*
 		 combinationMap.put(size(), new SensorCombination(size()) {
 		
 		 @Override
@@ -115,6 +116,7 @@ public class SensorCombinationFactory {
 		 .addSensor(SensorFactory.sensorMap.get(SensorType.TENSOMETER).get(0)) // sensor1 = tenso0
 		
 		 );
+		 */
 		 
 		 //@formatter:on
 	}

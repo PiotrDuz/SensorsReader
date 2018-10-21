@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ObjectsList>
-    <Tensometer>
-        <scale>1000.0</scale>
-        <zeroValue>0.0</zeroValue>
-        <name>TEN1</name>
-        <unit>N</unit>
-        <isCharted>true</isCharted>
-        <iD>0</iD>
-        <type>Tensometer</type>
-    </Tensometer>
     <Encoder>
         <scale>1.0</scale>
         <zeroValue>0.0</zeroValue>
@@ -30,36 +21,6 @@
     <Arduino>
         <deviceId>ch341</deviceId>
     </Arduino>
-    <CombinationData>
-        <name>COMB1</name>
-        <unit>F</unit>
-        <iD>0</iD>
-        <zeroValue>0.0</zeroValue>
-        <isCharted>true</isCharted>
-        <variableList>
-            <name>var2</name>
-            <value>1.0</value>
-        </variableList>
-        <variableList>
-            <name>var1</name>
-            <value>1.0</value>
-        </variableList>
-    </CombinationData>
-    <CombinationData>
-        <name>C2</name>
-        <unit>G</unit>
-        <iD>1</iD>
-        <zeroValue>3.0</zeroValue>
-        <isCharted>true</isCharted>
-        <variableList>
-            <name>naprezenie</name>
-            <value>67.0</value>
-        </variableList>
-        <variableList>
-            <name>nacisk</name>
-            <value>90.0</value>
-        </variableList>
-    </CombinationData>
     <TimeStamp>
         <name>time</name>
         <unit>s</unit>
