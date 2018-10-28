@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ResourceBundle;
 
+import application.ProgramException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,26 +38,26 @@ public class DateWindowController implements Initializable {
 	}
 
 	@FXML
-	public void clickButton(ActionEvent event) {
+	public void clickButton(ActionEvent event) throws ProgramException {
 		Button button = (Button) event.getSource();
 		if (button == buttonAccept) {
 			if (dateTime == null) {
 				return;
 			}
-			Arduino serial = Arduino.getInstance();
-			serial.open();
 
-			serial.delay(1000);
-			serial.write(Command.SET_DATE.get(), 1);
+			try (Arduino serial = Arduino.getInstance()) {
+				serial.delay(1000);
+				serial.write(Command.SET_DATE.get(), 1);
 
-			serial.write(dateTime.getYear(), 4);
-			serial.write(dateTime.getMonthValue(), 4);
-			serial.write(dateTime.getDayOfMonth(), 4);
-			serial.write(dateTime.getHour(), 4);
-			serial.write(dateTime.getMinute(), 4);
-			serial.write(dateTime.getSecond(), 4);
+				serial.write(dateTime.getYear(), 4);
+				serial.write(dateTime.getMonthValue(), 4);
+				serial.write(dateTime.getDayOfMonth(), 4);
+				serial.write(dateTime.getHour(), 4);
+				serial.write(dateTime.getMinute(), 4);
+				serial.write(dateTime.getSecond(), 4);
 
-			serial.close();
+				serial.close();
+			}
 
 			Stage stage = (Stage) button.getScene().getWindow();
 			stage.close();

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import operations.sensors.Measurable;
 import operations.sensors.Sensor;
 import operations.sensors.Sensorable;

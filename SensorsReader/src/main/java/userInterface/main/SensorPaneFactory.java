@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import  operations.sensors.Sensorable;
 import  operations.sensors.TimeStamp;

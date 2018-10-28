@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar fx:id="menuBar" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -72,12 +72,13 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Wykres">
               <items>
-                  <CustomMenuItem mnemonicParsing="false" text="Unspecified Action">
+                  <CustomMenuItem hideOnClick="false" mnemonicParsing="false" text="Wybor">
                      <content>
                         <ComboBox fx:id="comboChartTop" onAction="#comboSelection" prefWidth="150.0" />
                      </content>
                   </CustomMenuItem>
                   <CheckMenuItem fx:id="menuChartShowPane" mnemonicParsing="false" onAction="#clickMenuItem" text="Pokaz zakladke" />
+                  <Menu fx:id="menuChartItems" mnemonicParsing="false" text="Unspecified Menu" />
               </items>
             </Menu>
         </menus>

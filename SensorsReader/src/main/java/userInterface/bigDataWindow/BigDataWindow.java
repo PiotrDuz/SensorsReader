@@ -17,8 +17,7 @@ public class BigDataWindow {
 	}
 
 	public void openWindow() {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/BigDataWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/BigDataWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {

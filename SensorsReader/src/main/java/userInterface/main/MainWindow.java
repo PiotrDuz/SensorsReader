@@ -27,8 +27,7 @@ public class MainWindow extends Application {
 	public void start(Stage primaryStage) {
 		// run main window
 
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/MainWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/MainWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {

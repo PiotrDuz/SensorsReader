@@ -15,9 +15,9 @@ import operations.arduino.Arduino;
 import operations.sensors.Encoder;
 import operations.sensors.Sensor;
 import operations.sensors.SensorFactory;
+import operations.sensors.SensorFactory.SensorType;
 import operations.sensors.Tensometer;
 import operations.sensors.TimeStamp;
-import operations.sensors.SensorFactory.SensorType;
 import operations.sensors.combination.CombinationData;
 import operations.sensors.combination.SensorCombination;
 import operations.sensors.combination.SensorCombinationFactory;
@@ -74,8 +74,8 @@ public class Xml {
 				Tensometer ten = (Tensometer) object;
 				insertToMap(ten, ten.getType());
 			} else if (object instanceof Arduino) {
-				// Arduino ard = (Arduino) object;
-				// Arduino.setInstance(ard);
+				Arduino ard = (Arduino) object;
+				Arduino.setInstance(ard);
 			} else if (object instanceof CombinationData) {
 				CombinationData combData = (CombinationData) object;
 				SensorCombinationFactory.addToDataList(combData);
@@ -88,10 +88,8 @@ public class Xml {
 	/**
 	 * Inserts Sensor object to Sensor's map
 	 * 
-	 * @param sensor
-	 *            Object to insert
-	 * @param type
-	 *            Type
+	 * @param sensor Object to insert
+	 * @param type   Type
 	 */
 	private static void insertToMap(Sensor sensor, SensorType type) {
 
@@ -145,10 +143,8 @@ public class Xml {
 	/**
 	 * Sends objects parameters to XML file
 	 * 
-	 * @param jc
-	 *            JAXBContext object, specifying which Classes will be used
-	 * @param object
-	 *            Object which parameters to save
+	 * @param jc     JAXBContext object, specifying which Classes will be used
+	 * @param object Object which parameters to save
 	 * @throws JAXBException
 	 */
 	private static void marshal(JAXBContext jc, Object object) throws JAXBException {

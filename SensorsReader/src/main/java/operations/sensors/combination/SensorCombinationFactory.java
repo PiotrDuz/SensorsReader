@@ -1,12 +1,7 @@
 package operations.sensors.combination;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
-
-import operations.sensors.Measurable;
-import operations.sensors.SensorFactory;
-import operations.sensors.SensorFactory.SensorType;
 
 /**
  * Class for holding {@link SensorCombination} objects, and managing them.

@@ -3,16 +3,15 @@ package userInterface.main;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import org.jfree.chart.fx.ChartCanvas;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -115,6 +114,8 @@ public class MainWindowController implements Initializable {
 	MenuItem menuSystemDate;
 	@FXML
 	CheckMenuItem menuChartShowPane;
+	@FXML
+	Menu menuChartItems;
 
 	// Sensors real-time info
 	@FXML
@@ -133,7 +134,7 @@ public class MainWindowController implements Initializable {
 		// set chart properties
 		chartTop = ChartCreator.getChart(gridChartTop);
 		// initialize chart data arrays database
-		chartData = ChartData.getInstance(chartTop, menuChartShowPane);
+		chartData = ChartData.getInstance(menuChartShowPane);
 		// connect timeValue with PaneFactory holding data
 		SensorPaneFactory.setTimeTextValue(textTimeValue);
 		setGridColumnSize(gridPaneMaster, 0, 2);
@@ -153,13 +154,18 @@ public class MainWindowController implements Initializable {
 	 * Method should be used whenever measurement's objects set changes.
 	 */
 	public void initializeElements() {
+
 		// actualize chartData map
 		chartData.actualizeSeries();
 
-		// Set comboBox items list
-		ArrayList<Sensorable> dataList = new ArrayList<>(chartData.dataMap.keySet());
-		System.out.println(dataList.size());
-		comboChartTop.setItems(FXCollections.observableList(dataList));
+		// Set menu items list from which chart data can be chosen
+		menuChartItems.getItems().clear();
+		for (Sensorable sens : chartData.dataMap.keySet()) {
+			CheckMenuItem menuItem = new CheckMenuItem(sens.getName());
+			menuItem.setUserData(sens);
+			menuItem.setOnAction(this::selectChartItem);
+			menuChartItems.getItems().add(menuItem);
+		}
 
 		// reset time units and value
 		textTimeValue.setText(".");
@@ -170,6 +176,26 @@ public class MainWindowController implements Initializable {
 		for (Sensorable sensor : chartData.dataMap.keySet()) {
 			vboxSensors.getChildren().add(SensorPaneFactory.createPane(sensor));
 		}
+
+	}
+
+	public void selectChartItem(ActionEvent event) {
+
+		for (MenuItem menuItem : menuChartItems.getItems()) {
+			CheckMenuItem checkItem = (CheckMenuItem) menuItem;
+			checkItem.setSelected(false);
+		}
+
+		CheckMenuItem menuItem = (CheckMenuItem) event.getSource();
+		menuItem.setSelected(true);
+
+		if (menuItem.getUserData() == null) {
+			return;
+		}
+		Sensorable chartItem = (Sensorable) menuItem.getUserData();
+
+		ChartCreator.changeSeries(chartTop, chartItem, chartData.dataMap.get(chartItem));
+		ChartCreator.actualizeChart(chartTop);
 	}
 
 	/**

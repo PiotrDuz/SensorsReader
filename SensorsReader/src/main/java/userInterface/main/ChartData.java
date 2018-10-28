@@ -1,21 +1,19 @@
 package userInterface.main;
 
 import java.util.LinkedHashMap;
-
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.jfree.chart.fx.ChartCanvas;
 import org.jfree.data.xy.XYSeries;
 
 import javafx.application.Platform;
 import javafx.scene.control.CheckMenuItem;
 import operations.sensors.Measurable;
 import operations.sensors.SensorFactory;
+import operations.sensors.SensorFactory.SensorType;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
-import operations.sensors.SensorFactory.SensorType;
+import operations.sensors.combination.SensorCombination;
 import operations.sensors.combination.SensorCombinationFactory;
-import userInterface.bigDataWindow.BigDataWindow;
 import userInterface.main.SensorPaneFactory.PaneValues;
 
 /**
@@ -27,41 +25,34 @@ import userInterface.main.SensorPaneFactory.PaneValues;
  *
  */
 public class ChartData {
+	static private ChartData chartData;
+
 	private int dataPointsNumber = 800;
 	private int speedPointsNumber = 5;
 
-	static private ChartData chartData;
 	private CheckMenuItem paneVisibility;
-
-	private BigDataWindow dataWindow = null;
 	// is chart refreshing thread still working?
 	private volatile Boolean isBusy = false;
 
-	ChartCanvas chartTop;
 	/**
 	 * Holds XYChart.Series data series corresponding to every {@link Sensor},
 	 * {@link SensorCombination} and {@link TimeStamp}
 	 */
 	public final ConcurrentHashMap<Sensorable, XYSeries> dataMap = new ConcurrentHashMap<>();
 
-	public static ChartData getInstance(ChartCanvas combo1, CheckMenuItem paneVisibility) {
+	public static ChartData getInstance(CheckMenuItem paneVisibility) {
 		if (chartData == null) {
-			chartData = new ChartData(combo1, paneVisibility);
+			chartData = new ChartData(paneVisibility);
 		}
 		return chartData;
 	}
 
 	public static ChartData getInstance() {
-		return ChartData.getInstance(null, null);
+		return ChartData.getInstance(null);
 	}
 
-	private ChartData(ChartCanvas combo1, CheckMenuItem paneVisibility) {
-		this.chartTop = combo1;
+	private ChartData(CheckMenuItem paneVisibility) {
 		this.paneVisibility = paneVisibility;
-	}
-
-	public void showBigWindow(Sensorable sensor) {
-		dataWindow = new BigDataWindow(sensor);
 	}
 
 	/**
@@ -70,8 +61,7 @@ public class ChartData {
 	 * Creates new thread, that in unspecified time will update GUI.
 	 * /Platform.runLater/
 	 * 
-	 * @param map
-	 *            LinkedHashMap holding measurements mapped to sensors/combinations.
+	 * @param map LinkedHashMap holding measurements mapped to sensors/combinations.
 	 */
 	public void appendSeries(LinkedHashMap<Measurable, Double> map) {
 		if (isBusy != true) {

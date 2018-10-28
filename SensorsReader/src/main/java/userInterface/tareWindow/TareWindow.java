@@ -1,4 +1,4 @@
-package  userInterface.tareWindow;
+package userInterface.tareWindow;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import  operations.sensors.Sensorable;
+import operations.sensors.Sensorable;
 
 public class TareWindow {
 	private TareWindowController controller;
@@ -21,8 +21,7 @@ public class TareWindow {
 	}
 
 	public void openWindow() {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/TareWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/TareWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {
