@@ -34,7 +34,7 @@ public class BigDataWindow {
 		stage.setAlwaysOnTop(true);
 		stage.initStyle(StageStyle.UNDECORATED);
 		stage.setX(parent.getWidth());
-		stage.setY(-100.0);
+		stage.setY(0);
 		stage.show();
 
 		refresh(sens);
@@ -69,4 +69,5 @@ public class BigDataWindow {
 			return true;
 		}
 	}
+
 }

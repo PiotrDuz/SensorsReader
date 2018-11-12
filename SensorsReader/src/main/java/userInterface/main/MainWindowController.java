@@ -57,7 +57,7 @@ public class MainWindowController implements Initializable {
 	private BigDataWindow dataWindow = new BigDataWindow();
 	private boolean saveToFile = false;
 	private String fileName = null;
-	BooleanProperty menuDisable = new SimpleBooleanProperty(false);
+	BooleanProperty menuDisableProperty = new SimpleBooleanProperty(false);
 	// ROOT
 	@FXML
 	AnchorPane root;
@@ -111,6 +111,8 @@ public class MainWindowController implements Initializable {
 	@FXML
 	MenuItem menuActionCleanAll;
 	@FXML
+	Menu menuSystem;
+	@FXML
 	MenuItem menuSystemDate;
 	@FXML
 	MenuItem menuSystemReboot;
@@ -148,11 +150,12 @@ public class MainWindowController implements Initializable {
 		initializeElements();
 
 		// disable stop button
-		buttonStop.disableProperty().bind(menuDisable.not());
-		buttonStart.disableProperty().bind(menuDisable);
+		buttonStop.disableProperty().bind(menuDisableProperty.not());
+		buttonStart.disableProperty().bind(menuDisableProperty);
 		// menu items binding
-		menuSettings.disableProperty().bind(menuDisable);
-		menuPendrive.disableProperty().bind(menuDisable);
+		menuSettings.disableProperty().bind(menuDisableProperty);
+		menuPendrive.disableProperty().bind(menuDisableProperty);
+		menuSystem.disableProperty().bind(menuDisableProperty);
 	}
 
 	/**
@@ -231,14 +234,14 @@ public class MainWindowController implements Initializable {
 			// clean all data series, for new measurements to come
 			chartData.cleanSeries();
 
-			menuDisable.set(true);
+			menuDisableProperty.set(true);
 
 			readingsLogger = new ReadingsLogger(saveToFile, fileName);
 			Thread thread = new Thread(readingsLogger, "ReadingsLogger");
 			thread.start();
 
 		} else if (event.getSource().equals(buttonStop)) {
-			menuDisable.set(false);
+			menuDisableProperty.set(false);
 
 			readingsLogger.stop();
 		}
@@ -317,12 +320,12 @@ public class MainWindowController implements Initializable {
 		} else if (menuItem == menuSystemReboot) {
 			String text = "Uruchomic ponownie?";
 			if (PromptWindow.getPrompt(menuBar, text)) {
-				PendriveMount.executeCommand("shutdown -r now");
+				PendriveMount.executeCommand("sudo shutdown -r now");
 			}
 		} else if (menuItem == menuSystemShutdown) {
 			String text = "Wylaczyc system?";
 			if (PromptWindow.getPrompt(menuBar, text)) {
-				PendriveMount.executeCommand("shutdown -h now");
+				PendriveMount.executeCommand("sudo shutdown -h now");
 			}
 		} else if (menuItem == menuChartShowPane) {
 			if (menuChartShowPane.isSelected()) {

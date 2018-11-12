@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 public class PromptWindowController implements Initializable {
 	private String text;
@@ -38,9 +39,13 @@ public class PromptWindowController implements Initializable {
 
 		if (button == buttonYes) {
 			flag = true;
+
 		} else if (button == buttonNo) {
 			flag = false;
 		}
+
+		Stage stage = (Stage) button.getScene().getWindow();
+		stage.close();
 	}
 
 }
