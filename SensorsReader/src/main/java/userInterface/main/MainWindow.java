@@ -38,6 +38,7 @@ public class MainWindow extends Application {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setFullScreen(true);
+		primaryStage.setAlwaysOnTop(false);
 		primaryStage.show();
 
 	}
