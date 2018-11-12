@@ -75,7 +75,7 @@ public class Xml {
 				insertToMap(ten, ten.getType());
 			} else if (object instanceof Arduino) {
 				Arduino ard = (Arduino) object;
-				Arduino.setInstance(ard);
+				// Arduino.setInstance(ard);
 			} else if (object instanceof CombinationData) {
 				CombinationData combData = (CombinationData) object;
 				SensorCombinationFactory.addToDataList(combData);
@@ -88,8 +88,10 @@ public class Xml {
 	/**
 	 * Inserts Sensor object to Sensor's map
 	 * 
-	 * @param sensor Object to insert
-	 * @param type   Type
+	 * @param sensor
+	 *            Object to insert
+	 * @param type
+	 *            Type
 	 */
 	private static void insertToMap(Sensor sensor, SensorType type) {
 
@@ -143,8 +145,10 @@ public class Xml {
 	/**
 	 * Sends objects parameters to XML file
 	 * 
-	 * @param jc     JAXBContext object, specifying which Classes will be used
-	 * @param object Object which parameters to save
+	 * @param jc
+	 *            JAXBContext object, specifying which Classes will be used
+	 * @param object
+	 *            Object which parameters to save
 	 * @throws JAXBException
 	 */
 	private static void marshal(JAXBContext jc, Object object) throws JAXBException {

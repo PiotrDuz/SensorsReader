@@ -19,7 +19,7 @@
         <type>Encoder</type>
     </Encoder>
     <Arduino>
-        <deviceId>ch341</deviceId>
+        <deviceId>Serial</deviceId>
     </Arduino>
     <TimeStamp>
         <name>time</name>

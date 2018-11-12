@@ -6,17 +6,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import operations.arduino.Arduino;
 import operations.sensors.Sensorable;
 
 public class BigDataWindow {
 	private BigDataWindowController controller;
-	Stage stage;
+	Stage stage = null;
 
-	public BigDataWindow(Sensorable sensor) {
-		controller = new BigDataWindowController(sensor);
+	public BigDataWindow() {
+		controller = new BigDataWindowController();
 	}
 
-	public void openWindow() {
+	public void openWindow(Sensorable sens, Stage parent) {
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/BigDataWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
@@ -26,14 +28,26 @@ public class BigDataWindow {
 			e.printStackTrace();
 		}
 
-		Stage stage = new Stage();
-		stage.setTitle("combinationWindow");
+		stage = new Stage();
+		stage.setTitle("BigDataWindow");
 		stage.setScene(new Scene(root));
-		stage.showAndWait();
+		stage.setAlwaysOnTop(true);
+		stage.initStyle(StageStyle.UNDECORATED);
+		stage.setX(parent.getWidth());
+		stage.setY(0.0);
+		stage.show();
+
+		refresh(sens);
+
 	}
 
 	public void refresh(Sensorable sensor) {
-		controller.refresh(sensor);
+		if (sensor == null) {
+			return;
+		} else {
+			System.out.println(sensor.getName());
+			controller.refresh(sensor);
+		}
 	}
 
 	public void setText(double labelX, double labelY) {
@@ -46,5 +60,14 @@ public class BigDataWindow {
 
 	public void closeWindow() {
 		stage.close();
+		stage = null;
+	}
+
+	public boolean isOpen() {
+		if (stage == null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

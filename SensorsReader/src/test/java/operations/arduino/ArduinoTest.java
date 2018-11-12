@@ -2,6 +2,8 @@ package operations.arduino;
 
 import org.junit.Test;
 
+import com.fazecast.jSerialComm.SerialPort;
+
 public class ArduinoTest {
 
 	@Test
@@ -22,5 +24,13 @@ public class ArduinoTest {
 		assert val1 == -16777216;
 		assert val2 == 256;
 
+	}
+
+	@Test
+	public void getComDevices() {
+		SerialPort[] ports = SerialPort.getCommPorts();
+		for (SerialPort port : ports) {
+			System.out.println(port.getDescriptivePortName());
+		}
 	}
 }

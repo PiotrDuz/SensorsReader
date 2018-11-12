@@ -28,15 +28,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
 import operations.pendrive.PendriveKeeper;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
 import userInterface.addSensorWindow.AddSensorWindow;
+import userInterface.bigDataWindow.BigDataWindow;
 import userInterface.combinationWindow.CombinationWindow;
 import userInterface.dateSetting.DateWindow;
 import userInterface.keyboard.Keyboard;
+import userInterface.prompt.PromptWindow;
 import userInterface.sensorsWindow.SensorsWindow;
 import userInterface.tareWindow.TareWindow;
 import userInterface.timeWindow.TimeWindow;
@@ -51,6 +54,7 @@ public class MainWindowController implements Initializable {
 	// not FXML
 	private ReadingsLogger readingsLogger;
 	private ChartData chartData;
+	private BigDataWindow dataWindow = new BigDataWindow();
 	private boolean saveToFile = false;
 	private String fileName = null;
 	BooleanProperty menuDisable = new SimpleBooleanProperty(false);
@@ -113,7 +117,13 @@ public class MainWindowController implements Initializable {
 	@FXML
 	MenuItem menuSystemDate;
 	@FXML
+	MenuItem menuSystemReboot;
+	@FXML
+	MenuItem menuSystemShutdown;
+	@FXML
 	CheckMenuItem menuChartShowPane;
+	@FXML
+	CheckMenuItem menuChartShowWindow;
 	@FXML
 	Menu menuChartItems;
 
@@ -129,12 +139,12 @@ public class MainWindowController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// set font
-		DoubleProperty fontSize = new SimpleDoubleProperty(8); // font size in pt
+		DoubleProperty fontSize = new SimpleDoubleProperty(12); // font size in pt
 		root.styleProperty().bind(Bindings.format("-fx-font-size: %.2fpt;", fontSize));
 		// set chart properties
 		chartTop = ChartCreator.getChart(gridChartTop);
 		// initialize chart data arrays database
-		chartData = ChartData.getInstance(menuChartShowPane);
+		chartData = ChartData.getInstance(menuChartShowPane, dataWindow);
 		// connect timeValue with PaneFactory holding data
 		SensorPaneFactory.setTimeTextValue(textTimeValue);
 		setGridColumnSize(gridPaneMaster, 0, 2);
@@ -179,6 +189,18 @@ public class MainWindowController implements Initializable {
 
 	}
 
+	public Sensorable getSelectedChartSens() {
+		Sensorable item = null;
+		for (MenuItem menuItem : menuChartItems.getItems()) {
+			CheckMenuItem checkItem = (CheckMenuItem) menuItem;
+			if (checkItem.isSelected()) {
+				item = (Sensorable) checkItem.getUserData();
+			}
+		}
+
+		return item;
+	}
+
 	public void selectChartItem(ActionEvent event) {
 
 		for (MenuItem menuItem : menuChartItems.getItems()) {
@@ -196,6 +218,10 @@ public class MainWindowController implements Initializable {
 
 		ChartCreator.changeSeries(chartTop, chartItem, chartData.dataMap.get(chartItem));
 		ChartCreator.actualizeChart(chartTop);
+
+		if (dataWindow.isOpen()) {
+			dataWindow.refresh(chartItem);
+		}
 	}
 
 	/**
@@ -294,12 +320,13 @@ public class MainWindowController implements Initializable {
 			addSensorWindow.openWindow();
 			initializeElements();
 		} else if (menuItem == menuActionTare) {
-			TareWindow tareWindow = new TareWindow((Node) menuBar, comboChartTop.getValue());
+
+			TareWindow tareWindow = new TareWindow((Node) menuBar, getSelectedChartSens());
 			tareWindow.openWindow();
 		} else if (menuItem == menuActionClean) {
-			if (comboChartTop.getValue() != null) {
-				comboChartTop.getValue().setMax(null);
-				comboChartTop.getValue().setMin(null);
+			if (getSelectedChartSens() != null) {
+				getSelectedChartSens().setMax(null);
+				getSelectedChartSens().setMin(null);
 			}
 		} else if (menuItem == menuActionCleanAll) {
 			for (Sensorable component : ChartData.getInstance().dataMap.keySet()) {
@@ -309,11 +336,20 @@ public class MainWindowController implements Initializable {
 		} else if (menuItem == menuSystemDate) {
 			DateWindow dateWindow = new DateWindow((Node) menuBar);
 			dateWindow.openWindow();
+		} else if (menuItem == menuSystemReboot) {
+			String text = "Uruchomic ponownie?";
+			if(PromptWindow.getPrompt(menuBar, ""))
 		} else if (menuItem == menuChartShowPane) {
 			if (menuChartShowPane.isSelected()) {
 				setGridColumnSize(gridPaneMaster, 0, 200);
 			} else {
 				setGridColumnSize(gridPaneMaster, 0, 2);
+			}
+		} else if (menuItem == menuChartShowWindow) {
+			if (menuChartShowWindow.isSelected()) {
+				dataWindow.openWindow(getSelectedChartSens(), (Stage) menuBar.getScene().getWindow());
+			} else {
+				dataWindow.closeWindow();
 			}
 		}
 	}

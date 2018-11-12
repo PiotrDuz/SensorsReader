@@ -1,4 +1,4 @@
-package  userInterface.sensorsWindow;
+package userInterface.sensorsWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,10 +13,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import  operations.sensors.Sensor;
-import  operations.sensors.SensorFactory;
-import  operations.sensors.SensorFactory.SensorType;
-import  userInterface.keyboard.Keyboard;
+import operations.sensors.Sensor;
+import operations.sensors.SensorFactory;
+import operations.sensors.SensorFactory.SensorType;
+import userInterface.keyboard.Keyboard;
 
 public class SensorsWindowController implements Initializable {
 	@FXML
@@ -41,6 +41,11 @@ public class SensorsWindowController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		for (SensorType sensorType : SensorFactory.typePrecedence) {
+			// check if there are some sensors of given type
+			if (SensorFactory.sensorMap.get(sensorType) == null) {
+				continue;
+			}
+
 			for (int i = 0; i < SensorFactory.sensorMap.get(sensorType).size(); i++) {
 				comboBox.getItems().add(SensorFactory.sensorMap.get(sensorType).get(i));
 			}

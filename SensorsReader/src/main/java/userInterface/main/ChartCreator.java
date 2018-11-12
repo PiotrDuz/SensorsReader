@@ -1,8 +1,11 @@
 package userInterface.main;
 
+import java.awt.Font;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.fx.ChartCanvas;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
@@ -18,6 +21,15 @@ public class ChartCreator {
 	public static ChartCanvas getChart(GridPane grid) {
 		XYSeriesCollection collection = new XYSeriesCollection();
 		JFreeChart chart = ChartFactory.createXYLineChart("Chart", "X", "Y", collection);
+
+		// chart settings
+		XYPlot plot = chart.getXYPlot();
+		Font font = new Font("Dialog", Font.PLAIN, 14);
+		ValueAxis domainAx = plot.getDomainAxis();
+		domainAx.setTickLabelFont(font);
+		ValueAxis rangeAx = plot.getRangeAxis();
+		rangeAx.setTickLabelFont(font);
+		((NumberAxis) rangeAx).setAutoRangeIncludesZero(false);
 
 		// fire chart repaint on demand
 		chart.setNotify(false);
@@ -53,19 +65,27 @@ public class ChartCreator {
 		XYPlot plot = chart.getXYPlot();
 		XYSeriesCollection collection = (XYSeriesCollection) plot.getDataset();
 		if (collection.getSeriesCount() != 0) {
-			collection.removeSeries(0);
+			collection.removeAllSeries();
 		}
 		collection.addSeries(series);
 
-		plot.getDomainAxis().setLabel(null); // ("Czas: " + TimeStamp.getInstance().getUnit());
-		NumberAxis rangeAx = (NumberAxis) plot.getRangeAxis();
-		rangeAx.setLabel(null); // dataObject.getUnit());
-		rangeAx.setAutoRangeIncludesZero(false);
+		ValueAxis domainAx = plot.getDomainAxis();
+		domainAx.setLabel(dataObject.getXAxis().getUnit());
+		ValueAxis rangeAx = plot.getRangeAxis();
+		rangeAx.setLabel(dataObject.getUnit());
+
 	}
 
+	/**
+	 * Has to be called by GUI thread!
+	 * 
+	 * @param chart
+	 */
 	public static void actualizeChart(ChartCanvas chart) {
-		chart.getChart().setNotify(true);
 		chart.getChart().setNotify(false);
+		chart.getChart().setNotify(true);
+
+		chart.requestFocus();
 	}
 
 	private static void decorCanvas(ChartCanvas canvas) {

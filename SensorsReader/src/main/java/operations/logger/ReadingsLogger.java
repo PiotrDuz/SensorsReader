@@ -123,7 +123,7 @@ public class ReadingsLogger implements Runnable {
 			}
 
 			serial.write(Command.STOP_MEASURING.get(), 1);
-			serial.delay(1000);
+			Arduino.delay(1000);
 		} catch (ProgramException e) {
 			logger.error(e);
 		}

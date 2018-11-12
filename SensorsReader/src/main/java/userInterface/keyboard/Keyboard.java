@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Keyboard {
 	private KeyboardController keyboardController;
@@ -29,6 +30,7 @@ public class Keyboard {
 			newWindow.initModality(Modality.WINDOW_MODAL);
 			newWindow.setTitle("Keyboard");
 			newWindow.setScene(scene1);
+			newWindow.initStyle(StageStyle.UNDECORATED);
 			newWindow.showAndWait();
 		} catch (Exception e) {
 			e.printStackTrace();

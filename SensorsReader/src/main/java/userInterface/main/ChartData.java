@@ -14,6 +14,7 @@ import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
 import operations.sensors.combination.SensorCombination;
 import operations.sensors.combination.SensorCombinationFactory;
+import userInterface.bigDataWindow.BigDataWindow;
 import userInterface.main.SensorPaneFactory.PaneValues;
 
 /**
@@ -31,6 +32,7 @@ public class ChartData {
 	private int speedPointsNumber = 5;
 
 	private CheckMenuItem paneVisibility;
+	private BigDataWindow dataWindow;
 	// is chart refreshing thread still working?
 	private volatile Boolean isBusy = false;
 
@@ -40,19 +42,28 @@ public class ChartData {
 	 */
 	public final ConcurrentHashMap<Sensorable, XYSeries> dataMap = new ConcurrentHashMap<>();
 
-	public static ChartData getInstance(CheckMenuItem paneVisibility) {
+	/**
+	 * Method to initialize singleton with references to data windows that wil be
+	 * actualized
+	 * 
+	 * @param paneVisibility
+	 * @param dataWindow
+	 * @return
+	 */
+	public static ChartData getInstance(CheckMenuItem paneVisibility, BigDataWindow dataWindow) {
 		if (chartData == null) {
-			chartData = new ChartData(paneVisibility);
+			chartData = new ChartData(paneVisibility, dataWindow);
 		}
 		return chartData;
 	}
 
 	public static ChartData getInstance() {
-		return ChartData.getInstance(null);
+		return ChartData.getInstance(null, null);
 	}
 
-	private ChartData(CheckMenuItem paneVisibility) {
+	private ChartData(CheckMenuItem paneVisibility, BigDataWindow dataWindow) {
 		this.paneVisibility = paneVisibility;
+		this.dataWindow = dataWindow;
 	}
 
 	/**
@@ -61,7 +72,8 @@ public class ChartData {
 	 * Creates new thread, that in unspecified time will update GUI.
 	 * /Platform.runLater/
 	 * 
-	 * @param map LinkedHashMap holding measurements mapped to sensors/combinations.
+	 * @param map
+	 *            LinkedHashMap holding measurements mapped to sensors/combinations.
 	 */
 	public void appendSeries(LinkedHashMap<Measurable, Double> map) {
 		if (isBusy != true) {
@@ -74,6 +86,10 @@ public class ChartData {
 						// add new point to chart data array
 						XYSeries dataList = dataMap.get(measurement);
 						dataList.add(map.get(measurement.getXAxis()), map.get(measurement));
+
+						if (dataWindow.isOpen()) {
+							dataWindow.setText(map.get(measurement.getXAxis()), map.get(measurement));
+						}
 
 						if (paneVisibility.isSelected()) {
 							// actualize time

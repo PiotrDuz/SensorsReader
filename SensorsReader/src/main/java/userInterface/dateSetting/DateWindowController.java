@@ -46,7 +46,7 @@ public class DateWindowController implements Initializable {
 			}
 
 			try (Arduino serial = Arduino.getInstance()) {
-				serial.delay(1000);
+				Arduino.delay(1000);
 				serial.write(Command.SET_DATE.get(), 1);
 
 				serial.write(dateTime.getYear(), 4);

@@ -62,7 +62,7 @@ public class Arduino implements AutoCloseable {
 	 * Sets timeout (read_blocking), speed (115200 baud) 8bit, 1 stop, noparity
 	 */
 	private void initialize() {
-		port = getComm();
+		port = getComm(DEVICE_ID);
 		port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 1, 1);
 		port.setComPortParameters(115200, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
 	}
@@ -98,8 +98,10 @@ public class Arduino implements AutoCloseable {
 	 * Start point defines from which index start taking 4 bytes. <br>
 	 * Bytes should be oriented MSB first.
 	 *
-	 * @param array Byte array
-	 * @param start Array's index from which to start conversion
+	 * @param array
+	 *            Byte array
+	 * @param start
+	 *            Array's index from which to start conversion
 	 * @return int Number
 	 */
 	public static int byteToInt(byte[] array, int start) {
@@ -156,8 +158,10 @@ public class Arduino implements AutoCloseable {
 	 * <p>
 	 * Number of bytes written can be controlled.
 	 * 
-	 * @param c        int number
-	 * @param quantity number of bytes to write (starting from least significant)
+	 * @param c
+	 *            int number
+	 * @param quantity
+	 *            number of bytes to write (starting from least significant)
 	 */
 	public void write(int c, int quantity) {
 
@@ -174,7 +178,8 @@ public class Arduino implements AutoCloseable {
 	 * <p>
 	 * Method will wait for bytes arrival 1s.
 	 * 
-	 * @param quantity How many bytes to read
+	 * @param quantity
+	 *            How many bytes to read
 	 * @return Bytes array or throws IOException if port doesn't have specified
 	 *         number of bytes
 	 */
@@ -184,6 +189,7 @@ public class Arduino implements AutoCloseable {
 		int i = 0;
 		// wait for whole packet to arrive. Throw exception on timeout
 		while (port.bytesAvailable() < quantity && i < 1001) {
+
 			// wait 2ms
 			Arduino.delay(2);
 
@@ -204,10 +210,10 @@ public class Arduino implements AutoCloseable {
 	 * 
 	 * @return SerialPort object or null if not found
 	 */
-	public SerialPort getComm() {
+	public SerialPort getComm(String devId) {
 		SerialPort[] ports = SerialPort.getCommPorts();
 		for (SerialPort port : ports) {
-			if (port.getDescriptivePortName().contains(DEVICE_ID)) {
+			if (port.getDescriptivePortName().contains(devId)) {
 				return port;
 			}
 		}

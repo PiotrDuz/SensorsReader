@@ -3,12 +3,16 @@ package userInterface.keyboard;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class KeyboardController implements Initializable {
@@ -17,6 +21,8 @@ public class KeyboardController implements Initializable {
 	private String initialText;
 	@FXML
 	private TextField textInput;
+	@FXML
+	private AnchorPane anchorRoot;
 
 	public KeyboardController(String initialText) {
 		this.initialText = initialText;
@@ -24,6 +30,10 @@ public class KeyboardController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		// set font
+		DoubleProperty fontSize = new SimpleDoubleProperty(12); // font size in pt
+		anchorRoot.styleProperty().bind(Bindings.format("-fx-font-size: %.2fpt;", fontSize));
+
 		if (initialText != null) {
 			textInput.setText(initialText);
 			textHolder.append(initialText);

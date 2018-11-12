@@ -1,4 +1,4 @@
-package  operations.sensors;
+package operations.sensors;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,7 +22,7 @@ public class SensorFactory {
 	 * Defines what is the order of types ({@link SensorType}, and which should be
 	 * used.
 	 */
-	public final static SensorType[] typePrecedence = { SensorType.ENCODER, SensorType.TENSOMETER };
+	public final static SensorType[] typePrecedence = { SensorType.ENCODER };
 
 	/**
 	 * Returns array with int values, where each record holds quantity of sensors
