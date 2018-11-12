@@ -33,8 +33,8 @@ public class BigDataWindow {
 		stage.initOwner(parent);
 		stage.setAlwaysOnTop(true);
 		stage.initStyle(StageStyle.UNDECORATED);
-		stage.setX(parent.getWidth());
-		stage.setY(0);
+		stage.setX(0.0); // parent.getWidth()
+		stage.setY(0.0);
 		stage.show();
 
 		refresh(sens);
