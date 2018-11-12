@@ -72,8 +72,7 @@ public class ChartData {
 	 * Creates new thread, that in unspecified time will update GUI.
 	 * /Platform.runLater/
 	 * 
-	 * @param map
-	 *            LinkedHashMap holding measurements mapped to sensors/combinations.
+	 * @param map LinkedHashMap holding measurements mapped to sensors/combinations.
 	 */
 	public void appendSeries(LinkedHashMap<Measurable, Double> map) {
 		if (isBusy != true) {
@@ -87,7 +86,7 @@ public class ChartData {
 						XYSeries dataList = dataMap.get(measurement);
 						dataList.add(map.get(measurement.getXAxis()), map.get(measurement));
 
-						if (dataWindow.isOpen()) {
+						if (dataWindow.isOpen() && dataWindow.getSensor() == measurement) {
 							dataWindow.setText(map.get(measurement.getXAxis()), map.get(measurement));
 						}
 

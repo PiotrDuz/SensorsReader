@@ -18,7 +18,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -64,11 +63,7 @@ public class MainWindowController implements Initializable {
 	AnchorPane root;
 	@FXML
 	GridPane gridPaneMaster;
-	// ComboBox
-	@FXML
-	ComboBox<Sensorable> comboChartTop;
-	@FXML
-	ComboBox<Sensorable> comboChartBottom;
+
 	// Chart
 	ChartCanvas chartTop;
 
@@ -222,24 +217,6 @@ public class MainWindowController implements Initializable {
 
 		if (dataWindow.isOpen()) {
 			dataWindow.refresh(chartItem);
-		}
-	}
-
-	/**
-	 * Changes chart info and data on selection from ComboBox
-	 * 
-	 * @param event
-	 */
-	@FXML
-	public synchronized void comboSelection(ActionEvent event) {
-		if (event.getSource().equals(comboChartTop)) {
-			Sensorable measuredData = comboChartTop.getValue();
-			if (measuredData == comboChartBottom.getValue() || measuredData == null) {
-				return;
-			}
-			ChartCreator.changeSeries(chartTop, measuredData, chartData.dataMap.get(measuredData));
-			ChartCreator.actualizeChart(chartTop);
-
 		}
 	}
 

@@ -57,7 +57,6 @@ public class BigDataWindowController implements Initializable {
 
 	public void refresh(Sensorable sensor) {
 		this.sensor = sensor;
-		System.out.println(labelYUnit);
 		labelYUnit.setText(sensor.getUnit());
 		labelXUnit.setText(sensor.getXAxis().getUnit());
 		labelName.setText(sensor.getName());

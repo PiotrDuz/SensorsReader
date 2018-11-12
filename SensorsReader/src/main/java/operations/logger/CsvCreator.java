@@ -1,5 +1,12 @@
 package operations.logger;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -12,18 +19,10 @@ import operations.pendrive.PendriveMount;
 import operations.sensors.Measurable;
 import operations.sensors.Sensor;
 import operations.sensors.SensorFactory;
-import operations.sensors.TimeStamp;
 import operations.sensors.SensorFactory.SensorType;
+import operations.sensors.TimeStamp;
 import operations.sensors.combination.SensorCombination;
-import operations.sensors.combination.SensorCombinationFactory;
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;;
+import operations.sensors.combination.SensorCombinationFactory;;
 
 /**
  * .CSV file creator class.<br>
@@ -31,7 +30,6 @@ import java.nio.file.Paths;;
  */
 public class CsvCreator {
 	private static final String filePath = PendriveMount.MOUNT_POINT + "/";
-	private String fileName = null;
 	private CSVPrinter csvPrinter;
 
 	/**
@@ -47,7 +45,7 @@ public class CsvCreator {
 		if (fileName == null) {
 			fileName = "Pomiar_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
 		}
-		this.fileName = fileName;
+
 		// create file and CSVPrinter
 		// write header
 		Path totalPath = Paths.get(filePath + fileName + ".csv");
@@ -91,8 +89,7 @@ public class CsvCreator {
 	 * <p>
 	 * Uses {@link LinkedHashMap} so iteration order is preserved.
 	 * 
-	 * @param valuesMap
-	 *            Map of sensor-value pairs
+	 * @param valuesMap Map of sensor-value pairs
 	 * 
 	 */
 	public void saveCsv(LinkedHashMap<Measurable, Double> valuesMap) {
@@ -115,7 +112,6 @@ public class CsvCreator {
 	 * Closes open file for writing/reading.
 	 */
 	public void close() {
-		fileName = null;
 		try {
 			csvPrinter.close();
 		} catch (IOException e) {

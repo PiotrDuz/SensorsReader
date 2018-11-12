@@ -5,9 +5,9 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import operations.arduino.Arduino;
 import operations.sensors.Sensorable;
 
 public class BigDataWindow {
@@ -33,8 +33,9 @@ public class BigDataWindow {
 		stage.setScene(new Scene(root));
 		stage.setAlwaysOnTop(true);
 		stage.initStyle(StageStyle.UNDECORATED);
+		stage.initModality(Modality.NONE);
 		stage.setX(parent.getWidth());
-		stage.setY(0.0);
+		stage.setY(-100.0);
 		stage.show();
 
 		refresh(sens);
@@ -45,7 +46,6 @@ public class BigDataWindow {
 		if (sensor == null) {
 			return;
 		} else {
-			System.out.println(sensor.getName());
 			controller.refresh(sensor);
 		}
 	}
