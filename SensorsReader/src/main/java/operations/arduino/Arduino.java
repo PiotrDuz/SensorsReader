@@ -98,10 +98,8 @@ public class Arduino implements AutoCloseable {
 	 * Start point defines from which index start taking 4 bytes. <br>
 	 * Bytes should be oriented MSB first.
 	 *
-	 * @param array
-	 *            Byte array
-	 * @param start
-	 *            Array's index from which to start conversion
+	 * @param array Byte array
+	 * @param start Array's index from which to start conversion
 	 * @return int Number
 	 */
 	public static int byteToInt(byte[] array, int start) {
@@ -158,10 +156,8 @@ public class Arduino implements AutoCloseable {
 	 * <p>
 	 * Number of bytes written can be controlled.
 	 * 
-	 * @param c
-	 *            int number
-	 * @param quantity
-	 *            number of bytes to write (starting from least significant)
+	 * @param c        int number
+	 * @param quantity number of bytes to write (starting from least significant)
 	 */
 	public void write(int c, int quantity) {
 
@@ -178,8 +174,7 @@ public class Arduino implements AutoCloseable {
 	 * <p>
 	 * Method will wait for bytes arrival 1s.
 	 * 
-	 * @param quantity
-	 *            How many bytes to read
+	 * @param quantity How many bytes to read
 	 * @return Bytes array or throws IOException if port doesn't have specified
 	 *         number of bytes
 	 */
@@ -214,6 +209,7 @@ public class Arduino implements AutoCloseable {
 		SerialPort[] ports = SerialPort.getCommPorts();
 		for (SerialPort port : ports) {
 			if (port.getDescriptivePortName().contains(devId)) {
+				System.out.println(port.getDescriptivePortName());
 				return port;
 			}
 		}
