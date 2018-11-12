@@ -5,7 +5,6 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import operations.sensors.Sensorable;
@@ -31,9 +30,9 @@ public class BigDataWindow {
 		stage = new Stage();
 		stage.setTitle("BigDataWindow");
 		stage.setScene(new Scene(root));
+		stage.initOwner(parent);
 		stage.setAlwaysOnTop(true);
 		stage.initStyle(StageStyle.UNDECORATED);
-		stage.initModality(Modality.NONE);
 		stage.setX(parent.getWidth());
 		stage.setY(-100.0);
 		stage.show();
