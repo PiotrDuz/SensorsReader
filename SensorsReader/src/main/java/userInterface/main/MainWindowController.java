@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
 import operations.pendrive.PendriveKeeper;
+import operations.pendrive.PendriveMount;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
 import userInterface.addSensorWindow.AddSensorWindow;
@@ -338,7 +339,14 @@ public class MainWindowController implements Initializable {
 			dateWindow.openWindow();
 		} else if (menuItem == menuSystemReboot) {
 			String text = "Uruchomic ponownie?";
-			if(PromptWindow.getPrompt(menuBar, ""))
+			if (PromptWindow.getPrompt(menuBar, text)) {
+				PendriveMount.executeCommand("shutdown -r now");
+			}
+		} else if (menuItem == menuSystemShutdown) {
+			String text = "Wylaczyc system?";
+			if (PromptWindow.getPrompt(menuBar, text)) {
+				PendriveMount.executeCommand("shutdown -h now");
+			}
 		} else if (menuItem == menuChartShowPane) {
 			if (menuChartShowPane.isSelected()) {
 				setGridColumnSize(gridPaneMaster, 0, 200);

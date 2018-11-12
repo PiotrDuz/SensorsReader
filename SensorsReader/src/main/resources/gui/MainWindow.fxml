@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="root" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar fx:id="menuBar" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -50,8 +50,8 @@
             <Menu mnemonicParsing="false" text="System">
               <items>
                 <MenuItem fx:id="menuSystemDate" mnemonicParsing="false" onAction="#clickMenuItem" text="Data" />
-                  <MenuItem fx:id="menuSystemReboot" mnemonicParsing="false" onAction="#clickMenuButton" text="Uruchom Ponownie" />
-                  <MenuItem fx:id="menuSystemShutdown" mnemonicParsing="false" onAction="#clickMenuButton" text="Wylacz" />
+                  <MenuItem fx:id="menuSystemReboot" mnemonicParsing="false" onAction="#clickMenuItem" text="Uruchom Ponownie" />
+                  <MenuItem fx:id="menuSystemShutdown" mnemonicParsing="false" onAction="#clickMenuItem" text="Wylacz" />
               </items>
             </Menu>
             <Menu fx:id="menuAction" mnemonicParsing="false" text="Akcja">
