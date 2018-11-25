@@ -76,7 +76,7 @@ public class App {
 		String time = String.format("%02d", hour) + ":" + String.format("%02d", minute) + ":"
 				+ String.format("%02d", second);
 		// reuse execute command
-		PendriveMount.executeCommand("timedatectl set-time \"" + date + " " + time + "\"");
+		PendriveMount.executeCommand("sudo timedatectl set-time \"" + date + " " + time + "\"");
 
 	}
 }
