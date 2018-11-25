@@ -22,18 +22,18 @@
         <menus>
           <Menu fx:id="menuSettings" mnemonicParsing="false" text="Ustawienia">
             <items>
-                  <MenuItem fx:id="menuSettingsSensors" mnemonicParsing="false" onAction="#clickMenuItem" text="Czujniki" />
-                  <MenuItem fx:id="menuSettingsCombinations" mnemonicParsing="false" onAction="#clickMenuItem" text="Kombinacje" />
-                  <MenuItem fx:id="menuSettingsTime" mnemonicParsing="false" onAction="#clickMenuItem" text="Czas" />
-              <MenuItem fx:id="menuSettingsSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapisz" />
-                  <MenuItem fx:id="menuSettingsAdd" mnemonicParsing="false" onAction="#clickMenuItem" text="Dodaj" />
+                  <MenuItem fx:id="menuSettingsSensors" mnemonicParsing="false" onAction="#clickMenuItemSettings" text="Czujniki" />
+                  <MenuItem fx:id="menuSettingsCombinations" mnemonicParsing="false" onAction="#clickMenuItemSettings" text="Kombinacje" />
+                  <MenuItem fx:id="menuSettingsTime" mnemonicParsing="false" onAction="#clickMenuItemSettings" text="Czas" />
+              <MenuItem fx:id="menuSettingsSave" mnemonicParsing="false" onAction="#clickMenuItemSettings" text="Zapisz" />
+                  <MenuItem fx:id="menuSettingsAdd" mnemonicParsing="false" onAction="#clickMenuItemSettings" text="Dodaj" />
             </items>
           </Menu>
           <Menu fx:id="menuPendrive" mnemonicParsing="false" text="Pendrive">
             <items>
-                  <MenuItem fx:id="menuPendriveFileName" mnemonicParsing="false" onAction="#clickMenuItem" text="NazwaPliku" />
-              <MenuItem fx:id="menuPendriveSave" mnemonicParsing="false" onAction="#clickMenuItem" text="Zapis" />
-                  <MenuItem fx:id="menuPendriveUnmount" mnemonicParsing="false" onAction="#clickMenuItem" text="Odlacz" />
+                  <MenuItem fx:id="menuPendriveFileName" mnemonicParsing="false" onAction="#clickMenuItemPendrive" text="NazwaPliku" />
+              <MenuItem fx:id="menuPendriveSave" mnemonicParsing="false" onAction="#clickMenuItemPendrive" text="Zapis" />
+                  <MenuItem fx:id="menuPendriveUnmount" mnemonicParsing="false" onAction="#clickMenuItemPendrive" text="Odlacz" />
                   <CustomMenuItem mnemonicParsing="false" text="Unspecified Action">
                      <content>
                         <Label fx:id="labelSaving" text="BRAK" textFill="#e80808" />
@@ -48,16 +48,16 @@
           </Menu>
             <Menu fx:id="menuSystem" mnemonicParsing="false" text="System">
               <items>
-                <MenuItem fx:id="menuSystemDate" mnemonicParsing="false" onAction="#clickMenuItem" text="Data" />
-                  <MenuItem fx:id="menuSystemReboot" mnemonicParsing="false" onAction="#clickMenuItem" text="Uruchom Ponownie" />
-                  <MenuItem fx:id="menuSystemShutdown" mnemonicParsing="false" onAction="#clickMenuItem" text="Wylacz" />
+                <MenuItem fx:id="menuSystemDate" mnemonicParsing="false" onAction="#clickMenuItemSystem" text="Data" />
+                  <MenuItem fx:id="menuSystemReboot" mnemonicParsing="false" onAction="#clickMenuItemSystem" text="Uruchom Ponownie" />
+                  <MenuItem fx:id="menuSystemShutdown" mnemonicParsing="false" onAction="#clickMenuItemSystem" text="Wylacz" />
               </items>
             </Menu>
             <Menu fx:id="menuAction" mnemonicParsing="false" text="Akcja">
               <items>
-                <MenuItem fx:id="menuActionTare" mnemonicParsing="false" onAction="#clickMenuItem" text="Taruj" />
-                  <MenuItem fx:id="menuActionClean" mnemonicParsing="false" onAction="#clickMenuItem" text="Czysc Maks/Min" />
-                  <MenuItem fx:id="menuActionCleanAll" mnemonicParsing="false" onAction="#clickMenuItem" text="Czysc wszystkie Maks/Min" />
+                <MenuItem fx:id="menuActionTare" mnemonicParsing="false" onAction="#clickMenuItemAction" text="Taruj" />
+                  <MenuItem fx:id="menuActionClean" mnemonicParsing="false" onAction="#clickMenuItemAction" text="Czysc Maks/Min" />
+                  <MenuItem fx:id="menuActionCleanAll" mnemonicParsing="false" onAction="#clickMenuItemAction" text="Czysc wszystkie Maks/Min" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <CustomMenuItem mnemonicParsing="false" text="Unspecified Action">
                      <content>
@@ -69,12 +69,13 @@
                         <Button fx:id="buttonStop" maxHeight="25.0" minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#buttonPress" prefHeight="30.0" prefWidth="150.0" text="STOP" textFill="#030303" />
                      </content>
                   </CustomMenuItem>
+                  <CheckMenuItem fx:id="menuActionSaveState" mnemonicParsing="false" onAction="#clickMenuItemAction" text="Zachowaj stan" />
               </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Wykres">
               <items>
-                  <CheckMenuItem fx:id="menuChartShowPane" mnemonicParsing="false" onAction="#clickMenuItem" text="Pokaz zakladke" />
-                  <CheckMenuItem fx:id="menuChartShowWindow" mnemonicParsing="false" onAction="#clickMenuItem" text="Pokaz okno" />
+                  <CheckMenuItem fx:id="menuChartShowPane" mnemonicParsing="false" onAction="#clickMenuItemChart" text="Pokaz zakladke" />
+                  <CheckMenuItem fx:id="menuChartShowWindow" mnemonicParsing="false" onAction="#clickMenuItemChart" text="Pokaz okno" />
                   <Menu fx:id="menuChartItems" mnemonicParsing="false" text="WYKRES" />
               </items>
             </Menu>

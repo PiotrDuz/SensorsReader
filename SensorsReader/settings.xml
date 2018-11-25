@@ -8,6 +8,7 @@
         <isCharted>true</isCharted>
         <iD>0</iD>
         <type>Encoder</type>
+        <lastState>-16384</lastState>
     </Encoder>
     <Encoder>
         <scale>1.0</scale>
@@ -17,13 +18,48 @@
         <isCharted>true</isCharted>
         <iD>1</iD>
         <type>Encoder</type>
+        <lastState>0</lastState>
     </Encoder>
     <Arduino>
         <deviceId>Serial</deviceId>
     </Arduino>
+    <CombinationData>
+        <name>Comb</name>
+        <unit>KL</unit>
+        <iD>0</iD>
+        <zeroValue>0.0</zeroValue>
+        <isCharted>true</isCharted>
+        <choosenVar>Skala1</choosenVar>
+        <variableList>
+            <activable>true</activable>
+            <name>Skala1</name>
+            <value>1.0</value>
+        </variableList>
+        <variableList>
+            <activable>true</activable>
+            <name>Skala5</name>
+            <value>1.0</value>
+        </variableList>
+        <variableList>
+            <activable>true</activable>
+            <name>Skala4</name>
+            <value>1.0</value>
+        </variableList>
+        <variableList>
+            <activable>true</activable>
+            <name>Skala3</name>
+            <value>1.0</value>
+        </variableList>
+        <variableList>
+            <activable>true</activable>
+            <name>Skala2</name>
+            <value>1.0</value>
+        </variableList>
+    </CombinationData>
     <TimeStamp>
         <name>time</name>
         <unit>s</unit>
         <scale>1000.0</scale>
+        <savePeriod>0.2</savePeriod>
     </TimeStamp>
 </ObjectsList>

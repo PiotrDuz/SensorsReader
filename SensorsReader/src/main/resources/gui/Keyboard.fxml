@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="anchorRoot" minHeight="230.0" minWidth="550.0" prefHeight="230.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="anchorRoot" minHeight="230.0" minWidth="550.0" prefHeight="230.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane prefHeight="230.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -81,6 +81,7 @@
                   <Button maxWidth="30.0" minHeight="30.0" minWidth="38.0" mnemonicParsing="false" onAction="#pressButton" text="B" GridPane.columnIndex="5" GridPane.rowIndex="3" />
                   <Button maxWidth="30.0" minHeight="30.0" minWidth="38.0" mnemonicParsing="false" onAction="#pressButton" text="N" GridPane.columnIndex="6" GridPane.rowIndex="3" />
                   <Button maxWidth="30.0" minHeight="30.0" minWidth="38.0" mnemonicParsing="false" onAction="#pressButton" text="_" GridPane.columnIndex="9" GridPane.rowIndex="3" />
+                  <Button minHeight="30.0" minWidth="38.0" mnemonicParsing="false" onAction="#pressButton" prefHeight="30.0" text="-" GridPane.columnIndex="9" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </children>

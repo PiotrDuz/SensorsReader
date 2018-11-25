@@ -46,17 +46,16 @@ public class DateWindowController implements Initializable {
 			}
 
 			try (Arduino serial = Arduino.getInstance()) {
-				Arduino.delay(1000);
+				serial.open();
 				serial.write(Command.SET_DATE.get(), 1);
 
-				serial.write(dateTime.getYear(), 4);
-				serial.write(dateTime.getMonthValue(), 4);
-				serial.write(dateTime.getDayOfMonth(), 4);
-				serial.write(dateTime.getHour(), 4);
-				serial.write(dateTime.getMinute(), 4);
-				serial.write(dateTime.getSecond(), 4);
+				serial.write(dateTime.getYear() - 2000, 1);
+				serial.write(dateTime.getMonthValue(), 1);
+				serial.write(dateTime.getDayOfMonth(), 1);
+				serial.write(dateTime.getHour(), 1);
+				serial.write(dateTime.getMinute(), 1);
+				serial.write(dateTime.getSecond(), 1);
 
-				serial.close();
 			}
 
 			Stage stage = (Stage) button.getScene().getWindow();

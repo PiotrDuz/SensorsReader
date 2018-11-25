@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import org.jfree.chart.fx.ChartCanvas;
 
+import application.ProgramException;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -32,6 +33,7 @@ import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
 import operations.pendrive.PendriveKeeper;
 import operations.pendrive.PendriveMount;
+import operations.sensors.SensorFactory;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
 import userInterface.addSensorWindow.AddSensorWindow;
@@ -110,6 +112,8 @@ public class MainWindowController implements Initializable {
 	MenuItem menuActionClean;
 	@FXML
 	MenuItem menuActionCleanAll;
+	@FXML
+	CheckMenuItem menuActionSaveState;
 	@FXML
 	Menu menuSystem;
 	@FXML
@@ -227,12 +231,17 @@ public class MainWindowController implements Initializable {
 	 * Button Start/Stop - launching and stopping reading data.
 	 * 
 	 * @param event
+	 * @throws ProgramException
 	 */
 	@FXML
-	public void buttonPress(ActionEvent event) {
+	public void buttonPress(ActionEvent event) throws ProgramException {
 		if (event.getSource().equals(buttonStart)) {
 			// clean all data series, for new measurements to come
 			chartData.cleanSeries();
+			// if last state should not be saved, clear it
+			if (!menuActionSaveState.isSelected()) {
+				SensorFactory.clearState();
+			}
 
 			menuDisableProperty.set(true);
 
@@ -247,19 +256,37 @@ public class MainWindowController implements Initializable {
 		}
 	}
 
-	/**
-	 * Reacts on actions done in MenuBar.
-	 * 
-	 * @param event
-	 */
 	@FXML
-	public void clickMenuItem(ActionEvent event) {
+	public void clickMenuItemSettings(ActionEvent event) {
 		MenuItem menuItem = (MenuItem) event.getSource();
 
 		if (menuItem == menuSettingsSave) {
 			Xml.saveXml();
-			System.out.println("saved");
-		} else if (menuItem == menuPendriveSave) {
+			PromptWindow.getPrompt(menuBar, "Zapisano!");
+		} else if (menuItem == menuSettingsSensors) {
+			SensorsWindow sensorsWindow = new SensorsWindow((Node) menuBar);
+			sensorsWindow.openWindow();
+			initializeElements();
+		} else if (menuItem == menuSettingsCombinations) {
+			CombinationWindow combinationWindow = new CombinationWindow((Node) menuBar);
+			combinationWindow.openWindow();
+			initializeElements();
+		} else if (menuItem == menuSettingsTime) {
+			TimeWindow timeWindow = new TimeWindow((Node) menuBar);
+			timeWindow.openWindow();
+			initializeElements();
+		} else if (menuItem == menuSettingsAdd) {
+			AddSensorWindow addSensorWindow = new AddSensorWindow((Node) menuBar);
+			addSensorWindow.openWindow();
+			initializeElements();
+		}
+	}
+
+	@FXML
+	public void clickMenuItemPendrive(ActionEvent event) {
+		MenuItem menuItem = (MenuItem) event.getSource();
+
+		if (menuItem == menuPendriveSave) {
 			if (saveToFile == false) {
 				saveToFile = true;
 				labelSaving.setTextFill(Color.GREEN);
@@ -284,23 +311,34 @@ public class MainWindowController implements Initializable {
 			if (keyboard.getText() != null) {
 				fileName = keyboard.getText();
 			}
-		} else if (menuItem == menuSettingsSensors) {
-			SensorsWindow sensorsWindow = new SensorsWindow((Node) menuBar);
-			sensorsWindow.openWindow();
-			initializeElements();
-		} else if (menuItem == menuSettingsCombinations) {
-			CombinationWindow combinationWindow = new CombinationWindow((Node) menuBar);
-			combinationWindow.openWindow();
-			initializeElements();
-		} else if (menuItem == menuSettingsTime) {
-			TimeWindow timeWindow = new TimeWindow((Node) menuBar);
-			timeWindow.openWindow();
-			initializeElements();
-		} else if (menuItem == menuSettingsAdd) {
-			AddSensorWindow addSensorWindow = new AddSensorWindow((Node) menuBar);
-			addSensorWindow.openWindow();
-			initializeElements();
-		} else if (menuItem == menuActionTare) {
+		}
+	}
+
+	@FXML
+	public void clickMenuItemSystem(ActionEvent event) {
+		MenuItem menuItem = (MenuItem) event.getSource();
+
+		if (menuItem == menuSystemDate) {
+			DateWindow dateWindow = new DateWindow((Node) menuBar);
+			dateWindow.openWindow();
+		} else if (menuItem == menuSystemReboot) {
+			String text = "Uruchomic ponownie?";
+			if (PromptWindow.getPrompt(menuBar, text)) {
+				PendriveMount.executeCommand("sudo shutdown -r now");
+			}
+		} else if (menuItem == menuSystemShutdown) {
+			String text = "Wylaczyc system?";
+			if (PromptWindow.getPrompt(menuBar, text)) {
+				PendriveMount.executeCommand("sudo shutdown -h now");
+			}
+		}
+	}
+
+	@FXML
+	public void clickMenuItemAction(ActionEvent event) {
+		MenuItem menuItem = (MenuItem) event.getSource();
+
+		if (menuItem == menuActionTare) {
 
 			TareWindow tareWindow = new TareWindow((Node) menuBar, getSelectedChartSens());
 			tareWindow.openWindow();
@@ -314,20 +352,14 @@ public class MainWindowController implements Initializable {
 				component.setMax(null);
 				component.setMin(null);
 			}
-		} else if (menuItem == menuSystemDate) {
-			DateWindow dateWindow = new DateWindow((Node) menuBar);
-			dateWindow.openWindow();
-		} else if (menuItem == menuSystemReboot) {
-			String text = "Uruchomic ponownie?";
-			if (PromptWindow.getPrompt(menuBar, text)) {
-				PendriveMount.executeCommand("sudo shutdown -r now");
-			}
-		} else if (menuItem == menuSystemShutdown) {
-			String text = "Wylaczyc system?";
-			if (PromptWindow.getPrompt(menuBar, text)) {
-				PendriveMount.executeCommand("sudo shutdown -h now");
-			}
-		} else if (menuItem == menuChartShowPane) {
+		}
+	}
+
+	@FXML
+	public void clickMenuItemChart(ActionEvent event) {
+		MenuItem menuItem = (MenuItem) event.getSource();
+
+		if (menuItem == menuChartShowPane) {
 			if (menuChartShowPane.isSelected()) {
 				setGridColumnSize(gridPaneMaster, 0, 200);
 			} else {

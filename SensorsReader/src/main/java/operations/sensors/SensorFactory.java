@@ -1,10 +1,10 @@
 package operations.sensors;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
-import java.util.Map;
 
 /**
  * Class to create, and hold all {@link Sensor} objects.
@@ -23,6 +23,18 @@ public class SensorFactory {
 	 * used.
 	 */
 	public final static SensorType[] typePrecedence = { SensorType.ENCODER };
+
+	/**
+	 * Clears last state in sensor defined in {@link #typePrecedence}
+	 */
+	public static void clearState() {
+		for (SensorType type : typePrecedence) {
+			ConcurrentHashMap<Integer, Sensor> sensors = sensorMap.get(type);
+			for (Sensor sens : sensors.values()) {
+				sens.setLastState(0);
+			}
+		}
+	}
 
 	/**
 	 * Returns array with int values, where each record holds quantity of sensors
@@ -90,8 +102,7 @@ public class SensorFactory {
 	 * Creates object basing on provided enum parameter. <br>
 	 * Tensometer/Encoder objects supported.
 	 * 
-	 * @param classType
-	 *            Provide type of class to create object (must extend Sensor)
+	 * @param classType Provide type of class to create object (must extend Sensor)
 	 * @return newly created object
 	 */
 	public static Sensor createSensor(SensorType classType) {

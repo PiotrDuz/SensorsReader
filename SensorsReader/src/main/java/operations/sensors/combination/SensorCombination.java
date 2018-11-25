@@ -1,6 +1,5 @@
 package operations.sensors.combination;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -31,7 +30,7 @@ import operations.sensors.Sensorable;
  *
  */
 
-public class SensorCombination implements Measurable, Sensorable {
+public class SensorCombination implements Sensorable {
 	private String name = "Comb";
 	private String unit;
 	private int iD;
@@ -42,9 +41,14 @@ public class SensorCombination implements Measurable, Sensorable {
 	protected double zeroValue = 0;
 
 	protected boolean isCharted = true;
-
-	protected ArrayList<Sensor> sensors = new ArrayList<>();
-	protected HashMap<String, Double> variables = new HashMap<>();
+	/**
+	 * Map of variables used in calculations
+	 */
+	protected HashMap<String, Variable> variables = new HashMap<>();
+	/**
+	 * Variable currently set to be chosen from radio buttons
+	 */
+	protected String choosenVar = null;
 
 	public SensorCombination() {
 	}
@@ -59,6 +63,7 @@ public class SensorCombination implements Measurable, Sensorable {
 		this.variables = data.getVariableMap();
 		this.zeroValue = data.getZeroValue();
 		this.isCharted = data.isCharted();
+		this.choosenVar = data.getChoosenVar();
 	}
 
 	public CombinationData getCombinationData() {
@@ -69,6 +74,7 @@ public class SensorCombination implements Measurable, Sensorable {
 		data.setiD(this.iD);
 		data.setZeroValue(this.zeroValue);
 		data.setCharted(this.isCharted);
+		data.setChoosenVar(this.choosenVar);
 		return data;
 	}
 
@@ -103,13 +109,8 @@ public class SensorCombination implements Measurable, Sensorable {
 		return minValue;
 	}
 
-	public SensorCombination addSensor(Sensor sensor) {
-		sensors.add(sensor);
-		return this;
-	}
-
-	public SensorCombination addVariable(String name) {
-		variables.put(name, 1.0);
+	public SensorCombination addVariable(Variable var) {
+		variables.put(var.getName(), var);
 		return this;
 	}
 
@@ -138,15 +139,23 @@ public class SensorCombination implements Measurable, Sensorable {
 		this.unit = unit;
 	}
 
+	public void setChosenVar(String var) {
+		this.choosenVar = var;
+	}
+
+	public String getChosenVar() {
+		return this.choosenVar;
+	}
+
 	public int getId() {
 		return iD;
 	}
 
-	public HashMap<String, Double> getVariables() {
+	public HashMap<String, Variable> getVariables() {
 		return variables;
 	}
 
-	public void setVariables(HashMap<String, Double> variables) {
+	public void setVariables(HashMap<String, Variable> variables) {
 		this.variables = variables;
 	}
 

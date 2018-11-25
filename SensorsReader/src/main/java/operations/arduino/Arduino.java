@@ -19,7 +19,7 @@ import application.ProgramException;
 @XmlRootElement(name = "Arduino")
 public class Arduino implements AutoCloseable {
 
-	private String DEVICE_ID; // ch341
+	private String DEVICE_ID = "Serial"; // ch341
 	@XmlTransient
 	protected SerialPort port;
 	@XmlTransient
@@ -112,7 +112,7 @@ public class Arduino implements AutoCloseable {
 			limit = start + 4;
 		}
 
-		// most significant byte is first, so count from 4 descending
+		// MSB first
 		int j = 4;
 		for (int i = start; i < limit; i++) {
 			// byte value as int

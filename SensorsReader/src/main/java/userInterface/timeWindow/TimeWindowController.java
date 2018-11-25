@@ -1,4 +1,4 @@
-package  userInterface.timeWindow;
+package userInterface.timeWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,8 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import  operations.sensors.TimeStamp;
-import  userInterface.keyboard.Keyboard;
+import operations.sensors.TimeStamp;
+import userInterface.keyboard.Keyboard;
 
 public class TimeWindowController implements Initializable {
 	@FXML
@@ -23,12 +23,15 @@ public class TimeWindowController implements Initializable {
 	TextField textFieldScale;
 	@FXML
 	Button buttonExit;
+	@FXML
+	TextField textFieldPeriod;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		textFieldName.setText(TimeStamp.getInstance().getName());
 		textFieldUnit.setText(TimeStamp.getInstance().getUnit());
 		textFieldScale.setText(TimeStamp.getInstance().getScale().toString());
+		textFieldPeriod.setText(TimeStamp.getInstance().getSavePeriod().toString());
 	}
 
 	@FXML
@@ -41,13 +44,12 @@ public class TimeWindowController implements Initializable {
 
 	@FXML
 	public void textFieldClick(MouseEvent event) {
-
 		TextField field = (TextField) event.getSource();
 		Keyboard keyboard = new Keyboard();
 		keyboard.display((Node) field);
+
 		// check if user has not cancelled the edit
 		if (keyboard.getText() != null) {
-
 			boolean parsable = true;
 			Double number = null;
 			try {
@@ -59,7 +61,6 @@ public class TimeWindowController implements Initializable {
 
 			// find out which box data is entered
 			if (field == textFieldName) {
-				System.out.println(TimeStamp.getInstance().getName());
 				TimeStamp.getInstance().setName(keyboard.getText());
 			} else if (field == textFieldUnit) {
 				TimeStamp.getInstance().setUnit(keyboard.getText());
@@ -68,6 +69,11 @@ public class TimeWindowController implements Initializable {
 					return;
 				}
 				TimeStamp.getInstance().setScale(number);
+			} else if (field == textFieldPeriod) {
+				if (parsable == false) {
+					return;
+				}
+				TimeStamp.getInstance().setSavePeriod(number);
 			}
 
 			field.setText(keyboard.getText());
