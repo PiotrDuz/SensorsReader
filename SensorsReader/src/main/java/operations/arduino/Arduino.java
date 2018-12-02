@@ -208,6 +208,7 @@ public class Arduino implements AutoCloseable {
 	public SerialPort getComm(String devId) {
 		SerialPort[] ports = SerialPort.getCommPorts();
 		for (SerialPort port : ports) {
+			System.out.println(port.getDescriptivePortName());
 			if (port.getDescriptivePortName().contains(devId)) {
 				System.out.println(port.getDescriptivePortName());
 				return port;

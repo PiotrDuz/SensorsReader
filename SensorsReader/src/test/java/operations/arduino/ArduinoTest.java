@@ -2,6 +2,8 @@ package operations.arduino;
 
 import java.io.IOException;
 
+import org.junit.Test;
+
 import com.fazecast.jSerialComm.SerialPort;
 
 import application.ProgramException;
@@ -27,6 +29,7 @@ public class ArduinoTest {
 
 	}
 
+	@Test
 	public void getComDevices() {
 		SerialPort[] ports = SerialPort.getCommPorts();
 		for (SerialPort port : ports) {
@@ -34,6 +37,7 @@ public class ArduinoTest {
 		}
 	}
 
+	@Test
 	public void testDate() throws ProgramException {
 
 		byte[] array = null;

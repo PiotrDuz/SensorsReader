@@ -39,10 +39,10 @@ public class App {
 		PendriveKeeper pendriveKeeper = PendriveKeeper.getInstance();
 		Thread thread = new Thread(pendriveKeeper);
 		thread.start();
-
+		System.out.println("Before date");
 		// set system date
 		setSystemDate();
-
+		System.out.println("after date");
 		// launch main aaplication
 		Application.launch(MainWindow.class, args);
 
@@ -76,7 +76,8 @@ public class App {
 		String time = String.format("%02d", hour) + ":" + String.format("%02d", minute) + ":"
 				+ String.format("%02d", second);
 		// reuse execute command
+		System.out.println("Before system call");
 		PendriveMount.executeCommand("sudo timedatectl set-time \"" + date + " " + time + "\"");
-
+		System.out.println("After system call");
 	}
 }
