@@ -1,5 +1,6 @@
 package userInterface.main;
 
+import java.awt.BasicStroke;
 import java.awt.Font;
 
 import org.jfree.chart.ChartFactory;
@@ -24,12 +25,16 @@ public class ChartCreator {
 
 		// chart settings
 		XYPlot plot = chart.getXYPlot();
+		// set font
 		Font font = new Font("Dialog", Font.PLAIN, 14);
 		ValueAxis domainAx = plot.getDomainAxis();
 		domainAx.setTickLabelFont(font);
 		ValueAxis rangeAx = plot.getRangeAxis();
 		rangeAx.setTickLabelFont(font);
+		// do not include zero point when chart is far away
 		((NumberAxis) rangeAx).setAutoRangeIncludesZero(false);
+		// change line thickness
+		plot.getRenderer().setSeriesStroke(0, new BasicStroke(3));
 
 		// fire chart repaint on demand
 		chart.setNotify(false);
