@@ -40,16 +40,16 @@ public class SensorPaneFactory {
 		TitledPane tp = new TitledPane();
 		tp.setText(sensor.getName()); // sensor name;
 		Text textValue = new Text(".");
-		Text textValueName = new Text("Wart: ");
+		Text textValueName = new Text("Wart  ");
 		Text textValueUnit = new Text(sensor.getUnit());
 		Text textMax = new Text(".");
-		Text textMaxName = new Text("Maks: ");
+		Text textMaxName = new Text("Maks  ");
 		Text textMaxUnit = new Text(sensor.getUnit());
 		Text textMin = new Text(".");
-		Text textMinName = new Text("Min: ");
+		Text textMinName = new Text("Min  ");
 		Text textMinUnit = new Text(sensor.getUnit());
 		Text textSpeed = new Text(".");
-		Text textSpeedName = new Text("Predk: ");
+		Text textSpeedName = new Text("Predk  ");
 		Text textSpeedUnit = new Text(sensor.getUnit() + "/" + TimeStamp.getInstance().getUnit());
 
 		GridPane grid = new GridPane();

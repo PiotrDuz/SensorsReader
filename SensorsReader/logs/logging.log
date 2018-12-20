@@ -10,3 +10,7 @@
 2018-11-25 18:47:12 ERROR ReadingsLogger:158 - java.io.IOException: No bytes in port
 2018-11-25 18:47:23 ERROR ReadingsLogger:104 - application.ProgramException: java.io.IOException: No bytes in port
 2018-11-25 18:50:40 ERROR App:64 - java.io.IOException: No bytes in port
+2018-12-11 14:09:29 ERROR App:64 - application.ProgramException: Serial port could not be opened
+2018-12-13 13:17:24 ERROR App:64 - java.io.IOException: No bytes in port
+2018-12-19 17:58:58 ERROR App:64 - application.ProgramException: Serial port could not be opened
+2018-12-20 10:20:49 ERROR App:64 - application.ProgramException: Serial port could not be opened

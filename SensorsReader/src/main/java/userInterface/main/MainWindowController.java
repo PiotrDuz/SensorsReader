@@ -290,11 +290,11 @@ public class MainWindowController implements Initializable {
 			if (saveToFile == false) {
 				saveToFile = true;
 				labelSaving.setTextFill(Color.GREEN);
-				labelSaving.setText("TAK");
+				labelSaving.setText("DO ZAPISU");
 			} else {
 				saveToFile = false;
 				labelSaving.setTextFill(Color.RED);
-				labelSaving.setText("BRAK");
+				labelSaving.setText("BRAK ZAPISU");
 			}
 		} else if (menuItem == menuPendriveUnmount) {
 			PendriveKeeper.getInstance().orderUnmount();
@@ -388,10 +388,10 @@ public class MainWindowController implements Initializable {
 	public void changePendriveMountStatus(boolean flag) {
 		if (flag == true) {
 			labelPendrive.setTextFill(Color.GREEN);
-			labelPendrive.setText("OBECNY");
+			labelPendrive.setText("OBECNY PENDRIVE");
 		} else {
 			labelPendrive.setTextFill(Color.RED);
-			labelPendrive.setText("BRAK");
+			labelPendrive.setText("BRAK PENDRIVE");
 		}
 	}
 }
