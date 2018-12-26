@@ -28,7 +28,7 @@ import userInterface.main.SensorPaneFactory.PaneValues;
 public class ChartData {
 	static private ChartData chartData;
 
-	private int dataPointsNumber = 800;
+	private int dataPointsNumber = 36000;
 	private int speedPointsNumber = 5;
 
 	private CheckMenuItem paneVisibility;
@@ -72,7 +72,8 @@ public class ChartData {
 	 * Creates new thread, that in unspecified time will update GUI.
 	 * /Platform.runLater/
 	 * 
-	 * @param map LinkedHashMap holding measurements mapped to sensors/combinations.
+	 * @param map
+	 *            LinkedHashMap holding measurements mapped to sensors/combinations.
 	 */
 	public void appendSeries(LinkedHashMap<Measurable, Double> map) {
 		if (isBusy != true) {
@@ -160,5 +161,13 @@ public class ChartData {
 		for (XYSeries series : dataMap.values()) {
 			series.clear();
 		}
+	}
+
+	public void setDataPoints(int points) {
+		this.dataPointsNumber = points;
+	}
+
+	public int getDataPoints() {
+		return this.dataPointsNumber;
 	}
 }

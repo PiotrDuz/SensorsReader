@@ -21,6 +21,7 @@ public class TimeStamp implements Measurable {
 	private String unit = "s";
 	private double scale = 1000.0;
 	private double savePeriod = 0.0;
+	private int chartPoints = 1000;
 
 	public static TimeStamp getInstance() {
 		if (stamp == null) {
@@ -87,6 +88,14 @@ public class TimeStamp implements Measurable {
 	public void setSavePeriod(double saveFrequency) {
 
 		this.savePeriod = saveFrequency;
+	}
+
+	public Integer getChartPoints() {
+		return this.chartPoints;
+	}
+
+	public void setChartPoints(int chartPeriod) {
+		this.chartPoints = chartPeriod;
 	}
 
 	/*

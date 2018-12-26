@@ -25,6 +25,8 @@ public class TimeWindowController implements Initializable {
 	Button buttonExit;
 	@FXML
 	TextField textFieldPeriod;
+	@FXML
+	TextField textFieldPointsChart;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -32,6 +34,7 @@ public class TimeWindowController implements Initializable {
 		textFieldUnit.setText(TimeStamp.getInstance().getUnit());
 		textFieldScale.setText(TimeStamp.getInstance().getScale().toString());
 		textFieldPeriod.setText(TimeStamp.getInstance().getSavePeriod().toString());
+		textFieldPointsChart.setText(TimeStamp.getInstance().getChartPoints().toString());
 	}
 
 	@FXML
@@ -74,6 +77,11 @@ public class TimeWindowController implements Initializable {
 					return;
 				}
 				TimeStamp.getInstance().setSavePeriod(number);
+			} else if (field == textFieldPointsChart) {
+				if (parsable == false) {
+					return;
+				}
+				TimeStamp.getInstance().setChartPoints(number.intValue());
 			}
 
 			field.setText(keyboard.getText());

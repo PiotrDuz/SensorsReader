@@ -84,13 +84,16 @@ public class ReadingsLogger implements Runnable {
 
 				getReadings(serial, measureMap, sensorArray);
 
+				// current time
+				double currTime = measureMap.get(TimeStamp.getInstance());
 				// add new values to corresponding chart's series
 				ChartData.getInstance().appendSeries(measureMap);
 
 				// save readings
-				if (csvCreator != null && csvCreator.readyToSave(measureMap.get(TimeStamp.getInstance()))) {
+				if (csvCreator != null && csvCreator.readyToSave(currTime)) {
 					csvCreator.saveCsv(measureMap);
 				}
+
 			}
 
 			serial.write(Command.STOP_MEASURING.get(), 1);

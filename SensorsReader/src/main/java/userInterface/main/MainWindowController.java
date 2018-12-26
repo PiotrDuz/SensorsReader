@@ -168,6 +168,8 @@ public class MainWindowController implements Initializable {
 	 */
 	public void initializeElements() {
 
+		// set chart data points
+		chartData.setDataPoints(TimeStamp.getInstance().getChartPoints());
 		// actualize chartData map
 		chartData.actualizeSeries();
 
