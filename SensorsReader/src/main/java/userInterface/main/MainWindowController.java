@@ -123,6 +123,8 @@ public class MainWindowController implements Initializable {
 	@FXML
 	MenuItem menuSystemShutdown;
 	@FXML
+	MenuItem menuChartClear;
+	@FXML
 	CheckMenuItem menuChartShowPane;
 	@FXML
 	CheckMenuItem menuChartShowWindow;
@@ -373,6 +375,8 @@ public class MainWindowController implements Initializable {
 			} else {
 				dataWindow.closeWindow();
 			}
+		} else if (menuItem == menuChartClear) {
+			this.chartData.cleanSeries();
 		}
 	}
 

@@ -74,6 +74,7 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Wykres">
               <items>
+                  <MenuItem fx:id="menuChartClear" mnemonicParsing="false" onAction="#clickMenuItemChart" text="Czysc" />
                   <CheckMenuItem fx:id="menuChartShowPane" mnemonicParsing="false" onAction="#clickMenuItemChart" text="Pokaz zakladke" />
                   <CheckMenuItem fx:id="menuChartShowWindow" mnemonicParsing="false" onAction="#clickMenuItemChart" text="Pokaz okno" />
                   <Menu fx:id="menuChartItems" mnemonicParsing="false" text="WYKRES" />

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane layoutX="228.0" layoutY="160.0" prefHeight="500.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -114,8 +114,8 @@
                 <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="68.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wynik = czasSurowy / Skala&#10;czasSurowy to [ms]&#10;Przyklad: 1000.0 " GridPane.rowIndex="3" />
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Okres pomiedzy pomiarami.&#10;Podawac w ustawionych jednostkach.&#10;" GridPane.rowIndex="5" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wynik = czasSurowy / Skala&#10;czasSurowy to [ms]&#10;Przyklad: 1000.0  to 1s" GridPane.rowIndex="3" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Okres pomiedzy pomiarami &#10;zapisanymi na pendrive. &#10;Podawac w ustawionych jednostkach.&#10;" GridPane.rowIndex="5" />
                   <Separator prefWidth="200.0" GridPane.rowIndex="2" />
                   <Separator prefWidth="200.0" GridPane.rowIndex="4" />
                   <Label text="Ilość punktów wykresu.&#10;Czest. to 100Hz. 10 punktow&#10;da 1 sekunde,&#10;Maks. to 40 000." GridPane.rowIndex="6" />

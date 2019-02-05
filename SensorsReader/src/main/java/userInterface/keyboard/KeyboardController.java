@@ -11,10 +11,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author piotr
+ *
+ */
 public class KeyboardController implements Initializable {
 	int coursorPos = 0;
 	private StringBuilder textHolder = new StringBuilder();
@@ -23,6 +29,8 @@ public class KeyboardController implements Initializable {
 	private TextField textInput;
 	@FXML
 	private AnchorPane anchorRoot;
+	@FXML
+	private ToggleButton caseButton;
 
 	public KeyboardController(String initialText) {
 		this.initialText = initialText;
@@ -49,6 +57,11 @@ public class KeyboardController implements Initializable {
 	public void pressButton(ActionEvent event) {
 		Button button1 = (Button) event.getSource();
 		String text1 = button1.getText();
+
+		if (!caseButton.isSelected()) {
+			text1 = text1.toLowerCase();
+		}
+
 		textHolder.insert(coursorPos, text1);
 		coursorPos++;
 		textInput.setText(textHolder.toString());
