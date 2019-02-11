@@ -51,6 +51,7 @@
                 <MenuItem fx:id="menuSystemDate" mnemonicParsing="false" onAction="#clickMenuItemSystem" text="Data" />
                   <MenuItem fx:id="menuSystemReboot" mnemonicParsing="false" onAction="#clickMenuItemSystem" text="Uruchom Ponownie" />
                   <MenuItem fx:id="menuSystemShutdown" mnemonicParsing="false" onAction="#clickMenuItemSystem" text="Wylacz" />
+                  <MenuItem fx:id="menuSystemUpdate" mnemonicParsing="false" onAction="#clickMenuItemSystem" text="Aktualizuj" />
               </items>
             </Menu>
             <Menu fx:id="menuAction" mnemonicParsing="false" text="Akcja">

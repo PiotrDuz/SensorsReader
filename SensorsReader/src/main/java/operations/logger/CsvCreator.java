@@ -94,8 +94,7 @@ public class CsvCreator implements AutoCloseable {
 	 * <p>
 	 * Uses {@link LinkedHashMap} so iteration order is preserved.
 	 * 
-	 * @param valuesMap
-	 *            Map of sensor-value pairs
+	 * @param valuesMap Map of sensor-value pairs
 	 * @throws ProgramException
 	 * 
 	 */
@@ -128,7 +127,7 @@ public class CsvCreator implements AutoCloseable {
 
 	public boolean readyToSave(double time) {
 		boolean flag = false;
-
+		// 0.9 factor to not skip any frame. Better to catch more.
 		if ((time - this.prevTime) >= 0.9 * this.period) {
 			this.prevTime = time;
 			flag = true;

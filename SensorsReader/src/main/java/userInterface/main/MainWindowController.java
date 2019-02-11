@@ -123,6 +123,8 @@ public class MainWindowController implements Initializable {
 	@FXML
 	MenuItem menuSystemShutdown;
 	@FXML
+	MenuItem menuSystemUpdate;
+	@FXML
 	MenuItem menuChartClear;
 	@FXML
 	CheckMenuItem menuChartShowPane;
@@ -334,6 +336,12 @@ public class MainWindowController implements Initializable {
 			String text = "Wylaczyc system?";
 			if (PromptWindow.getPrompt(menuBar, text)) {
 				PendriveMount.executeCommand("sudo shutdown -h now");
+			}
+		} else if (menuItem == menuSystemUpdate) {
+			String text = "Aktualizowac? \n Wymagane polaczenie z internetem: \n "
+					+ "Postawic siec o SSID: raspberry_wifi \n i hasle: raspberry1";
+			if (PromptWindow.getPrompt(menuBar, text)) {
+				PendriveMount.executeCommand("~/update.sh");
 			}
 		}
 	}
