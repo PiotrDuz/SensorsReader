@@ -61,7 +61,7 @@ public class TareWindowController implements Initializable {
 		Button button = (Button) event.getSource();
 
 		if (button == buttonYes) {
-			measureComponent.setZeroValueScaled(value);
+			measureComponent.setZeroValueScaledRemembered(value);
 		} else if (button == buttonAll) {
 			for (Sensorable measureCompLoop : ChartData.getInstance().dataMap.keySet()) {
 				XYSeries list = ChartData.getInstance().dataMap.get(measureCompLoop);
@@ -73,7 +73,7 @@ public class TareWindowController implements Initializable {
 				}
 
 				double zeroValue = getAverage(list, 10);
-				measureCompLoop.setZeroValueScaled(zeroValue);
+				measureCompLoop.setZeroValueScaledRemembered(zeroValue);
 			}
 		}
 

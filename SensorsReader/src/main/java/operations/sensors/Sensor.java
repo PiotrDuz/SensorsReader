@@ -98,6 +98,14 @@ public class Sensor implements Sensorable {
 	}
 
 	public synchronized void setZeroValueScaled(double number) {
+		this.zeroValue = number * scale;
+	}
+
+	/**
+	 * It will remember the previous value and add new one <br>
+	 * Useful in setting zero during live operation
+	 */
+	public synchronized void setZeroValueScaledRemembered(double number) {
 		zeroValue = zeroValue + number * scale;
 	}
 

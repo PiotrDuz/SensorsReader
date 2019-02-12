@@ -200,7 +200,7 @@ public class CombinationWindowController implements Initializable {
 				if (parsable == false) {
 					return;
 				}
-				comboBox.getValue().setZeroValueScaled(number);
+				comboBox.getValue().setZeroValueScaledRemembered(number);
 			}
 			field.setText(keyboard.getText());
 		}

@@ -6,7 +6,7 @@ public interface Sensorable extends Measurable {
 
 	public Double getZeroValueScaled();
 
-	public void setZeroValueScaled(double number);
+	public void setZeroValueScaledRemembered(double number);
 
 	public Double getMax();
 

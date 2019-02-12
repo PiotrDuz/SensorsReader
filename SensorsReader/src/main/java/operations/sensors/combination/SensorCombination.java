@@ -178,7 +178,7 @@ public class SensorCombination implements Sensorable {
 	/**
 	 * There is no scale, so new value is just added to old zeroValue.
 	 */
-	public synchronized void setZeroValueScaled(double number) {
+	public synchronized void setZeroValueScaledRemembered(double number) {
 		zeroValue = zeroValue + number;
 	}
 

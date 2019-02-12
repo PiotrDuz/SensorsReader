@@ -2,6 +2,7 @@ package userInterface.sensorsWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -57,7 +58,7 @@ public class SensorsWindowController implements Initializable {
 		textFieldName.setText(comboBox.getValue().getName());
 		textFieldUnit.setText(comboBox.getValue().getUnit());
 		textFieldScale.setText(comboBox.getValue().getScale().toString());
-		textFieldZero.setText(comboBox.getValue().getZeroValueScaled().toString());
+		textFieldZero.setText(comboBox.getValue().getZeroValue().toString());
 		labelId.setText(comboBox.getValue().getId().toString());
 		labelType.setText(comboBox.getValue().getType().toString());
 		checkIsCharted.setSelected(comboBox.getValue().isCharted());
@@ -106,7 +107,7 @@ public class SensorsWindowController implements Initializable {
 				if (parsable == false) {
 					return;
 				}
-				comboBox.getValue().setZeroValueScaled(number);
+				comboBox.getValue().setZeroValue(number);
 			}
 			field.setText(keyboard.getText());
 		}

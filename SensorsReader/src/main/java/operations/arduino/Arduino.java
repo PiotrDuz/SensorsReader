@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.log4j.Logger;
+
 import com.fazecast.jSerialComm.SerialPort;
 
 import application.ProgramException;
@@ -18,6 +20,8 @@ import application.ProgramException;
  */
 @XmlRootElement(name = "Arduino")
 public class Arduino implements AutoCloseable {
+	@XmlTransient
+	final static Logger logger = Logger.getLogger(Arduino.class);
 
 	private String DEVICE_ID = "Serial"; // ch341
 	@XmlTransient
@@ -208,9 +212,9 @@ public class Arduino implements AutoCloseable {
 	public SerialPort getComm(String devId) {
 		SerialPort[] ports = SerialPort.getCommPorts();
 		for (SerialPort port : ports) {
-			System.out.println(port.getDescriptivePortName());
+			logger.info("Ports available: " + port.getDescriptivePortName());
 			if (port.getDescriptivePortName().contains(devId)) {
-				System.out.println(port.getDescriptivePortName());
+				logger.info("Chosen port: " + port.getDescriptivePortName());
 				return port;
 			}
 		}
