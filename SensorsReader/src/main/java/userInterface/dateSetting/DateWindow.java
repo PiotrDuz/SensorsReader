@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import userInterface.combinationWindow.CombinationWindowController;
 
 public class DateWindow {
 	private DateWindowController controller = new DateWindowController();
@@ -20,8 +19,7 @@ public class DateWindow {
 	}
 
 	public void openWindow() {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/DateWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/DateWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {

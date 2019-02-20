@@ -1,13 +1,14 @@
-package  userInterface.sensorsWindow;
+package userInterface.sensorsWindow;
 
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import java.io.IOException;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /*
  * Displays sensor settings window.
@@ -21,8 +22,7 @@ public class SensorsWindow {
 	}
 
 	public void openWindow() {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/SensorsWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/SensorsWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {

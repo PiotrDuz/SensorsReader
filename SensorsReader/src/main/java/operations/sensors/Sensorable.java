@@ -1,12 +1,12 @@
-package  operations.sensors;
+package operations.sensors;
 
-public interface Sensorable {
+public interface Sensorable extends Measurable {
 
 	public void setZeroValue(double number);
 
 	public Double getZeroValueScaled();
 
-	public void setZeroValueScaled(double number);
+	public void setZeroValueScaledRemembered(double number);
 
 	public Double getMax();
 
@@ -23,5 +23,7 @@ public interface Sensorable {
 	public boolean isCharted();
 
 	public void isChartedSet(boolean flag);
+
+	public Measurable getXAxis();
 
 }

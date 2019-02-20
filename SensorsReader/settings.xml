@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ObjectsList>
-    <Tensometer>
-        <scale>1000.0</scale>
-        <zeroValue>0.0</zeroValue>
-        <name>TEN1</name>
-        <unit>N</unit>
-        <isCharted>true</isCharted>
-        <iD>0</iD>
-        <type>Tensometer</type>
-    </Tensometer>
     <Encoder>
         <scale>1.0</scale>
         <zeroValue>0.0</zeroValue>
@@ -17,6 +8,7 @@
         <isCharted>true</isCharted>
         <iD>0</iD>
         <type>Encoder</type>
+        <lastState>-16384</lastState>
     </Encoder>
     <Encoder>
         <scale>1.0</scale>
@@ -26,43 +18,48 @@
         <isCharted>true</isCharted>
         <iD>1</iD>
         <type>Encoder</type>
+        <lastState>0</lastState>
     </Encoder>
     <Arduino>
-        <deviceId>ch341</deviceId>
+        <deviceId>Serial</deviceId>
     </Arduino>
     <CombinationData>
-        <name>COMB1</name>
-        <unit>F</unit>
+        <name>Comb</name>
+        <unit>KL</unit>
         <iD>0</iD>
         <zeroValue>0.0</zeroValue>
         <isCharted>true</isCharted>
+        <choosenVar>Skala1</choosenVar>
         <variableList>
-            <name>var2</name>
+            <activable>true</activable>
+            <name>Skala1</name>
             <value>1.0</value>
         </variableList>
         <variableList>
-            <name>var1</name>
+            <activable>true</activable>
+            <name>Skala5</name>
             <value>1.0</value>
         </variableList>
-    </CombinationData>
-    <CombinationData>
-        <name>C2</name>
-        <unit>G</unit>
-        <iD>1</iD>
-        <zeroValue>3.0</zeroValue>
-        <isCharted>true</isCharted>
         <variableList>
-            <name>naprezenie</name>
-            <value>67.0</value>
+            <activable>true</activable>
+            <name>Skala4</name>
+            <value>1.0</value>
         </variableList>
         <variableList>
-            <name>nacisk</name>
-            <value>90.0</value>
+            <activable>true</activable>
+            <name>Skala3</name>
+            <value>1.0</value>
+        </variableList>
+        <variableList>
+            <activable>true</activable>
+            <name>Skala2</name>
+            <value>1.0</value>
         </variableList>
     </CombinationData>
     <TimeStamp>
         <name>time</name>
         <unit>s</unit>
         <scale>1000.0</scale>
+        <savePeriod>0.2</savePeriod>
     </TimeStamp>
 </ObjectsList>

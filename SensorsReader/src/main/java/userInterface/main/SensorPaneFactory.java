@@ -1,4 +1,4 @@
-package  userInterface.main;
+package userInterface.main;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.ConcurrentHashMap;
@@ -6,10 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
-import  operations.sensors.Sensorable;
-import  operations.sensors.TimeStamp;
+import operations.sensors.Sensorable;
+import operations.sensors.TimeStamp;
 
 /**
  * Creating and managing TitledPanes that show real-time measurement parameters.
@@ -41,16 +40,16 @@ public class SensorPaneFactory {
 		TitledPane tp = new TitledPane();
 		tp.setText(sensor.getName()); // sensor name;
 		Text textValue = new Text(".");
-		Text textValueName = new Text("Wart:");
+		Text textValueName = new Text("Wart  ");
 		Text textValueUnit = new Text(sensor.getUnit());
 		Text textMax = new Text(".");
-		Text textMaxName = new Text("Maks:");
+		Text textMaxName = new Text("Maks  ");
 		Text textMaxUnit = new Text(sensor.getUnit());
 		Text textMin = new Text(".");
-		Text textMinName = new Text("Min:");
+		Text textMinName = new Text("Min  ");
 		Text textMinUnit = new Text(sensor.getUnit());
 		Text textSpeed = new Text(".");
-		Text textSpeedName = new Text("Predk:");
+		Text textSpeedName = new Text("Predk  ");
 		Text textSpeedUnit = new Text(sensor.getUnit() + "/" + TimeStamp.getInstance().getUnit());
 
 		GridPane grid = new GridPane();
@@ -60,10 +59,10 @@ public class SensorPaneFactory {
 		column.setPercentWidth(25);
 		grid.getColumnConstraints().add(column);
 		column = new ColumnConstraints();
-		column.setPercentWidth(45);
+		column.setPercentWidth(50);
 		grid.getColumnConstraints().add(column);
 		column = new ColumnConstraints();
-		column.setPercentWidth(30);
+		column.setPercentWidth(25);
 		grid.getColumnConstraints().add(column);
 
 		grid.add(textValueName, 0, 0);

@@ -1,4 +1,4 @@
-package  operations.initializator;
+package operations.initializator;
 
 import java.io.File;
 import java.net.URI;
@@ -10,17 +10,17 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import  application.App;
-import  operations.arduino.Arduino;
-import  operations.sensors.Encoder;
-import  operations.sensors.Sensor;
-import  operations.sensors.SensorFactory;
-import  operations.sensors.Tensometer;
-import  operations.sensors.TimeStamp;
-import  operations.sensors.SensorFactory.SensorType;
-import  operations.sensors.combination.CombinationData;
-import  operations.sensors.combination.SensorCombination;
-import  operations.sensors.combination.SensorCombinationFactory;
+import application.App;
+import operations.arduino.Arduino;
+import operations.sensors.Encoder;
+import operations.sensors.Sensor;
+import operations.sensors.SensorFactory;
+import operations.sensors.SensorFactory.SensorType;
+import operations.sensors.Tensometer;
+import operations.sensors.TimeStamp;
+import operations.sensors.combination.CombinationData;
+import operations.sensors.combination.SensorCombination;
+import operations.sensors.combination.SensorCombinationFactory;
 
 /**
  * Class that saves user settings to XML file and retrieves them to objects.<br>
@@ -88,10 +88,8 @@ public class Xml {
 	/**
 	 * Inserts Sensor object to Sensor's map
 	 * 
-	 * @param sensor
-	 *            Object to insert
-	 * @param type
-	 *            Type
+	 * @param sensor Object to insert
+	 * @param type   Type
 	 */
 	private static void insertToMap(Sensor sensor, SensorType type) {
 
@@ -145,10 +143,8 @@ public class Xml {
 	/**
 	 * Sends objects parameters to XML file
 	 * 
-	 * @param jc
-	 *            JAXBContext object, specifying which Classes will be used
-	 * @param object
-	 *            Object which parameters to save
+	 * @param jc     JAXBContext object, specifying which Classes will be used
+	 * @param object Object which parameters to save
 	 * @throws JAXBException
 	 */
 	private static void marshal(JAXBContext jc, Object object) throws JAXBException {

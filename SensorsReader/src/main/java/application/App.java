@@ -10,6 +10,7 @@ import operations.arduino.Command;
 import operations.initializator.Xml;
 import operations.pendrive.PendriveKeeper;
 import operations.pendrive.PendriveMount;
+import operations.sensors.combination.CombinationData;
 import operations.sensors.combination.SensorCombinationFactory;
 import userInterface.main.MainWindow;
 
@@ -38,10 +39,8 @@ public class App {
 		PendriveKeeper pendriveKeeper = PendriveKeeper.getInstance();
 		Thread thread = new Thread(pendriveKeeper);
 		thread.start();
-
 		// set system date
 		setSystemDate();
-
 		// launch main aaplication
 		Application.launch(MainWindow.class, args);
 
@@ -50,31 +49,33 @@ public class App {
 	}
 
 	public static void setSystemDate() throws ProgramException {
-		Arduino serial = Arduino.getInstance();
-		serial.open();
-		serial.delay(1000);
-		serial.write(Command.GET_DATE.get(), 1);
-
 		byte[] array = null;
-		try {
-			array = serial.read(4 * 5);
-		} catch (IOException e) {
+
+		try (Arduino serial = Arduino.getInstance()) {
+			serial.open();
+
+			serial.write(Command.GET_DATE.get(), 1);
+
+			array = serial.read(6);
+
+		} catch (IOException | ProgramException e) {
 			logger.error(e);
 			throw new ProgramException(e);
 		}
 
-		serial.close();
-
-		int year = Arduino.byteToInt(array, 4 * 0);
-		Integer month = Arduino.byteToInt(array, 4 * 1);
-		Integer day = Arduino.byteToInt(array, 4 * 2);
-		Integer hour = Arduino.byteToInt(array, 4 * 3);
-		Integer minute = Arduino.byteToInt(array, 4 * 4);
+		int year = array[0] + 2000;
+		int month = array[1];
+		int day = array[2];
+		int hour = array[3];
+		int minute = array[4];
+		int second = array[5];
 
 		String date = year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day);
-		String time = String.format("%02d", hour) + ":" + String.format("%02d", minute) + ":00";
+		String time = String.format("%02d", hour) + ":" + String.format("%02d", minute) + ":"
+				+ String.format("%02d", second);
 		// reuse execute command
-		PendriveMount.executeCommand("timedatectl set-time \"" + date + " " + time + "\"");
-
+		System.out.println("Before system call: " + date + " " + time);
+		PendriveMount.executeCommand("sudo timedatectl set-time \"" + date + " " + time + "\"");
+		System.out.println("sudo timedatectl set-time \"" + date + " " + time + "\"");
 	}
 }

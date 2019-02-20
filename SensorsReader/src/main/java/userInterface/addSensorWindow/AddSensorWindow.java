@@ -1,4 +1,4 @@
-package  userInterface.addSensorWindow;
+package userInterface.addSensorWindow;
 
 import java.io.IOException;
 
@@ -19,8 +19,7 @@ public class AddSensorWindow {
 	}
 
 	public void openWindow() {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/AddSensorWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/AddSensorWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {

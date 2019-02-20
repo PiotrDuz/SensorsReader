@@ -1,5 +1,11 @@
 package operations.logger;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -8,31 +14,25 @@ import java.util.LinkedHashMap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
+import application.ProgramException;
 import operations.pendrive.PendriveMount;
 import operations.sensors.Measurable;
 import operations.sensors.Sensor;
 import operations.sensors.SensorFactory;
-import operations.sensors.TimeStamp;
 import operations.sensors.SensorFactory.SensorType;
+import operations.sensors.TimeStamp;
 import operations.sensors.combination.SensorCombination;
-import operations.sensors.combination.SensorCombinationFactory;
-
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;;
+import operations.sensors.combination.SensorCombinationFactory;;
 
 /**
  * .CSV file creator class.<br>
  * Uses Apache Commons CVS library.
  */
-public class CsvCreator {
+public class CsvCreator implements AutoCloseable {
 	private static final String filePath = PendriveMount.MOUNT_POINT + "/";
-	private String fileName = null;
 	private CSVPrinter csvPrinter;
+	private double period = 0;
+	private double prevTime = 0;
 
 	/**
 	 * Constructor and file creator. It creates new file and assigns to it actual
@@ -41,13 +41,18 @@ public class CsvCreator {
 	 * <br>
 	 * unchanged.Also, prints header as a first line (.name of all
 	 * sensors/combinations) <br>
+	 * Specified frequency of saved data shall be in ms.
+	 * 
+	 * @throws ProgramException
 	 */
-	public CsvCreator(String fileName) {
+	public CsvCreator(String fileName, double period) throws ProgramException {
+		// frequency in ms of saving
+		this.period = period;
 		// Create new file name if already not exist
 		if (fileName == null) {
 			fileName = "Pomiar_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
 		}
-		this.fileName = fileName;
+
 		// create file and CSVPrinter
 		// write header
 		Path totalPath = Paths.get(filePath + fileName + ".csv");
@@ -57,10 +62,8 @@ public class CsvCreator {
 			csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
 			csvPrinter.printRecord((Object[]) createHeader());
 			csvPrinter.flush();
-		} catch (FileNotFoundException exc) {
-			System.out.println(exc + "1");
 		} catch (IOException exc) {
-			System.out.println(exc + "2");
+			throw new ProgramException(exc);
 		}
 	}
 
@@ -91,11 +94,11 @@ public class CsvCreator {
 	 * <p>
 	 * Uses {@link LinkedHashMap} so iteration order is preserved.
 	 * 
-	 * @param valuesMap
-	 *            Map of sensor-value pairs
+	 * @param valuesMap Map of sensor-value pairs
+	 * @throws ProgramException
 	 * 
 	 */
-	public void saveCsv(LinkedHashMap<Measurable, Double> valuesMap) {
+	public void saveCsv(LinkedHashMap<Measurable, Double> valuesMap) throws ProgramException {
 		int i = 0;
 		String[] row = new String[valuesMap.size()];
 		for (Measurable sensor : valuesMap.keySet()) {
@@ -107,7 +110,7 @@ public class CsvCreator {
 			csvPrinter.printRecord((Object[]) row);
 			csvPrinter.flush();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new ProgramException(e);
 		}
 	}
 
@@ -115,12 +118,21 @@ public class CsvCreator {
 	 * Closes open file for writing/reading.
 	 */
 	public void close() {
-		fileName = null;
 		try {
 			csvPrinter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public boolean readyToSave(double time) {
+		boolean flag = false;
+		// 0.9 factor to not skip any frame. Better to catch more.
+		if ((time - this.prevTime) >= 0.9 * this.period) {
+			this.prevTime = time;
+			flag = true;
+		}
+		return flag;
 	}
 
 }

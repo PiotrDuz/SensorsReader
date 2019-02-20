@@ -1,8 +1,11 @@
-package  operations.sensors;
+package operations.sensors;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
 
-import  operations.sensors.SensorFactory.SensorType;
+import operations.sensors.SensorFactory.SensorType;
 
 /**
  * Class holding all settings for sensor.<br>
@@ -13,14 +16,14 @@ import  operations.sensors.SensorFactory.SensorType;
  */
 @XmlSeeAlso({ Encoder.class, Tensometer.class })
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Sensor implements Measurable, Sensorable {
-	protected double scale = 1;
-	protected Double zeroValue = 0.0;
-
+public class Sensor implements Sensorable {
 	@XmlTransient
 	protected Double maxValue = null;
 	@XmlTransient
 	protected Double minValue = null;
+
+	protected double scale = 1;
+	protected Double zeroValue = 0.0;
 
 	protected String name = "sens";
 	protected String unit = "N";
@@ -30,6 +33,8 @@ public class Sensor implements Measurable, Sensorable {
 	protected int iD;
 
 	protected SensorType type;
+
+	protected int lastState = 0;
 
 	/**
 	 * Assign new ID and add object to the List of all sensors
@@ -44,7 +49,7 @@ public class Sensor implements Measurable, Sensorable {
 	 * @return
 	 */
 	public double getMeasurement(int value) {
-		double measurement = (value - zeroValue) / scale;
+		double measurement = ((value - zeroValue) + lastState) / scale;
 
 		if (maxValue == null || measurement > maxValue) {
 			maxValue = measurement;
@@ -93,6 +98,14 @@ public class Sensor implements Measurable, Sensorable {
 	}
 
 	public synchronized void setZeroValueScaled(double number) {
+		this.zeroValue = number * scale;
+	}
+
+	/**
+	 * It will remember the previous value and add new one <br>
+	 * Useful in setting zero during live operation
+	 */
+	public synchronized void setZeroValueScaledRemembered(double number) {
 		zeroValue = zeroValue + number * scale;
 	}
 
@@ -132,6 +145,18 @@ public class Sensor implements Measurable, Sensorable {
 		this.isCharted = flag;
 	}
 
+	public Measurable getXAxis() {
+		return TimeStamp.getInstance();
+	}
+
+	public int getLastState() {
+		return lastState;
+	}
+
+	public void setLastState(int lastState) {
+		this.lastState = lastState;
+	}
+
 	/**
 	 * @return the type
 	 */
@@ -140,8 +165,7 @@ public class Sensor implements Measurable, Sensorable {
 	}
 
 	/**
-	 * @param type
-	 *            the type to set
+	 * @param type the type to set
 	 */
 	public void setType(SensorType type) {
 		this.type = type;

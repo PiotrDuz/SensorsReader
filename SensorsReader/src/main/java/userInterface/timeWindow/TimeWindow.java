@@ -1,4 +1,4 @@
-package  userInterface.timeWindow;
+package userInterface.timeWindow;
 
 import java.io.IOException;
 
@@ -19,8 +19,7 @@ public class TimeWindow {
 	}
 
 	public void openWindow() {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/TimeWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/TimeWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {

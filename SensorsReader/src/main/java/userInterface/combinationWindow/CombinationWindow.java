@@ -1,4 +1,4 @@
-package  userInterface.combinationWindow;
+package userInterface.combinationWindow;
 
 import java.io.IOException;
 
@@ -19,8 +19,7 @@ public class CombinationWindow {
 	}
 
 	public void openWindow() {
-		FXMLLoader loader = new FXMLLoader(
-				getClass().getClassLoader().getResource("main/resources/gui/CombinationWindow.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/CombinationWindow.fxml"));
 		loader.setController(controller);
 		Parent root = null;
 		try {

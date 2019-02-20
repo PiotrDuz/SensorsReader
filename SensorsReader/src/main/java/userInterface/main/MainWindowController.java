@@ -3,22 +3,22 @@ package userInterface.main;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import org.jfree.chart.fx.ChartCanvas;
+
+import application.ProgramException;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -28,15 +28,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import operations.initializator.Xml;
 import operations.logger.ReadingsLogger;
 import operations.pendrive.PendriveKeeper;
+import operations.pendrive.PendriveMount;
+import operations.sensors.SensorFactory;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
 import userInterface.addSensorWindow.AddSensorWindow;
+import userInterface.bigDataWindow.BigDataWindow;
 import userInterface.combinationWindow.CombinationWindow;
 import userInterface.dateSetting.DateWindow;
 import userInterface.keyboard.Keyboard;
+import userInterface.prompt.PromptWindow;
 import userInterface.sensorsWindow.SensorsWindow;
 import userInterface.tareWindow.TareWindow;
 import userInterface.timeWindow.TimeWindow;
@@ -51,26 +56,21 @@ public class MainWindowController implements Initializable {
 	// not FXML
 	private ReadingsLogger readingsLogger;
 	private ChartData chartData;
+	private BigDataWindow dataWindow = new BigDataWindow();
 	private boolean saveToFile = false;
 	private String fileName = null;
-	BooleanProperty menuDisable = new SimpleBooleanProperty(false);
+	BooleanProperty menuDisableProperty = new SimpleBooleanProperty(false);
 	// ROOT
 	@FXML
 	AnchorPane root;
-	// ComboBox
 	@FXML
-	ComboBox<Sensorable> comboChartTop;
-	@FXML
-	ComboBox<Sensorable> comboChartBottom;
+	GridPane gridPaneMaster;
+
 	// Chart
 	ChartCanvas chartTop;
 
-	ChartCanvas chartBottom;
-
 	@FXML
 	GridPane gridChartTop;
-	@FXML
-	GridPane gridChartBottom;
 	// Time display
 	@FXML
 	Text textTimeValue;
@@ -113,7 +113,25 @@ public class MainWindowController implements Initializable {
 	@FXML
 	MenuItem menuActionCleanAll;
 	@FXML
+	CheckMenuItem menuActionSaveState;
+	@FXML
+	Menu menuSystem;
+	@FXML
 	MenuItem menuSystemDate;
+	@FXML
+	MenuItem menuSystemReboot;
+	@FXML
+	MenuItem menuSystemShutdown;
+	@FXML
+	MenuItem menuSystemUpdate;
+	@FXML
+	MenuItem menuChartClear;
+	@FXML
+	CheckMenuItem menuChartShowPane;
+	@FXML
+	CheckMenuItem menuChartShowWindow;
+	@FXML
+	Menu menuChartItems;
 
 	// Sensors real-time info
 	@FXML
@@ -127,24 +145,25 @@ public class MainWindowController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// set font
-		DoubleProperty fontSize = new SimpleDoubleProperty(8); // font size in pt
+		DoubleProperty fontSize = new SimpleDoubleProperty(12); // font size in pt
 		root.styleProperty().bind(Bindings.format("-fx-font-size: %.2fpt;", fontSize));
 		// set chart properties
 		chartTop = ChartCreator.getChart(gridChartTop);
-		chartBottom = ChartCreator.getChart(gridChartBottom);
 		// initialize chart data arrays database
-		chartData = ChartData.getInstance(chartTop, chartBottom);
+		chartData = ChartData.getInstance(menuChartShowPane, dataWindow);
 		// connect timeValue with PaneFactory holding data
 		SensorPaneFactory.setTimeTextValue(textTimeValue);
+		setGridColumnSize(gridPaneMaster, 0, 2);
 
 		initializeElements();
 
 		// disable stop button
-		buttonStop.setDisable(true);
+		buttonStop.disableProperty().bind(menuDisableProperty.not());
+		buttonStart.disableProperty().bind(menuDisableProperty);
 		// menu items binding
-		menuSettings.disableProperty().bind(menuDisable);
-		menuPendrive.disableProperty().bind(menuDisable);
-		menuAction.disableProperty().bind(menuDisable.not());
+		menuSettings.disableProperty().bind(menuDisableProperty);
+		menuPendrive.disableProperty().bind(menuDisableProperty);
+		menuSystem.disableProperty().bind(menuDisableProperty);
 	}
 
 	/**
@@ -152,13 +171,20 @@ public class MainWindowController implements Initializable {
 	 * Method should be used whenever measurement's objects set changes.
 	 */
 	public void initializeElements() {
+
+		// set chart data points
+		chartData.setDataPoints(TimeStamp.getInstance().getChartPoints());
 		// actualize chartData map
 		chartData.actualizeSeries();
 
-		// Set comboBox items list
-		ArrayList<Sensorable> dataList = new ArrayList<>(chartData.dataMap.keySet());
-		comboChartTop.setItems(FXCollections.observableList(dataList));
-		comboChartBottom.setItems(FXCollections.observableList(dataList));
+		// Set menu items list from which chart data can be chosen
+		menuChartItems.getItems().clear();
+		for (Sensorable sens : chartData.dataMap.keySet()) {
+			CheckMenuItem menuItem = new CheckMenuItem(sens.getName());
+			menuItem.setUserData(sens);
+			menuItem.setOnAction(this::selectChartItem);
+			menuChartItems.getItems().add(menuItem);
+		}
 
 		// reset time units and value
 		textTimeValue.setText(".");
@@ -169,31 +195,41 @@ public class MainWindowController implements Initializable {
 		for (Sensorable sensor : chartData.dataMap.keySet()) {
 			vboxSensors.getChildren().add(SensorPaneFactory.createPane(sensor));
 		}
+
 	}
 
-	/**
-	 * Changes chart info and data on selection from ComboBox
-	 * 
-	 * @param event
-	 */
-	@FXML
-	public synchronized void comboSelection(ActionEvent event) {
-		if (event.getSource().equals(comboChartTop)) {
-			Sensorable measuredData = comboChartTop.getValue();
-			if (measuredData == comboChartBottom.getValue() || measuredData == null) {
-				return;
+	public Sensorable getSelectedChartSens() {
+		Sensorable item = null;
+		for (MenuItem menuItem : menuChartItems.getItems()) {
+			CheckMenuItem checkItem = (CheckMenuItem) menuItem;
+			if (checkItem.isSelected()) {
+				item = (Sensorable) checkItem.getUserData();
 			}
-			ChartCreator.changeSeries(chartTop, measuredData, chartData.dataMap.get(measuredData));
-			ChartCreator.actualizeChart(chartTop);
+		}
 
-		} else if (event.getSource().equals(comboChartBottom)) {
-			Sensorable measuredData = comboChartBottom.getValue();
-			if (measuredData == comboChartTop.getValue() || measuredData == null) {
-				return;
-			}
+		return item;
+	}
 
-			ChartCreator.changeSeries(chartBottom, measuredData, chartData.dataMap.get(measuredData));
-			ChartCreator.actualizeChart(chartBottom);
+	public void selectChartItem(ActionEvent event) {
+
+		for (MenuItem menuItem : menuChartItems.getItems()) {
+			CheckMenuItem checkItem = (CheckMenuItem) menuItem;
+			checkItem.setSelected(false);
+		}
+
+		CheckMenuItem menuItem = (CheckMenuItem) event.getSource();
+		menuItem.setSelected(true);
+
+		if (menuItem.getUserData() == null) {
+			return;
+		}
+		Sensorable chartItem = (Sensorable) menuItem.getUserData();
+
+		ChartCreator.changeSeries(chartTop, chartItem, chartData.dataMap.get(chartItem));
+		ChartCreator.actualizeChart(chartTop);
+
+		if (dataWindow.isOpen()) {
+			dataWindow.refresh(chartItem);
 		}
 	}
 
@@ -201,70 +237,38 @@ public class MainWindowController implements Initializable {
 	 * Button Start/Stop - launching and stopping reading data.
 	 * 
 	 * @param event
+	 * @throws ProgramException
 	 */
 	@FXML
-	public void buttonPress(ActionEvent event) {
+	public void buttonPress(ActionEvent event) throws ProgramException {
 		if (event.getSource().equals(buttonStart)) {
 			// clean all data series, for new measurements to come
 			chartData.cleanSeries();
+			// if last state should not be saved, clear it
+			if (!menuActionSaveState.isSelected()) {
+				SensorFactory.clearState();
+			}
 
-			menuDisable.set(true);
-
-			buttonStart.setDisable(true);
-			// enable STOP button
-			buttonStop.setDisable(false);
+			menuDisableProperty.set(true);
 
 			readingsLogger = new ReadingsLogger(saveToFile, fileName);
 			Thread thread = new Thread(readingsLogger, "ReadingsLogger");
 			thread.start();
 
 		} else if (event.getSource().equals(buttonStop)) {
-			menuDisable.set(false);
+			menuDisableProperty.set(false);
 
-			buttonStart.setDisable(false);
-			// disable STOP button
-			buttonStop.setDisable(true);
 			readingsLogger.stop();
 		}
 	}
 
-	/**
-	 * Reacts on actions done in MenuBar.
-	 * 
-	 * @param event
-	 */
 	@FXML
-	public void clickMenuItem(ActionEvent event) {
+	public void clickMenuItemSettings(ActionEvent event) {
 		MenuItem menuItem = (MenuItem) event.getSource();
 
 		if (menuItem == menuSettingsSave) {
 			Xml.saveXml();
-			System.out.println("saved");
-		} else if (menuItem == menuPendriveSave) {
-			if (saveToFile == false) {
-				saveToFile = true;
-				labelSaving.setTextFill(Color.GREEN);
-				labelSaving.setText("TAK");
-			} else {
-				saveToFile = false;
-				labelSaving.setTextFill(Color.RED);
-				labelSaving.setText("BRAK");
-			}
-		} else if (menuItem == menuPendriveUnmount) {
-			PendriveKeeper.getInstance().orderUnmount();
-		} else if (menuItem == menuPendriveFileName) {
-			Keyboard keyboard;
-			if (fileName == null) {
-				keyboard = new Keyboard(
-						"Pomiar_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")));
-			} else {
-				keyboard = new Keyboard(fileName);
-			}
-			keyboard.display((Node) menuBar);
-			// check if user has not cancelled the input
-			if (keyboard.getText() != null) {
-				fileName = keyboard.getText();
-			}
+			PromptWindow.getPrompt(menuBar, "Zapisano!");
 		} else if (menuItem == menuSettingsSensors) {
 			SensorsWindow sensorsWindow = new SensorsWindow((Node) menuBar);
 			sensorsWindow.openWindow();
@@ -281,23 +285,113 @@ public class MainWindowController implements Initializable {
 			AddSensorWindow addSensorWindow = new AddSensorWindow((Node) menuBar);
 			addSensorWindow.openWindow();
 			initializeElements();
-		} else if (menuItem == menuActionTare) {
-			TareWindow tareWindow = new TareWindow((Node) menuBar, comboChartTop.getValue());
+		}
+	}
+
+	@FXML
+	public void clickMenuItemPendrive(ActionEvent event) {
+		MenuItem menuItem = (MenuItem) event.getSource();
+
+		if (menuItem == menuPendriveSave) {
+			if (saveToFile == false) {
+				saveToFile = true;
+				labelSaving.setTextFill(Color.GREEN);
+				labelSaving.setText("DO ZAPISU");
+			} else {
+				saveToFile = false;
+				labelSaving.setTextFill(Color.RED);
+				labelSaving.setText("BRAK ZAPISU");
+			}
+		} else if (menuItem == menuPendriveUnmount) {
+			PendriveKeeper.getInstance().orderUnmount();
+		} else if (menuItem == menuPendriveFileName) {
+			Keyboard keyboard;
+			if (fileName == null) {
+				keyboard = new Keyboard(
+						"Pomiar_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")));
+			} else {
+				keyboard = new Keyboard(fileName);
+			}
+			keyboard.display((Node) menuBar);
+			// check if user has not cancelled the input
+			if (keyboard.getText() != null) {
+				fileName = keyboard.getText();
+			}
+		}
+	}
+
+	@FXML
+	public void clickMenuItemSystem(ActionEvent event) {
+		MenuItem menuItem = (MenuItem) event.getSource();
+
+		if (menuItem == menuSystemDate) {
+			DateWindow dateWindow = new DateWindow((Node) menuBar);
+			dateWindow.openWindow();
+		} else if (menuItem == menuSystemReboot) {
+			String text = "Uruchomic ponownie?";
+			if (PromptWindow.getPrompt(menuBar, text)) {
+				PendriveMount.executeCommand("sudo shutdown -r now");
+			}
+		} else if (menuItem == menuSystemShutdown) {
+			String text = "Wylaczyc system?";
+			if (PromptWindow.getPrompt(menuBar, text)) {
+				PendriveMount.executeCommand("sudo shutdown -h now");
+			}
+		} else if (menuItem == menuSystemUpdate) {
+			String text = "Aktualizowac? \n Wymagane polaczenie z internetem: \n "
+					+ "Postawic siec o SSID: raspberry_wifi \n i hasle: raspberry1";
+			if (PromptWindow.getPrompt(menuBar, text)) {
+				PendriveMount.executeCommand("~/update.sh");
+			}
+		}
+	}
+
+	@FXML
+	public void clickMenuItemAction(ActionEvent event) {
+		MenuItem menuItem = (MenuItem) event.getSource();
+
+		if (menuItem == menuActionTare) {
+
+			TareWindow tareWindow = new TareWindow((Node) menuBar, getSelectedChartSens());
 			tareWindow.openWindow();
 		} else if (menuItem == menuActionClean) {
-			if (comboChartTop.getValue() != null) {
-				comboChartTop.getValue().setMax(null);
-				comboChartTop.getValue().setMin(null);
+			if (getSelectedChartSens() != null) {
+				getSelectedChartSens().setMax(null);
+				getSelectedChartSens().setMin(null);
 			}
 		} else if (menuItem == menuActionCleanAll) {
 			for (Sensorable component : ChartData.getInstance().dataMap.keySet()) {
 				component.setMax(null);
 				component.setMin(null);
 			}
-		} else if (menuItem == menuSystemDate) {
-			DateWindow dateWindow = new DateWindow((Node) menuBar);
-			dateWindow.openWindow();
 		}
+	}
+
+	@FXML
+	public void clickMenuItemChart(ActionEvent event) {
+		MenuItem menuItem = (MenuItem) event.getSource();
+
+		if (menuItem == menuChartShowPane) {
+			if (menuChartShowPane.isSelected()) {
+				setGridColumnSize(gridPaneMaster, 0, 200);
+			} else {
+				setGridColumnSize(gridPaneMaster, 0, 2);
+			}
+		} else if (menuItem == menuChartShowWindow) {
+			if (menuChartShowWindow.isSelected()) {
+				dataWindow.openWindow(getSelectedChartSens(), (Stage) menuBar.getScene().getWindow());
+			} else {
+				dataWindow.closeWindow();
+			}
+		} else if (menuItem == menuChartClear) {
+			this.chartData.cleanSeries();
+		}
+	}
+
+	private void setGridColumnSize(GridPane grid, int column, int size) {
+		grid.getColumnConstraints().get(column).setMaxWidth(size);
+		grid.getColumnConstraints().get(column).setPrefWidth(size);
+		grid.getColumnConstraints().get(column).setMinWidth(size);
 	}
 
 	/**
@@ -308,10 +402,10 @@ public class MainWindowController implements Initializable {
 	public void changePendriveMountStatus(boolean flag) {
 		if (flag == true) {
 			labelPendrive.setTextFill(Color.GREEN);
-			labelPendrive.setText("OBECNY");
+			labelPendrive.setText("OBECNY PENDRIVE");
 		} else {
 			labelPendrive.setTextFill(Color.RED);
-			labelPendrive.setText("BRAK");
+			labelPendrive.setText("BRAK PENDRIVE");
 		}
 	}
 }

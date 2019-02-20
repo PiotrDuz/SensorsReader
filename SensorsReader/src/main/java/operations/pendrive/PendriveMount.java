@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Mounting, unmounting, detecting pendrive.<br>
@@ -41,7 +42,7 @@ public class PendriveMount {
 		String command = "sudo umount " + deviceAddress;
 		Boolean status = false;
 
-		BufferedReader output = this.executeCommand(command);
+		BufferedReader output = PendriveMount.executeCommand(command);
 		try {
 			if (output.readLine() == null) {
 				status = true;
@@ -59,8 +60,7 @@ public class PendriveMount {
 	 * Mounts drive for provided address. <br>
 	 * Mounting point specified by MOUNT_POINT in Const
 	 * 
-	 * @param address
-	 *            Address of device to be mounted
+	 * @param address Address of device to be mounted
 	 * @return If true, mounting successful. False means some errors.
 	 */
 	public Boolean mountDrive(String address) {
@@ -68,7 +68,7 @@ public class PendriveMount {
 		String command = "sudo mount -t vfat " + deviceAddress + " " + MOUNT_POINT + " -o uid=1000,gid=1000,umask=022";
 		Boolean status = false;
 
-		BufferedReader output = this.executeCommand(command);
+		BufferedReader output = PendriveMount.executeCommand(command);
 		try {
 			if (output.readLine() == null) {
 				status = true;
@@ -132,8 +132,7 @@ public class PendriveMount {
 	/**
 	 * Executes bash command
 	 * 
-	 * @param command
-	 *            Bash command to be executed
+	 * @param command Bash command to be executed
 	 * @return BufferedReader containing terminal's answer for a command
 	 */
 	public static BufferedReader executeCommand(String command) {
@@ -147,7 +146,7 @@ public class PendriveMount {
 			outputStreamWriter.write(command);
 			outputStreamWriter.close();
 
-			bash.waitFor();
+			bash.waitFor(3, TimeUnit.SECONDS);
 			readerOutput = new BufferedReader(new InputStreamReader(bash.getInputStream()));
 		} catch (Exception e) {
 			System.out.println(e);

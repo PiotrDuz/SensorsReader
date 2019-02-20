@@ -1,11 +1,11 @@
-package  operations.sensors.combination;
+package operations.sensors.combination;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class for holding {@link CombinationData} parameters and save them in XML.
@@ -21,21 +21,30 @@ public class CombinationData {
 	private int iD;
 	private double zeroValue;
 	private boolean isCharted;
+	private String choosenVar;
 
 	private ArrayList<Variable> variableList = new ArrayList<>();
 
-	public void insertVariableMap(HashMap<String, Double> map) {
+	public void insertVariableMap(HashMap<String, Variable> map) {
 		for (String varName : map.keySet()) {
-			variableList.add(new Variable(varName, map.get(varName)));
+			variableList.add(map.get(varName));
 		}
 	}
 
-	public HashMap<String, Double> getVariableMap() {
-		HashMap<String, Double> map = new HashMap<>();
+	public HashMap<String, Variable> getVariableMap() {
+		HashMap<String, Variable> map = new HashMap<>();
 		for (Variable var : variableList) {
-			map.put(var.getName(), var.getValue());
+			map.put(var.getName(), var);
 		}
 		return map;
+	}
+
+	public String getChoosenVar() {
+		return choosenVar;
+	}
+
+	public void setChoosenVar(String choosenVar) {
+		this.choosenVar = choosenVar;
 	}
 
 	public String getName() {
@@ -70,8 +79,7 @@ public class CombinationData {
 	}
 
 	/**
-	 * @param zeroValue
-	 *            the zeroValue to set
+	 * @param zeroValue the zeroValue to set
 	 */
 	public void setZeroValue(double zeroValue) {
 		this.zeroValue = zeroValue;
@@ -85,8 +93,7 @@ public class CombinationData {
 	}
 
 	/**
-	 * @param isCharted
-	 *            the isCharted to set
+	 * @param isCharted the isCharted to set
 	 */
 	public void setCharted(boolean isCharted) {
 		this.isCharted = isCharted;

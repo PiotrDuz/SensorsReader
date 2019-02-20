@@ -1,10 +1,15 @@
-package  operations.arduino;
+package operations.arduino;
 
-import com.fazecast.jSerialComm.*;
 import java.io.IOException;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.apache.log4j.Logger;
+
+import com.fazecast.jSerialComm.SerialPort;
+
+import application.ProgramException;
 
 /**
  * Class that interacts with Arduino microcontroller. <br>
@@ -14,9 +19,11 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Piotr Duzniak
  */
 @XmlRootElement(name = "Arduino")
-public class Arduino {
+public class Arduino implements AutoCloseable {
+	@XmlTransient
+	final static Logger logger = Logger.getLogger(Arduino.class);
 
-	private String DEVICE_ID; // ch341
+	private String DEVICE_ID = "Serial"; // ch341
 	@XmlTransient
 	protected SerialPort port;
 	@XmlTransient
@@ -59,7 +66,7 @@ public class Arduino {
 	 * Sets timeout (read_blocking), speed (115200 baud) 8bit, 1 stop, noparity
 	 */
 	private void initialize() {
-		port = getComm();
+		port = getComm(DEVICE_ID);
 		port.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 1, 1);
 		port.setComPortParameters(115200, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY);
 	}
@@ -68,28 +75,35 @@ public class Arduino {
 	 * Opens USB COM port and waits 3 seconds to initialize.
 	 * <p>
 	 * Port has to be closed with {@link Arduino#close()} after using !
+	 * 
+	 * @throws ProgramException
 	 */
-	public void open() {
-		port.openPort();
+	public void open() throws ProgramException {
+		if (!port.openPort()) {
+			throw new ProgramException("Serial port could not be opened");
+		}
 		delay(3000);
 	}
 
 	/**
 	 * Close serial port.
+	 * 
+	 * @throws ProgramException
 	 */
-	public void close() {
-		port.closePort();
+	public void close() throws ProgramException {
+		if (!port.closePort()) {
+			throw new ProgramException("Port has not been closed properly");
+		}
 	}
 
 	/**
 	 * Takes byte array and converts 4 consecutive bytes to int.
 	 * <p>
-	 * Start point defines from which index start taking 4 bytes.
+	 * Start point defines from which index start taking 4 bytes. <br>
+	 * Bytes should be oriented MSB first.
 	 *
-	 * @param array
-	 *            Byte array
-	 * @param start
-	 *            Start point
+	 * @param array Byte array
+	 * @param start Array's index from which to start conversion
 	 * @return int Number
 	 */
 	public static int byteToInt(byte[] array, int start) {
@@ -101,9 +115,16 @@ public class Arduino {
 		} else {
 			limit = start + 4;
 		}
+
+		// MSB first
+		int j = 4;
 		for (int i = start; i < limit; i++) {
-			result = result | ((0xFF & array[i]) << 8 * i);
+			// byte value as int
+			int tempInt = (0xFF & array[i]);
+			int shift = 8 * --j;
+			result = result | (tempInt << shift);
 		}
+
 		return result;
 	}
 
@@ -112,7 +133,7 @@ public class Arduino {
 	 * 
 	 * @param i
 	 */
-	public void delay(int i) {
+	public static void delay(int i) {
 		try {
 			Thread.sleep(i);
 		} catch (InterruptedException exc) {
@@ -139,10 +160,8 @@ public class Arduino {
 	 * <p>
 	 * Number of bytes written can be controlled.
 	 * 
-	 * @param c
-	 *            int number
-	 * @param quantity
-	 *            number of bytes to write (starting from least significant)
+	 * @param c        int number
+	 * @param quantity number of bytes to write (starting from least significant)
 	 */
 	public void write(int c, int quantity) {
 
@@ -159,8 +178,7 @@ public class Arduino {
 	 * <p>
 	 * Method will wait for bytes arrival 1s.
 	 * 
-	 * @param quantity
-	 *            How many bytes to read
+	 * @param quantity How many bytes to read
 	 * @return Bytes array or throws IOException if port doesn't have specified
 	 *         number of bytes
 	 */
@@ -168,16 +186,16 @@ public class Arduino {
 		byte buffer[] = new byte[quantity];
 
 		int i = 0;
-		while (port.bytesAvailable() < quantity && i < 1000) {
-			try {
-				Thread.sleep(1);
-				i++;
-			} catch (InterruptedException exc) {
-				System.out.println(exc);
+		// wait for whole packet to arrive. Throw exception on timeout
+		while (port.bytesAvailable() < quantity && i < 1001) {
+
+			// wait 2ms
+			Arduino.delay(2);
+
+			if (i > 999) {
+				throw new IOException("No bytes in port");
 			}
-		}
-		if (i > 999) {
-			throw new IOException("No bytes in port");
+			i++;
 		}
 
 		port.readBytes(buffer, quantity);
@@ -191,10 +209,12 @@ public class Arduino {
 	 * 
 	 * @return SerialPort object or null if not found
 	 */
-	public SerialPort getComm() {
+	public SerialPort getComm(String devId) {
 		SerialPort[] ports = SerialPort.getCommPorts();
 		for (SerialPort port : ports) {
-			if (port.getDescriptivePortName().contains(DEVICE_ID)) {
+			logger.info("Ports available: " + port.getDescriptivePortName());
+			if (port.getDescriptivePortName().contains(devId)) {
+				logger.info("Chosen port: " + port.getDescriptivePortName());
 				return port;
 			}
 		}

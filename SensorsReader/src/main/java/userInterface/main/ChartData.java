@@ -1,20 +1,21 @@
-package  userInterface.main;
+package userInterface.main;
 
 import java.util.LinkedHashMap;
-
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.jfree.chart.fx.ChartCanvas;
 import org.jfree.data.xy.XYSeries;
 
 import javafx.application.Platform;
-import  operations.sensors.Measurable;
-import  operations.sensors.SensorFactory;
-import  operations.sensors.Sensorable;
-import  operations.sensors.TimeStamp;
-import  operations.sensors.SensorFactory.SensorType;
-import  operations.sensors.combination.SensorCombinationFactory;
-import  userInterface.main.SensorPaneFactory.PaneValues;
+import javafx.scene.control.CheckMenuItem;
+import operations.sensors.Measurable;
+import operations.sensors.SensorFactory;
+import operations.sensors.SensorFactory.SensorType;
+import operations.sensors.Sensorable;
+import operations.sensors.TimeStamp;
+import operations.sensors.combination.SensorCombination;
+import operations.sensors.combination.SensorCombinationFactory;
+import userInterface.bigDataWindow.BigDataWindow;
+import userInterface.main.SensorPaneFactory.PaneValues;
 
 /**
  * Class responsible for holding and handling data series that are displayed on
@@ -25,15 +26,15 @@ import  userInterface.main.SensorPaneFactory.PaneValues;
  *
  */
 public class ChartData {
-	private int dataPointsNumber = 800;
-	private int speedPointsNumber = 5;
 	static private ChartData chartData;
-	// multithreaded data
-	private volatile Boolean isBusy = false;
-	private volatile Boolean chartTickTock = false;
 
-	ChartCanvas chartTop;
-	ChartCanvas chartBottom;
+	private int dataPointsNumber = 36000;
+	private int speedPointsNumber = 5;
+
+	private CheckMenuItem paneVisibility;
+	private BigDataWindow dataWindow;
+	// is chart refreshing thread still working?
+	private volatile Boolean isBusy = false;
 
 	/**
 	 * Holds XYChart.Series data series corresponding to every {@link Sensor},
@@ -41,9 +42,17 @@ public class ChartData {
 	 */
 	public final ConcurrentHashMap<Sensorable, XYSeries> dataMap = new ConcurrentHashMap<>();
 
-	public static ChartData getInstance(ChartCanvas combo1, ChartCanvas combo2) {
+	/**
+	 * Method to initialize singleton with references to data windows that wil be
+	 * actualized
+	 * 
+	 * @param paneVisibility
+	 * @param dataWindow
+	 * @return
+	 */
+	public static ChartData getInstance(CheckMenuItem paneVisibility, BigDataWindow dataWindow) {
 		if (chartData == null) {
-			chartData = new ChartData(combo1, combo2);
+			chartData = new ChartData(paneVisibility, dataWindow);
 		}
 		return chartData;
 	}
@@ -52,9 +61,9 @@ public class ChartData {
 		return ChartData.getInstance(null, null);
 	}
 
-	private ChartData(ChartCanvas combo1, ChartCanvas combo2) {
-		this.chartTop = combo1;
-		this.chartBottom = combo2;
+	private ChartData(CheckMenuItem paneVisibility, BigDataWindow dataWindow) {
+		this.paneVisibility = paneVisibility;
+		this.dataWindow = dataWindow;
 	}
 
 	/**
@@ -74,33 +83,34 @@ public class ChartData {
 				@Override
 				public void run() {
 					for (Sensorable measurement : dataMap.keySet()) {
-
+						// add new point to chart data array
 						XYSeries dataList = dataMap.get(measurement);
-						dataList.add(map.get(TimeStamp.getInstance()), map.get((Measurable) measurement));
-						// actualize time
-						SensorPaneFactory.getTimeTextValue().setText(map.get(TimeStamp.getInstance()).toString());
-						// actualize Panes values
-						PaneValues paneValues = SensorPaneFactory.mapPane.get(measurement);
+						dataList.add(map.get(measurement.getXAxis()), map.get(measurement));
 
-						paneValues.setValue(map.get((Measurable) measurement));
-						paneValues.setMax(measurement.getMax());
-						paneValues.setMin(measurement.getMin());
-						if (dataList.getItemCount() >= speedPointsNumber) {
-							double dTime = dataList.getDataItem(dataList.getItemCount() - 1).getXValue()
-									- dataList.getDataItem(dataList.getItemCount() - speedPointsNumber).getXValue();
-							double dMeasurement = dataList.getDataItem(dataList.getItemCount() - 1).getYValue()
-									- dataList.getDataItem(dataList.getItemCount() - speedPointsNumber).getYValue();
-							paneValues.setSpeed(dMeasurement / dTime);
+						if (dataWindow.isOpen() && dataWindow.getSensor() == measurement) {
+							dataWindow.setText(map.get(measurement.getXAxis()), map.get(measurement));
+						}
+
+						if (paneVisibility.isSelected()) {
+							// actualize time
+							SensorPaneFactory.getTimeTextValue().setText(map.get(TimeStamp.getInstance()).toString());
+							// actualize Panes values
+							PaneValues paneValues = SensorPaneFactory.mapPane.get(measurement);
+
+							paneValues.setValue(map.get(measurement));
+							paneValues.setMax(measurement.getMax());
+							paneValues.setMin(measurement.getMin());
+							// speed calculations
+							if (dataList.getItemCount() >= speedPointsNumber) {
+								double dTime = dataList.getDataItem(dataList.getItemCount() - 1).getXValue()
+										- dataList.getDataItem(dataList.getItemCount() - speedPointsNumber).getXValue();
+								double dMeasurement = dataList.getDataItem(dataList.getItemCount() - 1).getYValue()
+										- dataList.getDataItem(dataList.getItemCount() - speedPointsNumber).getYValue();
+								paneValues.setSpeed(dMeasurement / dTime);
+							}
 						}
 					}
-					//
-					if (chartTickTock == false) {
-						ChartCreator.actualizeChart(chartTop);
-						chartTickTock = true;
-					} else {
-						ChartCreator.actualizeChart(chartBottom);
-						chartTickTock = false;
-					}
+
 					isBusy = false;
 				}
 			});
@@ -151,5 +161,13 @@ public class ChartData {
 		for (XYSeries series : dataMap.values()) {
 			series.clear();
 		}
+	}
+
+	public void setDataPoints(int points) {
+		this.dataPointsNumber = points;
+	}
+
+	public int getDataPoints() {
+		return this.dataPointsNumber;
 	}
 }

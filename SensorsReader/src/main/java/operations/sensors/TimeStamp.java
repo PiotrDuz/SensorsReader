@@ -1,8 +1,7 @@
-package  operations.sensors;
+package operations.sensors;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -21,6 +20,8 @@ public class TimeStamp implements Measurable {
 	private String name = "time";
 	private String unit = "s";
 	private double scale = 1000.0;
+	private double savePeriod = 0.0;
+	private int chartPoints = 1000;
 
 	public static TimeStamp getInstance() {
 		if (stamp == null) {
@@ -78,6 +79,23 @@ public class TimeStamp implements Measurable {
 
 	public Double getZeroValue() {
 		return 0.0;
+	}
+
+	public Double getSavePeriod() {
+		return savePeriod;
+	}
+
+	public void setSavePeriod(double saveFrequency) {
+
+		this.savePeriod = saveFrequency;
+	}
+
+	public Integer getChartPoints() {
+		return this.chartPoints;
+	}
+
+	public void setChartPoints(int chartPeriod) {
+		this.chartPoints = chartPeriod;
 	}
 
 	/*

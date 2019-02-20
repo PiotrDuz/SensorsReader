@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Keyboard {
 	private KeyboardController keyboardController;
@@ -20,8 +21,7 @@ public class Keyboard {
 
 	public void display(Node node) {
 		try {
-			FXMLLoader loader = new FXMLLoader(
-					getClass().getClassLoader().getResource("main/resources/gui/Keyboard.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gui/Keyboard.fxml"));
 			loader.setController(keyboardController);
 			Parent root = loader.load();
 			Scene scene1 = new Scene(root);
@@ -30,6 +30,7 @@ public class Keyboard {
 			newWindow.initModality(Modality.WINDOW_MODAL);
 			newWindow.setTitle("Keyboard");
 			newWindow.setScene(scene1);
+			newWindow.initStyle(StageStyle.UNDECORATED);
 			newWindow.showAndWait();
 		} catch (Exception e) {
 			e.printStackTrace();

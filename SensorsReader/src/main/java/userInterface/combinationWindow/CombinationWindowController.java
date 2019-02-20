@@ -1,4 +1,4 @@
-package  userInterface.combinationWindow;
+package userInterface.combinationWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,9 +16,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import  operations.sensors.combination.SensorCombination;
-import  operations.sensors.combination.SensorCombinationFactory;
-import  userInterface.keyboard.Keyboard;
+import operations.sensors.combination.SensorCombination;
+import operations.sensors.combination.SensorCombinationFactory;
+import operations.sensors.combination.Variable;
+import userInterface.keyboard.Keyboard;
 
 public class CombinationWindowController implements Initializable {
 	@FXML
@@ -53,20 +54,37 @@ public class CombinationWindowController implements Initializable {
 		textFieldUnit.setText(comboBox.getValue().getUnit());
 		textFieldTare.setText(comboBox.getValue().getZeroValueScaled().toString());
 		checkIsCharted.setSelected(comboBox.getValue().isCharted());
+
 		// clear grid
 		gridPaneValues.getChildren().clear();
 		SensorCombination combination = comboBox.getValue();
+
 		// set equation
 		labelEquation.setText(combination.equationText());
+
 		// fill grid with new variables
 		int rowCount = gridPaneValues.getRowCount();
 		for (String varName : combination.getVariables().keySet()) {
+			Variable var = combination.getVariables().get(varName);
+			// label - variable name
 			Label label = new Label(varName);
 			TextField textField = new TextField();
-			textField.setText(combination.getVariables().get(varName).toString());
+			// text field initial value is currently set variable value
+			textField.setText(var.getValue().toString());
+			// attach event to text field
 			textField.setOnMouseClicked(this::textFieldGridClick);
-			gridPaneValues.add(label, 0, rowCount - 1);
-			gridPaneValues.add(textField, 1, rowCount - 1);
+			// add label and text field to grid
+			gridPaneValues.add(label, 1, rowCount - 1);
+			gridPaneValues.add(textField, 2, rowCount - 1);
+			if (var.isActivable()) {
+				CheckBox checkBox = new CheckBox();
+				checkBox.setOnMouseClicked(this::clickCheckBox);
+				if (var.getName().equals(comboBox.getValue().getChosenVar())) {
+					checkBox.setSelected(true);
+				}
+				gridPaneValues.add(checkBox, 0, rowCount - 1);
+			}
+
 			rowCount++;
 		}
 	}
@@ -76,6 +94,49 @@ public class CombinationWindowController implements Initializable {
 		if (event.getSource().equals(buttonExit)) {
 			Stage stage = (Stage) buttonExit.getScene().getWindow();
 			stage.close();
+		}
+	}
+
+	public void clickCheckBox(MouseEvent event) {
+		CheckBox currBox = (CheckBox) event.getSource();
+		// uncheck any check box
+		ObservableList<Node> children = gridPaneValues.getChildren();
+		for (Node node : children) {
+			// check boxes are column 0
+			if (GridPane.getColumnIndex(node) == 0) {
+				CheckBox gridBox = (CheckBox) node;
+				gridBox.setSelected(false);
+			}
+		}
+		// set current box as selected
+		currBox.setSelected(true);
+		// find which variable this checkbox references
+		Label labelVar = (Label) getGridObject(currBox, 1);
+		// set combination current variable
+		SensorCombination comb = comboBox.getValue();
+		comb.setChosenVar(labelVar.getText());
+	}
+
+	/**
+	 * 
+	 * @param rowObject
+	 * @param columnToRetrieve
+	 * @return
+	 */
+	public <T> Node getGridObject(T rowObject, int columnToRetrieve) {
+		int rowNumber = GridPane.getRowIndex((Node) rowObject);
+		Node object = null;
+		ObservableList<Node> children = gridPaneValues.getChildren();
+		for (Node node : children) {
+
+			if (GridPane.getRowIndex(node) == rowNumber && GridPane.getColumnIndex(node) == columnToRetrieve) {
+				object = node;
+			}
+		}
+		if (object != null) {
+			return object;
+		} else {
+			return null;
 		}
 	}
 
@@ -96,21 +157,16 @@ public class CombinationWindowController implements Initializable {
 				number = Double.parseDouble(keyboard.getText());
 			} catch (NumberFormatException exc) {
 				System.out.println(exc);
+				// if not number then return
 				return;
 			}
 			// find the row number in grid and return label of the same row
-			int rowNumber = GridPane.getRowIndex((Node) field);
-			Node label = null;
-			ObservableList<Node> children = gridPaneValues.getChildren();
-			for (Node node : children) {
-				if (GridPane.getRowIndex(node) == rowNumber && GridPane.getColumnIndex(node) == 0) {
-					label = node;
-				}
-			}
-			String varName = ((Label) label).getText();
+			Label varLabel = (Label) getGridObject(field, 1);
+			String varName = varLabel.getText();
 			// get CombinationData object and set its variable value
-			comboBox.getValue().getVariables().put(varName, number);
-
+			Variable var = comboBox.getValue().getVariables().get(varName);
+			var.setValue(number);
+			// set provided value in textField
 			field.setText(keyboard.getText());
 		}
 	}
@@ -144,7 +200,7 @@ public class CombinationWindowController implements Initializable {
 				if (parsable == false) {
 					return;
 				}
-				comboBox.getValue().setZeroValueScaled(number);
+				comboBox.getValue().setZeroValueScaledRemembered(number);
 			}
 			field.setText(keyboard.getText());
 		}

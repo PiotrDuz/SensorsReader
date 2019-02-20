@@ -1,14 +1,11 @@
-package  operations.sensors.combination;
+package operations.sensors.combination;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import javax.xml.bind.annotation.XmlTransient;
-
-import  operations.sensors.Measurable;
-import  operations.sensors.Sensor;
-import  operations.sensors.Sensorable;
+import operations.sensors.Measurable;
+import operations.sensors.Sensor;
+import operations.sensors.Sensorable;
 
 /**
  * Class for defining non-linear transformation from raw measurement to final.
@@ -33,7 +30,7 @@ import  operations.sensors.Sensorable;
  *
  */
 
-public class SensorCombination implements Measurable, Sensorable {
+public class SensorCombination implements Sensorable {
 	private String name = "Comb";
 	private String unit;
 	private int iD;
@@ -44,9 +41,14 @@ public class SensorCombination implements Measurable, Sensorable {
 	protected double zeroValue = 0;
 
 	protected boolean isCharted = true;
-
-	protected ArrayList<Sensor> sensors = new ArrayList<>();
-	protected HashMap<String, Double> variables = new HashMap<>();
+	/**
+	 * Map of variables used in calculations
+	 */
+	protected HashMap<String, Variable> variables = new HashMap<>();
+	/**
+	 * Variable currently set to be chosen from radio buttons
+	 */
+	protected String choosenVar = null;
 
 	public SensorCombination() {
 	}
@@ -61,6 +63,7 @@ public class SensorCombination implements Measurable, Sensorable {
 		this.variables = data.getVariableMap();
 		this.zeroValue = data.getZeroValue();
 		this.isCharted = data.isCharted();
+		this.choosenVar = data.getChoosenVar();
 	}
 
 	public CombinationData getCombinationData() {
@@ -71,6 +74,7 @@ public class SensorCombination implements Measurable, Sensorable {
 		data.setiD(this.iD);
 		data.setZeroValue(this.zeroValue);
 		data.setCharted(this.isCharted);
+		data.setChoosenVar(this.choosenVar);
 		return data;
 	}
 
@@ -105,13 +109,8 @@ public class SensorCombination implements Measurable, Sensorable {
 		return minValue;
 	}
 
-	public SensorCombination addSensor(Sensor sensor) {
-		sensors.add(sensor);
-		return this;
-	}
-
-	public SensorCombination addVariable(String name) {
-		variables.put(name, 1.0);
+	public SensorCombination addVariable(Variable var) {
+		variables.put(var.getName(), var);
 		return this;
 	}
 
@@ -140,15 +139,23 @@ public class SensorCombination implements Measurable, Sensorable {
 		this.unit = unit;
 	}
 
+	public void setChosenVar(String var) {
+		this.choosenVar = var;
+	}
+
+	public String getChosenVar() {
+		return this.choosenVar;
+	}
+
 	public int getId() {
 		return iD;
 	}
 
-	public HashMap<String, Double> getVariables() {
+	public HashMap<String, Variable> getVariables() {
 		return variables;
 	}
 
-	public void setVariables(HashMap<String, Double> variables) {
+	public void setVariables(HashMap<String, Variable> variables) {
 		this.variables = variables;
 	}
 
@@ -171,7 +178,7 @@ public class SensorCombination implements Measurable, Sensorable {
 	/**
 	 * There is no scale, so new value is just added to old zeroValue.
 	 */
-	public synchronized void setZeroValueScaled(double number) {
+	public synchronized void setZeroValueScaledRemembered(double number) {
 		zeroValue = zeroValue + number;
 	}
 
@@ -180,6 +187,14 @@ public class SensorCombination implements Measurable, Sensorable {
 	 */
 	public Double getZeroValueScaled() {
 		return zeroValue;
+	}
+
+	public Measurable getXAxis() {
+		return null;
+	}
+
+	public Sensorable getYAxis() {
+		return null;
 	}
 
 	/*

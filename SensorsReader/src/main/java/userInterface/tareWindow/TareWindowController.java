@@ -1,4 +1,4 @@
-package  userInterface.tareWindow;
+package userInterface.tareWindow;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -11,8 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import  operations.sensors.Sensorable;
-import  userInterface.main.ChartData;
+import operations.sensors.Sensorable;
+import userInterface.main.ChartData;
 
 public class TareWindowController implements Initializable {
 	Sensorable measureComponent;
@@ -61,9 +61,9 @@ public class TareWindowController implements Initializable {
 		Button button = (Button) event.getSource();
 
 		if (button == buttonYes) {
-			measureComponent.setZeroValueScaled(value);
+			measureComponent.setZeroValueScaledRemembered(value);
 		} else if (button == buttonAll) {
-			for (Sensorable measureCompLoop : ChartData.getInstance(null, null).dataMap.keySet()) {
+			for (Sensorable measureCompLoop : ChartData.getInstance().dataMap.keySet()) {
 				XYSeries list = ChartData.getInstance().dataMap.get(measureCompLoop);
 
 				if (list.getItemCount() == 0) {
@@ -73,7 +73,7 @@ public class TareWindowController implements Initializable {
 				}
 
 				double zeroValue = getAverage(list, 10);
-				measureCompLoop.setZeroValueScaled(zeroValue);
+				measureCompLoop.setZeroValueScaledRemembered(zeroValue);
 			}
 		}
 
