@@ -1,6 +1,9 @@
 package userInterface.combinationWindow;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
@@ -64,13 +67,15 @@ public class CombinationWindowController implements Initializable {
 
 		// fill grid with new variables
 		int rowCount = gridPaneValues.getRowCount();
-		for (String varName : combination.getVariables().keySet()) {
+		// turn to list for easier sorting
+		List<String> variables = new ArrayList<>(combination.getVariables().keySet());
+		Collections.sort(variables);
+		for (String varName : variables) {
 			Variable var = combination.getVariables().get(varName);
 			// label - variable name
 			Label label = new Label(varName);
-			TextField textField = new TextField();
 			// text field initial value is currently set variable value
-			textField.setText(var.getValue().toString());
+			TextField textField = new TextField(var.getValue().toString());
 			// attach event to text field
 			textField.setOnMouseClicked(this::textFieldGridClick);
 			// add label and text field to grid

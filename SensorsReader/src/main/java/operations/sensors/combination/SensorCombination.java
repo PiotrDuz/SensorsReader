@@ -2,6 +2,7 @@ package operations.sensors.combination;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import operations.sensors.Measurable;
 import operations.sensors.Sensor;
@@ -60,10 +61,16 @@ public class SensorCombination implements Sensorable {
 	public void setCombinationData(CombinationData data) {
 		this.name = data.getName();
 		this.unit = data.getUnit();
-		this.variables = data.getVariableMap();
 		this.zeroValue = data.getZeroValue();
 		this.isCharted = data.isCharted();
 		this.choosenVar = data.getChoosenVar();
+
+		Map<String, Variable> varDataMap = data.getVariableMap();
+		for (String var : this.variables.keySet()) {
+			if (varDataMap.get(var) != null) {
+				this.variables.put(var, varDataMap.get(var));
+			}
+		}
 	}
 
 	public CombinationData getCombinationData() {

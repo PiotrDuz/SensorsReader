@@ -63,7 +63,7 @@ public class SensorCombinationFactory {
 	 */
 	private static void defineCombinations() {
 		//@formatter:off
-		//!!-!! initialize 1 object
+		//---------------------- initialize 1 object
 	
 		 combinationMap.put(size(), new SensorCombination(size()) {
 		
@@ -88,14 +88,14 @@ public class SensorCombinationFactory {
 		 }
 		 
 		 }// variables setting section:
-		 .addVariable(new Variable("Skala1",1.0,true)) //
-		 .addVariable(new Variable("Skala2",1.0,true)) //
-		 .addVariable(new Variable("Skala3",1.0,true))
-		 .addVariable(new Variable("Skala4",1.0,true))
-		 .addVariable(new Variable("Skala5",1.0,true))
+		 .addVariable(new Variable(" 10kN",1.0,true)) 
+		 .addVariable(new Variable(" 20kN",1.0,true)) 
+		 .addVariable(new Variable(" 40kN",1.0,true))
+		 .addVariable(new Variable("100kN",1.0,true))
+		 .addVariable(new Variable("150kN",1.0,true))
 		 );
  
-		//!!-!! initialize 2 object
+		//------------------------- initialize 2 object
 			
 		 combinationMap.put(size(), new SensorCombination(size()) {
 		

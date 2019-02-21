@@ -36,6 +36,7 @@ import operations.pendrive.PendriveMount;
 import operations.sensors.SensorFactory;
 import operations.sensors.Sensorable;
 import operations.sensors.TimeStamp;
+import operations.sensors.combination.SensorCombinationFactory;
 import userInterface.addSensorWindow.AddSensorWindow;
 import userInterface.bigDataWindow.BigDataWindow;
 import userInterface.combinationWindow.CombinationWindow;
@@ -76,6 +77,11 @@ public class MainWindowController implements Initializable {
 	Text textTimeValue;
 	@FXML
 	Text textTimeUnit;
+	// scale max value for force display
+	@FXML
+	Label textMaxValue;
+	@FXML
+	Label textMaxValueUnit;
 	// Buttons
 	@FXML
 	Button buttonStart;
@@ -189,6 +195,9 @@ public class MainWindowController implements Initializable {
 		// reset time units and value
 		textTimeValue.setText(".");
 		textTimeUnit.setText(TimeStamp.getInstance().getUnit());
+		// update max scale value
+		textMaxValue.setText(SensorCombinationFactory.combinationMap.get(0).getChosenVar());
+		textMaxValueUnit.setText(SensorCombinationFactory.combinationMap.get(0).getUnit());
 		// clear old Pane map, fill with new Panes
 		vboxSensors.getChildren().clear();
 		SensorPaneFactory.mapPane.clear();

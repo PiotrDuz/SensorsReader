@@ -84,6 +84,8 @@ public class CsvCreator implements AutoCloseable {
 			SensorCombination comb = SensorCombinationFactory.combinationMap.get(i);
 			header.add(comb.getName() + " [" + comb.getUnit() + "]");
 		}
+		// add information about used max scale
+		header.add("Zakres max: " + SensorCombinationFactory.combinationMap.get(0).getChosenVar());
 
 		return header.toArray(new String[header.size()]);
 	}
